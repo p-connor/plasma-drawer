@@ -1,0 +1,25 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "cmpopp2@gmail.com",
+                "Name": "Connor Popp"
+            }
+        ],
+        "Category": "Application Launchers",
+        "Description": "A fullscreen customizable launcher",
+        "Icon": "start-here-kde",
+        "Id": "com.github.p-connor.launcher",
+        "Name": "Launcher",
+        "ServiceTypes": [
+            "Plasma/Applet"
+        ],
+        "Version": "1",
+        "Website": ""
+    },
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml",
+    "X-Plasma-Provides": [
+        "org.kde.plasma.launchermenu"
+    ]
+}
