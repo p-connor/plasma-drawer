@@ -32,7 +32,7 @@ FocusScope {
     signal keyNavUp
     signal keyNavDown
 
-    property bool dragEnabled: false
+    property bool dragEnabled: true
     property bool showLabels: true
     property alias usesPlasmaTheme: gridView.usesPlasmaTheme
 
@@ -106,7 +106,7 @@ FocusScope {
             var closeRequested = visualParent.actionTriggered(actionId, actionArgument);
 
             if (closeRequested) {
-                root.toggle();
+                root.leave();
             }
         }
     }
@@ -127,7 +127,6 @@ FocusScope {
             if (item && item != kicker.dragSource && kicker.dragSource && kicker.dragSource.parent == gridView.contentItem) {
                 item.GridView.view.model.moveRow(dragSource.itemIndex, item.itemIndex);
             }
-
         }
 
         Timer {
@@ -330,22 +329,14 @@ FocusScope {
                 if (gridView.currentItem && gridView.currentItem == pressedItem) {
                     
                     if (gridView.model.modelForRow(gridView.currentIndex) != null) {
-                        gridView.model = gridView.model.modelForRow(gridView.currentIndex);
+                        root.enterDirectoryAtIndex(gridView.currentIndex);
                     } else if ("trigger" in gridView.model) {
                         gridView.model.trigger(pressedItem.itemIndex, "", null);
 
-                        if ("toggle" in root) {
-                            root.toggle();
-                        } else {
-                            root.visible = false;
-                        }
+                        root.toggle();
                     }
                 } else if (!pressedItem && mouse.button == Qt.LeftButton && !dragHelper.dragging) {
-                    if ("toggle" in root) {
-                        root.toggle();
-                    } else {
-                        root.visible = false;
-                    }
+                    root.leave();
                 }
 
                 pressX = -1;

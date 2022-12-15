@@ -34,11 +34,14 @@ Item {
 
     property bool showLabel: true
 
+    readonly property bool isDirectory: model.hasChildren
+
     readonly property int itemIndex: model.index
     readonly property url url: model.url != undefined ? model.url : ""
     property bool pressed: false
     readonly property bool hasActionList: ((model.favoriteId != null)
-                                           || (("hasActionList" in model) && (model.hasActionList == true)))
+                                           || (("hasActionList" in model) && (model.hasActionList == true))
+                                           || isDirectory)
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: model.display
@@ -101,7 +104,7 @@ Item {
     PlasmaComponents.Label {
         id: folderArrow
 
-        visible: hasChildren
+        visible: isDirectory
 
         anchors {
             top: label.bottom
@@ -117,7 +120,7 @@ Item {
         elide: Text.ElideRight
         wrapMode: Text.NoWrap
 
-        text: '^'
+        text: "^"
     }
 
     Keys.onPressed: {
