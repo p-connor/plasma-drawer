@@ -20,24 +20,38 @@
 
 .pragma library
 
-function fillActionMenu(i18n, actionMenu, actionList, favoriteModel, favoriteId) {
+function fillActionMenu(i18n, actionMenu, actionList, favoriteModel, favoriteId, isDirectory=false) {
     // Accessing actionList can be a costly operation, so we don't
     // access it until we need the menu.
 
-    var actions = createFavoriteActions(i18n, favoriteModel, favoriteId);
+    if (isDirectory) {
+        actionMenu.actionList = createDirectoryActions(i18n);
+        return;
+    }
 
-    if (actions) {
+    var favoriteActions = createFavoriteActions(i18n, favoriteModel, favoriteId);
+
+    if (favoriteActions) {
         if (actionList && actionList.length > 0) {
             var separator = { "type": "separator" };
             actionList.unshift(separator);
             // actionList = actions.concat(actionList); // this crashes Qt O.o
-            actionList.unshift.apply(actionList, actions);
+            actionList.unshift.apply(actionList, favoriteActions);
         } else {
-            actionList = actions;
+            actionList = favoriteActions;
         }
     }
 
     actionMenu.actionList = actionList;
+}
+
+function createDirectoryActions(i18n) {
+    var action = {};    
+    action.text = i18n("Empty folder here");
+    action.icon = "edit-reset";
+    action.actionId = "_kicker_directory_empty";
+    // action.actionArgument = { favoriteModel: favoriteModel, favoriteId: favoriteId };
+    return [action];
 }
 
 function createFavoriteActions(i18n, favoriteModel, favoriteId) {
