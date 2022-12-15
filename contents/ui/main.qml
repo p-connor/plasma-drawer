@@ -224,6 +224,7 @@ Item {
         autoPopulate: true
 
         flat: false
+        showTopLevelItems: true
         sorted: true
         showSeparators: false
         paginate: false

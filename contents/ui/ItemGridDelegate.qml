@@ -35,6 +35,7 @@ Item {
     property bool showLabel: true
 
     readonly property bool isDirectory: model.hasChildren
+    readonly property var directoryModel: isDirectory ? root.currentModel.modelForRow(itemIndex) : undefined
 
     readonly property int itemIndex: model.index
     readonly property url url: model.url != undefined ? model.url : ""
@@ -57,27 +58,83 @@ Item {
         return Tools.triggerAction(plasmoid, GridView.view.model, model.index, actionId, actionArgument);
     }
 
-    Rectangle{
-        id: box
-        height: parent.height // - 10
-        width:  parent.width  // - 10
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        //color:"red"
-        //opacity: 0.4
-        color:"transparent"
-    }
-    PlasmaCore.IconItem {
-        id: icon
-        y: iconSize*0.2
-        anchors.horizontalCenter: box.horizontalCenter
-        anchors.verticalCenter: !showLabel ? box.verticalCenter : undefined
+    // Rectangle{
+    //     id: box
+    //     height: parent.height // - 10
+    //     width:  parent.width  // - 10
+    //     anchors.verticalCenter: parent.verticalCenter
+    //     anchors.horizontalCenter: parent.horizontalCenter
+    //     color: "transparent"
+    // }
+
+    Rectangle {
+        id: displayBox
         width: iconSize
         height: width
-        animated: false
-        usesPlasmaTheme: item.GridView.view.usesPlasmaTheme
-        source: model.decoration
+        y: iconSize * 0.2
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: !showLabel ? parent.verticalCenter : undefined
+        color:"transparent"
+
+        PlasmaCore.IconItem {
+            id: icon
+            visible: !isDirectory
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width
+            height: parent.height
+            animated: false
+            usesPlasmaTheme: item.GridView.view.usesPlasmaTheme
+            source: model.decoration
+        }
+
+        Rectangle {
+            id: directoryBorderBox
+            visible: isDirectory
+
+            anchors.fill: parent
+            radius: width / 4
+            border.color: theme.textColor
+            border.width: 2
+            color: "transparent"
+
+            GridView {
+                id: directoryGridView
+                
+                anchors.fill: parent
+                anchors.margins: parent.width / 10
+                cellWidth: width / 2 > units.iconSizes.small ? width / 2 : width
+                cellHeight: cellWidth
+                clip: true
+
+                model: directoryModel
+                delegate: Item {
+                    width: directoryGridView.cellWidth
+                    height: directoryGridView.cellHeight
+
+                    PlasmaCore.IconItem {
+                        id: directoryIconItem
+
+                        anchors.fill: parent
+                        animated: false
+                        usesPlasmaTheme: item.GridView.view.usesPlasmaTheme
+                        source: model.decoration
+                    }
+                }
+            }
+        }
     }
+
+    // Rectangle{
+    //     id: box
+    //     height: parent.height // - 10
+    //     width:  parent.width  // - 10
+    //     anchors.verticalCenter: box.verticalCenter
+    //     anchors.horizontalCenter: parent.horizontalCenter
+    //     color:"red"
+    //     opacity: 0.4
+    //     // color: "transparent"
+    // }
 
     PlasmaComponents.Label {
         id: label
@@ -85,11 +142,11 @@ Item {
         visible: showLabel
 
         anchors {
-            top: icon.bottom
+            top: displayBox.bottom
             topMargin: units.smallSpacing
-            left: box.left
+            left: parent.left
             leftMargin: highlightItemSvg.margins.left
-            right: box.right
+            right: parent.right
             rightMargin: highlightItemSvg.margins.right
         }
 
@@ -101,27 +158,27 @@ Item {
         text: model.display
     }
 
-    PlasmaComponents.Label {
-        id: folderArrow
+    // PlasmaComponents.Label {
+    //     id: folderArrow
 
-        visible: isDirectory
+    //     visible: isDirectory
 
-        anchors {
-            top: label.bottom
-            topMargin: units.smallSpacing
-            left: box.left
-            leftMargin: highlightItemSvg.margins.left
-            right: box.right
-            rightMargin: highlightItemSvg.margins.right
-        }
+    //     anchors {
+    //         top: label.bottom
+    //         topMargin: units.smallSpacing
+    //         left: parent.left
+    //         leftMargin: highlightItemSvg.margins.left
+    //         right: parent.right
+    //         rightMargin: highlightItemSvg.margins.right
+    //     }
 
-        horizontalAlignment: Text.AlignHCenter
+    //     horizontalAlignment: Text.AlignHCenter
 
-        elide: Text.ElideRight
-        wrapMode: Text.NoWrap
+    //     elide: Text.ElideRight
+    //     wrapMode: Text.NoWrap
 
-        text: "^"
-    }
+    //     text: "^"
+    // }
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Menu && hasActionList) {
