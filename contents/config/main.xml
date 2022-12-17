@@ -17,7 +17,7 @@
     </entry>
 
     <entry name="iconSize" type="Int">
-      <default>64</default>
+      <default>128</default>
     </entry>
     <entry name="spaceWidth" type="Int">
       <default>64</default>
@@ -29,13 +29,13 @@
       <default>60</default>
     </entry>
     <entry name="useCustomSizeGrid" type="Bool">
-      <default>false</default>
+      <default>true</default>
     </entry>
     <entry name="numberColumns" type="Int">
-      <default>7</default>
+      <default>5</default>
     </entry>
     <entry name="numberRows" type="Int">
-      <default>5</default>
+      <default>4</default>
     </entry>
     <entry name="showFavorites" type="Bool">
       <default>false</default>

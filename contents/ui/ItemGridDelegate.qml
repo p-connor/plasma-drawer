@@ -76,6 +76,7 @@ Item {
         anchors.verticalCenter: !showLabel ? parent.verticalCenter : undefined
         color:"transparent"
 
+        // Icon shown if not directory or TODO: setting enabled
         PlasmaCore.IconItem {
             id: icon
             visible: !isDirectory
@@ -88,15 +89,16 @@ Item {
             source: model.decoration
         }
 
+        // Otherwise if directory, show directory box instead
         Rectangle {
-            id: directoryBorderBox
+            id: directoryBackgroundBox
             visible: isDirectory
 
             anchors.fill: parent
             radius: width / 4
-            border.color: theme.textColor
-            border.width: 2
-            color: "transparent"
+            //border.color: theme.textColor
+            //border.width: 2
+            color: "#33000005"
 
             GridView {
                 id: directoryGridView
@@ -106,6 +108,7 @@ Item {
                 cellWidth: width / 2 > units.iconSizes.small ? width / 2 : width
                 cellHeight: cellWidth
                 clip: true
+                z: 1 // Make in front of background
 
                 model: directoryModel
                 delegate: Item {
@@ -156,6 +159,7 @@ Item {
         wrapMode: Text.NoWrap
 
         text: model.display
+        font.bold: isDirectory
     }
 
     // PlasmaComponents.Label {

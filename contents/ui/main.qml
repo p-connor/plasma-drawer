@@ -225,7 +225,7 @@ Item {
 
         flat: false
         showTopLevelItems: true
-        sorted: true
+        sorted: false
         showSeparators: false
         paginate: false
 
