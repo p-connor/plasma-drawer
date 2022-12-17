@@ -107,6 +107,8 @@ Item {
                 anchors.margins: parent.width / 10
                 cellWidth: width / 2 > units.iconSizes.small ? width / 2 : width
                 cellHeight: cellWidth
+                
+                // TODO - don't use clip here for performance reasons
                 clip: true
                 z: 1 // Make in front of background
 

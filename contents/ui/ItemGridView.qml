@@ -54,6 +54,8 @@ FocusScope {
 
     property alias hoverEnabled: mouseArea.hoverEnabled
 
+    property alias populateTransition: gridView.populate
+
     onFocusChanged: {
         if (!focus) {
             currentIndex = -1;
@@ -99,6 +101,22 @@ FocusScope {
         gridView.forceLayout();
     }
 
+    function setupEnterTransitionAnimation(isReverse = false, pos = null) {        
+        if (pos) {
+            gridView.populateOrigin = pos;
+        } else if (currentItem) {
+            gridView.populateOrigin = Qt.point(currentItem.x, currentItem.y);
+        } else {
+            gridView.populateOrigin = Qt.point(gridView.width / 2, gridView.height / 2);
+        }
+        
+        if (!isReverse) {
+            gridView.populate = directoryEnterTransition;
+        } else {
+            gridView.populate = directoryReturnTransition;
+        }
+    }
+
     ActionMenu {
         id: actionMenu
 
@@ -117,26 +135,11 @@ FocusScope {
         anchors.fill: parent
 
         onDragMove: {
-            if (!dragEnabled || gridView.animating) {
-                return;
-            }
-
             var cPos = mapToItem(gridView.contentItem, event.x, event.y);
             var item = gridView.itemAt(cPos.x, cPos.y);
 
             if (item && item != kicker.dragSource && kicker.dragSource && kicker.dragSource.parent == gridView.contentItem) {
                 item.GridView.view.model.moveRow(dragSource.itemIndex, item.itemIndex);
-            }
-        }
-
-        Timer {
-            id: resetAnimationDurationTimer
-
-            interval: 80
-            repeat: false
-
-            onTriggered: {
-                gridView.animationDuration = dragEnabled ? units.longDuration : 0;
             }
         }
 
@@ -153,66 +156,51 @@ FocusScope {
                 id: gridView
 
                 property bool usesPlasmaTheme: false
-
-                property bool animating: false
-                property int animationDuration: dragEnabled ? units.longDuration : 0
+                property var populateOrigin: Qt.point(gridView.width / 2, gridView.height / 2)
 
                 focus: true
                 visible: model.count > 0
                 //enabled: visible    
                 currentIndex: -1
-
-                move: Transition {
-                    enabled: itemGrid.dragEnabled
-
-                    SequentialAnimation {
-                        PropertyAction { target: gridView; property: "animating"; value: true }
-
-                        NumberAnimation {
-                            duration: gridView.animationDuration
-                            properties: "x, y"
-                            easing.type: Easing.OutQuad
-                        }
-
-                        PropertyAction { target: gridView; property: "animating"; value: false }
-                    }
-                }
-
-                moveDisplaced: Transition {
-                    enabled: itemGrid.dragEnabled
-
-                    SequentialAnimation {
-                        PropertyAction { target: gridView; property: "animating"; value: true }
-
-                        NumberAnimation {
-                            duration: gridView.animationDuration * 5
-                            properties: "x, y"
-                            easing.type: Easing.OutQuad
-                        }
-
-                        PropertyAction { target: gridView; property: "animating"; value: false }
-                    }
-                }
-
+             
                 keyNavigationWraps: false
                 boundsBehavior: Flickable.StopAtBounds
-
-                delegate: ItemGridDelegate {
-                    showLabel: showLabels
-                }
 
                 highlight: PlasmaComponents.Highlight {}
                 highlightFollowsCurrentItem: true
                 highlightMoveDuration: 0
 
-                onCountChanged: {
-                    animationDuration = 0;
-                    resetAnimationDurationTimer.start();
+                delegate: ItemGridDelegate {
+                    showLabel: showLabels
                 }
 
                 onModelChanged: {
                     currentIndex = -1;
                 }
+
+                Transition {
+                    id: directoryEnterTransition
+                    // PauseAnimation {
+                    //     duration: (directoryEnterTransition.ViewTransition.index) * 300
+                    // }
+                    NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: units.longDuration }
+                    NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: units.longDuration; easing.type: Easing.OutCubic }
+                    NumberAnimation { properties: "x"; from: gridView.populateOrigin.x; duration: units.veryLongDuration; easing.type: Easing.OutCubic }
+                    NumberAnimation { properties: "y"; from: gridView.populateOrigin.y; duration: units.veryLongDuration; easing.type: Easing.OutCubic }
+                }
+
+                Transition {
+                    id: directoryReturnTransition
+                    // PauseAnimation {
+                    //     duration: (directoryEnterTransition.ViewTransition.index) * 300
+                    // }
+                    NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: units.longDuration }
+                    NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: units.longDuration; easing.type: Easing.OutCubic }
+                    NumberAnimation { properties: "x"; from: directoryReturnTransition.ViewTransition.item.x + (directoryReturnTransition.ViewTransition.item.x - (width / 2)); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
+                    NumberAnimation { properties: "y"; from: directoryReturnTransition.ViewTransition.item.y + (directoryReturnTransition.ViewTransition.item.y - (height / 2)); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
+                }
+
+                populate: directoryEnterTransition
 
                 Keys.onLeftPressed: {
                     if (currentIndex == -1) {
@@ -329,7 +317,7 @@ FocusScope {
                 if (gridView.currentItem && gridView.currentItem == pressedItem) {
                     
                     if (gridView.model.modelForRow(gridView.currentIndex) != null) {
-                        root.enterDirectoryAtIndex(gridView.currentIndex);
+                        root.enterDirectoryAtCurrentIndex();
                     } else if ("trigger" in gridView.model) {
                         gridView.model.trigger(pressedItem.itemIndex, "", null);
 

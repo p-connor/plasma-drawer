@@ -92,8 +92,17 @@ Kicker.DashboardWindow {
         }
     }
 
-    function enterDirectoryAtIndex(index) {
-        let dir = currentModel.modelForRow(index);
+    function enterDirectoryAtCurrentIndex() {
+        // if (rootMouseArea.mouseX != false) {
+        //     let point = rootMouseArea.mapToItem(itemGridView.contentItem, rootMouseArea.mouseX, rootMouseArea.mouseY);
+        //     directoryEnterTransition.populateOrigin = (point.x, point.y);
+        //     itemGridView.populateTransition = directoryEnterTransition;
+        // } else {
+        //     itemGridView.zoomFromPos = (gridWidth / 2, gridHeight / 2);
+        // }
+
+        itemGridView.setupEnterTransitionAnimation();
+        let dir = currentModel.modelForRow(itemGridView.currentIndex);
         if (dir.hasChildren) {
             //modelStack.push(dir);
             modelStack = [...modelStack, dir];
@@ -101,6 +110,7 @@ Kicker.DashboardWindow {
     }
 
     function leave() {
+        itemGridView.setupEnterTransitionAnimation(true);
         if (modelStack.length > 1) {
             //modelStack.pop();
             // Note: need to reassign array to cause 'changed' signal
@@ -165,7 +175,7 @@ Kicker.DashboardWindow {
             }
 
             ItemGridView {
-                id: gridView
+                id: itemGridView
 
                 hoverEnabled: true
 
@@ -224,7 +234,7 @@ Kicker.DashboardWindow {
     Component.onCompleted: {
         kicker.reset.connect(reset);
 
-        console.log("\n\n ---- PRINTING ---- \n\n");
-        logModelChildren(appsModel);
+        // console.log("\n\n ---- PRINTING ---- \n\n");
+        // logModelChildren(appsModel);
     }
 }
