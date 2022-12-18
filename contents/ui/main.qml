@@ -140,7 +140,7 @@ Item {
     Connections {
         target: globalFavorites
 
-        onFavoritesChanged: {
+        function onFavoritesChanged() {
            plasmoid.configuration.favoriteApps = target.favorites;
         }
     }
@@ -148,7 +148,7 @@ Item {
     Connections {
         target: systemFavorites
 
-        onFavoritesChanged: {
+        function onFavoritesChanged() {
            plasmoid.configuration.favoriteSystemActions = target.favorites;
         }
     }
@@ -156,15 +156,15 @@ Item {
     Connections {
         target: plasmoid.configuration
 
-        onFavoriteAppsChanged: {
+        function onFavoriteAppsChanged() {
             globalFavorites.favorites = plasmoid.configuration.favoriteApps;
         }
 
-        onFavoriteSystemActionsChanged: {
+        function onFavoriteSystemActionsChanged() {
             systemFavorites.favorites = plasmoid.configuration.favoriteSystemActions;
         }
 
-        onHiddenApplicationsChanged: {
+        function onHiddenApplicationsChanged() {
             // Force refresh on hidden
             rootModel.refresh();
         }
