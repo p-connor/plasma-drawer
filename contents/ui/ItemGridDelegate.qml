@@ -35,7 +35,7 @@ Item {
     property bool showLabel: true
 
     readonly property bool isDirectory: model.hasChildren
-    readonly property var directoryModel: isDirectory ? root.currentModel.modelForRow(itemIndex) : undefined
+    readonly property var directoryModel: isDirectory ? GridView.view.model.modelForRow(itemIndex) : undefined
 
     readonly property int itemIndex: model.index
     readonly property url url: model.url != undefined ? model.url : ""

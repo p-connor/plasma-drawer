@@ -49,7 +49,7 @@ Kicker.DashboardWindow {
                                                  highlightItemSvg.margins.left + highlightItemSvg.margins.right))
 
 
-    property bool searching: (searchField.text != "")
+    // property bool searching: (searchField.text != "")
 
     // keyEventProxy: searchField
     backgroundColor: "transparent"
@@ -71,11 +71,11 @@ Kicker.DashboardWindow {
     }
 
     onKeyEscapePressed: {
-        if (searching) {
-            // searchField.text = ""
-        } else {
+        // if (searching) {
+        //     searchField.text = ""
+        // } else {
             root.leave();
-        }
+        // }
     }
 
     onVisibleChanged: {
@@ -83,14 +83,14 @@ Kicker.DashboardWindow {
         rootModel.pageSize = gridNumCols*gridNumRows
     }
 
-    onSearchingChanged: {
-        if (searching) {
-            // currentModel = runnerModel;
-            // paginationBar.model = runnerModel;
-        } else {
-            reset();
-        }
-    }
+    // onSearchingChanged: {
+    //     if (searching) {
+    //         currentModel = runnerModel;
+    //         paginationBar.model = runnerModel;
+    //     } else {
+    //         reset();
+    //     }
+    // }
 
     function enterDirectoryAtCurrentIndex() {
         // if (rootMouseArea.mouseX != false) {
@@ -121,9 +121,9 @@ Kicker.DashboardWindow {
     }
 
     function reset() {
-        if (!searching) {
-            // currentModel = appsModel;
-        }
+        // if (!searching) {
+        //     currentModel = appsModel;
+        // }
         modelStack = [appsModel]
         // searchField.text = "";
     }
