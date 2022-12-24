@@ -84,11 +84,11 @@ Item {
         target: plasmoid.configuration
 
         // TODO - update
-        onFavoriteSystemActionsChanged: {
+        function onFavoriteSystemActionsChanged() {
             systemFavorites.favorites = plasmoid.configuration.favoriteSystemActions;
         }
 
-        onHiddenApplicationsChanged: {
+        function onHiddenApplicationsChanged() {
             // Force refresh on hidden
             rootModel.refresh();
         }
