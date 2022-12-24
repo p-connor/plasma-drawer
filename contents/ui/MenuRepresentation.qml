@@ -80,7 +80,6 @@ Kicker.DashboardWindow {
 
     onVisibleChanged: {
         reset();
-        rootModel.pageSize = gridNumCols*gridNumRows
     }
 
     onSearchingChanged: {
@@ -221,11 +220,11 @@ Kicker.DashboardWindow {
                 }
 
                 onKeyNavDown: {
-                    if(systemFavoritesGrid.visible) {
-                        currentIndex = -1;
-                        systemFavoritesGrid.focus = true;
-                        systemFavoritesGrid.tryActivate(0, 0);
-                    }
+                    // if(systemFavoritesGrid.visible) {
+                    //     currentIndex = -1;
+                    //     systemFavoritesGrid.focus = true;
+                    //     systemFavoritesGrid.tryActivate(0, 0);
+                    // }
                 }
             }
         }

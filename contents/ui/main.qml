@@ -42,9 +42,6 @@ Item {
 
     property Item dragSource: null
 
-    property QtObject globalFavorites: rootModel.favoritesModel
-    property QtObject systemFavorites: rootModel.systemFavoritesModel
-
     function logModelChildren(modelId, leadingSpace=0) {
         let spacing = Array(leadingSpace + 1).join(" ");
         // console.log(modelId.description);
@@ -83,83 +80,10 @@ Item {
         MenuRepresentation {}
     }
 
-    Kicker.RootModel {
-        id: rootModel
-
-        autoPopulate: false
-
-        appNameFormat: plasmoid.configuration.appNameFormat
-        flat: true
-        sorted: true
-        showSeparators: false
-        appletInterface: plasmoid
-
-        paginate: false
-        showAllApps: false
-        showRecentApps: false
-        showRecentDocs: false
-        showRecentContacts: false
-        showPowerSession: false
-
-        onFavoritesModelChanged: {
-            if ("initForClient" in favoritesModel) {
-                favoritesModel.initForClient("org.kde.plasma.kicker.favorites.instance-" + plasmoid.id)
-
-                if (!plasmoid.configuration.favoritesPortedToKAstats) {
-                    favoritesModel.portOldFavorites(plasmoid.configuration.favoriteApps);
-                    plasmoid.configuration.favoritesPortedToKAstats = true;
-                }
-            } else {
-                favoritesModel.favorites = plasmoid.configuration.favoriteApps;
-            }
-
-            favoritesModel.maxFavorites = pageSize;
-        }
-
-        onSystemFavoritesModelChanged: {
-           systemFavoritesModel.enabled = true;
-           systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
-           systemFavoritesModel.maxFavorites = 8;
-        }
-
-        Component.onCompleted: {
-            if ("initForClient" in favoritesModel) {
-               favoritesModel.initForClient("org.kde.plasma.kicker.favorites.instance-" + plasmoid.id)
-               if (!plasmoid.configuration.favoritesPortedToKAstats) {
-                   favoritesModel.portOldFavorites(plasmoid.configuration.favoriteApps);
-                   plasmoid.configuration.favoritesPortedToKAstats = true;
-               }
-            } else {
-               favoritesModel.favorites = plasmoid.configuration.favoriteApps;
-            }
-            favoritesModel.maxFavorites = pageSize;
-            rootModel.refresh();
-        }
-    }
-
-    Connections {
-        target: globalFavorites
-
-        onFavoritesChanged: {
-           plasmoid.configuration.favoriteApps = target.favorites;
-        }
-    }
-
-    Connections {
-        target: systemFavorites
-
-        onFavoritesChanged: {
-           plasmoid.configuration.favoriteSystemActions = target.favorites;
-        }
-    }
-
     Connections {
         target: plasmoid.configuration
 
-        onFavoriteAppsChanged: {
-            globalFavorites.favorites = plasmoid.configuration.favoriteApps;
-        }
-
+        // TODO - update
         onFavoriteSystemActionsChanged: {
             systemFavorites.favorites = plasmoid.configuration.favoriteSystemActions;
         }
@@ -170,9 +94,28 @@ Item {
         }
     }
 
+    Kicker.AppsModel {
+        id: appsModel
+
+        autoPopulate: true
+
+        flat: false
+        showTopLevelItems: true
+        sorted: false
+        showSeparators: false
+        paginate: false
+
+        appletInterface: plasmoid
+        appNameFormat: plasmoid.configuration.appNameFormat
+
+        Component.onCompleted: {
+            appsModel.refresh();
+        }
+    }
+
     Kicker.RunnerModel {
         id: runnerModel
-        favoritesModel: globalFavorites
+        // favoritesModel: globalFavorites
         runners: plasmoid.configuration.useExtraRunners ? new Array("services").concat(plasmoid.configuration.extraRunners) : "services"
         appletInterface: plasmoid
         deleteWhenEmpty: false
@@ -218,53 +161,9 @@ Item {
         dragSource = null;
     }
 
-    Kicker.AppsModel {
-        id: appsModel
-
-        autoPopulate: true
-
-        flat: false
-        showTopLevelItems: true
-        sorted: false
-        showSeparators: false
-        paginate: false
-
-        appletInterface: plasmoid
-        appNameFormat: plasmoid.configuration.appNameFormat
-
-        onFavoritesModelChanged: {
-            if ("initForClient" in favoritesModel) {
-                favoritesModel.initForClient("org.kde.plasma.kicker.favorites.instance-" + plasmoid.id)
-
-                if (!plasmoid.configuration.favoritesPortedToKAstats) {
-                    favoritesModel.portOldFavorites(plasmoid.configuration.favoriteApps);
-                    plasmoid.configuration.favoritesPortedToKAstats = true;
-                }
-            } else {
-                favoritesModel.favorites = plasmoid.configuration.favoriteApps;
-            }
-
-            favoritesModel.maxFavorites = pageSize;
-        }
-
-        Component.onCompleted: {
-            if ("initForClient" in favoritesModel) {
-               favoritesModel.initForClient("org.kde.plasma.kicker.favorites.instance-" + plasmoid.id)
-               if (!plasmoid.configuration.favoritesPortedToKAstats) {
-                   favoritesModel.portOldFavorites(plasmoid.configuration.favoriteApps);
-                   plasmoid.configuration.favoritesPortedToKAstats = true;
-               }
-            } else {
-               favoritesModel.favorites = plasmoid.configuration.favoriteApps;
-            }
-            favoritesModel.maxFavorites = pageSize;
-            appsModel.refresh();
-        }
-    }
-
     Component.onCompleted: {
         plasmoid.setAction("menuedit", i18n("Edit Applications..."));
-        rootModel.refreshed.connect(reset);
+        // rootModel.refreshed.connect(reset);
         dragHelper.dropped.connect(resetDragSource);
     }
 }

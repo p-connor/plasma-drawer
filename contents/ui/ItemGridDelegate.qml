@@ -40,8 +40,7 @@ Item {
     readonly property int itemIndex: model.index
     readonly property url url: model.url != undefined ? model.url : ""
     property bool pressed: false
-    readonly property bool hasActionList: ((model.favoriteId != null)
-                                           || (("hasActionList" in model) && (model.hasActionList == true))
+    readonly property bool hasActionList: ((("hasActionList" in model) && (model.hasActionList == true))
                                            || isDirectory)
 
     Accessible.role: Accessible.MenuItem
@@ -49,7 +48,8 @@ Item {
 
     function openActionMenu(x, y) {
         var actionList = hasActionList ? model.actionList : [];
-        Tools.fillActionMenu(i18n, actionMenu, actionList, GridView.view.model.favoritesModel, model.favoriteId, isDirectory);
+        //Tools.fillActionMenu(i18n, actionMenu, actionList, GridView.view.model.favoritesModel, model.favoriteId, isDirectory);
+        actionMenu.actionList = isDirectory ? Tools.createDirectoryActions(i18n) : actionList;
         actionMenu.visualParent = item;
         actionMenu.open(x, y);
     }
