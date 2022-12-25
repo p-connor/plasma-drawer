@@ -111,6 +111,7 @@ Item {
                 // TODO - don't use clip here for performance reasons
                 clip: true
                 z: 1 // Make in front of background
+                interactive: false
 
                 model: directoryModel
                 delegate: Item {

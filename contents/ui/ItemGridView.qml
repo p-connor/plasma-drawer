@@ -49,9 +49,6 @@ FocusScope {
     property alias cellWidth: gridView.cellWidth
     property alias cellHeight: gridView.cellHeight
 
-    property alias horizontalScrollBarPolicy: scrollArea.horizontalScrollBarPolicy
-    property alias verticalScrollBarPolicy: scrollArea.verticalScrollBarPolicy
-
     property alias hoverEnabled: mouseArea.hoverEnabled
 
     property alias populateTransition: gridView.populate
@@ -143,127 +140,139 @@ FocusScope {
             }
         }
 
-        PlasmaExtras.ScrollArea {
-            id: scrollArea
-
+        GridView {
+            id: gridView
             anchors.fill: parent
 
+            property bool usesPlasmaTheme: false
+            property var populateOrigin: Qt.point(gridView.width / 2, gridView.height / 2)
+
             focus: true
+            visible: model.count > 0  
+            currentIndex: -1
+            clip: true
+            
+            keyNavigationWraps: false
+            boundsBehavior: Flickable.StopAtBounds
+            snapMode: GridView.SnapToRow
 
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+            highlightFollowsCurrentItem: true
+            highlight: PlasmaComponents.Highlight {
+                visible: gridView.highlightFollowsCurrentItem
+            }
+            highlightMoveDuration: 0
 
-            GridView {
-                id: gridView
+            delegate: ItemGridDelegate {
+                showLabel: showLabels
+            }
 
-                property bool usesPlasmaTheme: false
-                property var populateOrigin: Qt.point(gridView.width / 2, gridView.height / 2)
+            onModelChanged: {
+                currentIndex = -1;
+            }
 
-                focus: true
-                visible: model.count > 0
-                //enabled: visible    
-                currentIndex: -1
-             
-                keyNavigationWraps: false
-                boundsBehavior: Flickable.StopAtBounds
-
-                highlight: PlasmaComponents.Highlight {}
-                highlightFollowsCurrentItem: true
-                highlightMoveDuration: 0
-
-                delegate: ItemGridDelegate {
-                    showLabel: showLabels
-                }
-
-                onModelChanged: {
-                    currentIndex = -1;
-                }
-
-                Transition {
-                    id: directoryEnterTransition
-                    // PauseAnimation {
-                    //     duration: (directoryEnterTransition.ViewTransition.index) * 300
-                    // }
-                    NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: units.longDuration }
-                    NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: units.longDuration; easing.type: Easing.OutCubic }
-                    NumberAnimation { properties: "x"; from: gridView.populateOrigin.x; duration: units.veryLongDuration; easing.type: Easing.OutCubic }
-                    NumberAnimation { properties: "y"; from: gridView.populateOrigin.y; duration: units.veryLongDuration; easing.type: Easing.OutCubic }
-                }
-
-                Transition {
-                    id: directoryReturnTransition
-                    // PauseAnimation {
-                    //     duration: (directoryEnterTransition.ViewTransition.index) * 300
-                    // }
-                    NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: units.longDuration }
-                    NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: units.longDuration; easing.type: Easing.OutCubic }
-                    NumberAnimation { properties: "x"; from: directoryReturnTransition.ViewTransition.item.x + (directoryReturnTransition.ViewTransition.item.x - (width / 2)); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
-                    NumberAnimation { properties: "y"; from: directoryReturnTransition.ViewTransition.item.y + (directoryReturnTransition.ViewTransition.item.y - (height / 2)); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
-                }
-
-                populate: directoryEnterTransition
-
-                Keys.onLeftPressed: {
-                    if (currentIndex == -1) {
-                        currentIndex = 0;
-                        return;
+            Transition {
+                id: directoryEnterTransition
+                // PauseAnimation {
+                //     duration: (directoryEnterTransition.ViewTransition.index) * 300
+                // }
+                SequentialAnimation {
+                    PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: false }
+                    NumberAnimation { property: "opacity"; to: 0; duration: 0 }
+                    PauseAnimation {
+                        duration: (directoryEnterTransition.ViewTransition.index) * 5
                     }
-
-                    if (!(event.modifiers & Qt.ControlModifier) && currentCol() != 0) {
-                        event.accepted = true;
-                        moveCurrentIndexLeft();
-                    } else {
-                        itemGrid.keyNavLeft();
+                    ParallelAnimation {
+                        NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: units.veryLongDuration * .75 }
+                        NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: units.veryLongDuration * .75; easing.type: Easing.OutCubic }
+                        NumberAnimation { property: "x"; from: gridView.populateOrigin.x; duration: units.veryLongDuration; easing.type: Easing.OutCubic }
+                        NumberAnimation { property: "y"; from: gridView.populateOrigin.y; duration: units.veryLongDuration; easing.type: Easing.OutCubic }
                     }
+                    PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: true }
+                }
+            }
+
+            Transition {
+                id: directoryReturnTransition
+                // PauseAnimation {
+                //     duration: (directoryEnterTransition.ViewTransition.index) * 300
+                // }
+                SequentialAnimation {
+                    PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: false }
+                    PropertyAction { target: gridView; property: "clip"; value: false }
+                    ParallelAnimation {
+                        NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: units.veryLongDuration * .8 }
+                        NumberAnimation { property: "scale"; from: 0.5; to: 1.0; duration: units.veryLongDuration * .8; easing.type: Easing.OutCubic }
+                        NumberAnimation { property: "x"; from: directoryReturnTransition.ViewTransition.item.x + ((directoryReturnTransition.ViewTransition.item.x - (width / 2)) * .4); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
+                        NumberAnimation { property: "y"; from: directoryReturnTransition.ViewTransition.item.y + ((directoryReturnTransition.ViewTransition.item.y - (height / 2)) * .4); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
+                    }
+                    PropertyAction { target: gridView; property: "clip"; value: true }
+                    PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: true }
+                }
+            }
+
+            populate: directoryEnterTransition
+
+            Keys.onLeftPressed: {
+                if (currentIndex == -1) {
+                    currentIndex = 0;
+                    return;
                 }
 
-                Keys.onRightPressed: {
-                    if (currentIndex == -1) {
-                        currentIndex = 0;
-                        return;
-                    }
+                if (!(event.modifiers & Qt.ControlModifier) && currentCol() != 0) {
+                    event.accepted = true;
+                    moveCurrentIndexLeft();
+                } else {
+                    itemGrid.keyNavLeft();
+                }
+            }
 
+            Keys.onRightPressed: {
+                if (currentIndex == -1) {
+                    currentIndex = 0;
+                    return;
+                }
+
+                var columns = Math.floor(width / cellWidth);
+
+                if (!(event.modifiers & Qt.ControlModifier) && currentCol() != columns - 1 && currentIndex != count - 1) {
+                    event.accepted = true;
+                    moveCurrentIndexRight();
+                } else {
+                    itemGrid.keyNavRight();
+                }
+            }
+
+            Keys.onUpPressed: {
+                if (currentIndex == -1) {
+                    currentIndex = 0;
+                    return;
+                }
+
+                if (currentRow() != 0) {
+                    event.accepted = true;
+                    moveCurrentIndexUp();
+                    positionViewAtIndex(currentIndex, GridView.Contain);
+                } else {
+                    itemGrid.keyNavUp();
+                }
+            }
+
+            Keys.onDownPressed: {
+                if (currentIndex == -1) {
+                    currentIndex = 0;
+                    return;
+                }
+
+                if (currentRow() < itemGrid.lastRow()) {
+                    // Fix moveCurrentIndexDown()'s lack of proper spatial nav down
+                    // into partial columns.
+                    event.accepted = true;
                     var columns = Math.floor(width / cellWidth);
-
-                    if (!(event.modifiers & Qt.ControlModifier) && currentCol() != columns - 1 && currentIndex != count - 1) {
-                        event.accepted = true;
-                        moveCurrentIndexRight();
-                    } else {
-                        itemGrid.keyNavRight();
-                    }
-                }
-
-                Keys.onUpPressed: {
-                    if (currentIndex == -1) {
-                        currentIndex = 0;
-                        return;
-                    }
-
-                    if (currentRow() != 0) {
-                        event.accepted = true;
-                        moveCurrentIndexUp();
-                        positionViewAtIndex(currentIndex, GridView.Contain);
-                    } else {
-                        itemGrid.keyNavUp();
-                    }
-                }
-
-                Keys.onDownPressed: {
-                    if (currentIndex == -1) {
-                        currentIndex = 0;
-                        return;
-                    }
-
-                    if (currentRow() < itemGrid.lastRow()) {
-                        // Fix moveCurrentIndexDown()'s lack of proper spatial nav down
-                        // into partial columns.
-                        event.accepted = true;
-                        var columns = Math.floor(width / cellWidth);
-                        var newIndex = currentIndex + columns;
-                        currentIndex = Math.min(newIndex, count - 1);
-                        positionViewAtIndex(currentIndex, GridView.Contain);
-                    } else {
-                        itemGrid.keyNavDown();
-                    }
+                    var newIndex = currentIndex + columns;
+                    currentIndex = Math.min(newIndex, count - 1);
+                    positionViewAtIndex(currentIndex, GridView.Contain);
+                } else {
+                    itemGrid.keyNavDown();
                 }
             }
         }
@@ -271,6 +280,7 @@ FocusScope {
         MouseArea {
             id: mouseArea
             anchors.fill: parent
+            anchors.bottomMargin: 2; // Prevents autoscrolling down when mouse at bottom of grid
 
             property int pressX: -1
             property int pressY: -1

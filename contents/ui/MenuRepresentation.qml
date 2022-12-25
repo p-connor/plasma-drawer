@@ -176,21 +176,17 @@ Kicker.DashboardWindow {
             ItemGridView {
                 id: itemGridView
 
-                hoverEnabled: true
-
                 visible: model.count > 0
                 anchors.fill: parent
 
                 cellWidth:  cellSizeWidth
                 cellHeight: cellSizeHeight
 
-                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-                verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-                dragEnabled: true
-
                 model: currentModel
                 
+                dragEnabled: false
+                hoverEnabled: true
+
                 // onCurrentIndexChanged: {
                 //     if (currentIndex != -1 && !searching) {
                 //         pageListScrollArea.focus = true;
