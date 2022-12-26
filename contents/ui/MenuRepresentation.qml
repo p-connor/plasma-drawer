@@ -36,17 +36,13 @@ Kicker.DashboardWindow {
     id: root
 
     property int iconSize:    plasmoid.configuration.iconSize
-    property int spaceWidth:  plasmoid.configuration.spaceWidth
-    property int spaceHeight: plasmoid.configuration.spaceHeight
-    property int cellSizeWidth: spaceWidth + iconSize + theme.mSize(theme.defaultFont).height
+    
+    // TODO - polish cell sizes for different resolutions
+    property int cellSizeWidth: (iconSize * 1.5) + theme.mSize(theme.defaultFont).height
                                 + (2 * units.smallSpacing)
                                 + (2 * Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
                                                 highlightItemSvg.margins.left + highlightItemSvg.margins.right))
-
-    property int cellSizeHeight: spaceHeight + iconSize + theme.mSize(theme.defaultFont).height
-                                 + (2 * units.smallSpacing)
-                                 + (2 * Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
-                                                 highlightItemSvg.margins.left + highlightItemSvg.margins.right))
+    property int cellSizeHeight: cellSizeWidth - (iconSize * .25)
 
 
     // property bool searching: (searchField.text != "")
@@ -54,9 +50,8 @@ Kicker.DashboardWindow {
     // keyEventProxy: searchField
     backgroundColor: "transparent"
 
-    property bool linkUseCustomSizeGrid: plasmoid.configuration.useCustomSizeGrid
-    property int gridNumCols:  plasmoid.configuration.useCustomSizeGrid ? plasmoid.configuration.numberColumns : Math.floor(width  * 0.85  / cellSizeWidth) 
-    property int gridNumRows:  plasmoid.configuration.useCustomSizeGrid ? plasmoid.configuration.numberRows : Math.floor(height * 0.8  /  cellSizeHeight)
+    property int gridNumCols:  plasmoid.configuration.numberColumns
+    property int gridNumRows:  Math.floor(height * 0.6  /  cellSizeHeight)
     property int gridWidth:  gridNumCols * cellSizeWidth
     property int gridHeight: gridNumRows * cellSizeHeight
 

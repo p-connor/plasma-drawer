@@ -17,20 +17,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.Controls 1.0
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.0
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.14
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-
+import org.kde.kirigami 2.5 as Kirigami
 import org.kde.kquickcontrolsaddons 2.0 as KQuickAddons
 import org.kde.draganddrop 2.0 as DragDrop
-
-import org.kde.plasma.private.kicker 0.1 as Kicker
-
-import org.kde.kirigami 2.4 as Kirigami
 
 Kirigami.FormLayout {
     id: configGeneral
@@ -38,120 +32,111 @@ Kirigami.FormLayout {
     property string cfg_icon:                   plasmoid.configuration.icon
     property bool cfg_useCustomButtonImage:     plasmoid.configuration.useCustomButtonImage
     property string cfg_customButtonImage:      plasmoid.configuration.customButtonImage
-    property alias cfg_iconSize:                iconSize.value
-    property alias cfg_spaceWidth:              spaceWidth.value
-    property alias cfg_spaceHeight:             spaceHeight.value
+    
+    property int cfg_iconSize:                  plasmoid.configuration.iconSize
+    
     property alias cfg_backgroundOpacity:       backgroundOpacity.value
-    property alias cfg_useCustomSizeGrid:       useCustomSizeGrid.checked
+    
     property alias cfg_numberColumns:           numberColumns.value
-    property alias cfg_numberRows:              numberRows.value
-    property alias cfg_showFavorites:           showFavorites.checked
-    property alias cfg_startOnFavorites:        startOnFavorites.checked
+    
     property alias cfg_showSystemActions:       showSystemActions.checked
     property alias cfg_systemActionIconSize:    systemActionIconSize.value
-    property alias cfg_scrollAnimationDuration: scrollAnimationDuration.value
 
     
     // ----------------- Icon -----------------
-    RowLayout {
+    Button {
+        id: iconButton
+
         Kirigami.FormData.label: i18n("Icon:")
-        
-        spacing: units.smallSpacing
 
-        Button {
+        implicitWidth: previewFrame.width + units.smallSpacing * 2
+        implicitHeight: previewFrame.height + units.smallSpacing * 2
 
-            id: iconButton
-            Layout.minimumWidth: previewFrame.width + units.smallSpacing * 2
-            Layout.maximumWidth: Layout.minimumWidth
-            Layout.minimumHeight: previewFrame.height + units.smallSpacing * 2
-            Layout.maximumHeight: Layout.minimumWidth
+        // Just to provide some visual feedback when dragging;
+        // cannot have checked without checkable enabled
+        checkable: true
+        checked: dropArea.containsAcceptableDrag
 
-            DragDrop.DropArea {
-                id: dropArea
+        onPressed: iconMenu.opened ? iconMenu.close() : iconMenu.open()
 
-                property bool containsAcceptableDrag: false
+        DragDrop.DropArea {
+            id: dropArea
 
-                anchors.fill: parent
+            property bool containsAcceptableDrag: false
 
-                onDragEnter: {
-                    // Cannot use string operations (e.g. indexOf()) on "url" basic type.
-                    var urlString = event.mimeData.url.toString();
+            anchors.fill: parent
 
-                    // This list is also hardcoded in KIconDialog.
-                    var extensions = [".png", ".xpm", ".svg", ".svgz"];
-                    containsAcceptableDrag = urlString.indexOf("file:///") === 0 && extensions.some(function (extension) {
-                        return urlString.indexOf(extension) === urlString.length - extension.length; // "endsWith"
-                    });
+            onDragEnter: {
+                // Cannot use string operations (e.g. indexOf()) on "url" basic type.
+                var urlString = event.mimeData.url.toString();
 
-                    if (!containsAcceptableDrag) {
-                        event.ignore();
-                    }
-                }
-                onDragLeave: containsAcceptableDrag = false
+                // This list is also hardcoded in KIconDialog.
+                var extensions = [".png", ".xpm", ".svg", ".svgz"];
+                containsAcceptableDrag = urlString.indexOf("file:///") === 0 && extensions.some(function (extension) {
+                    return urlString.indexOf(extension) === urlString.length - extension.length; // "endsWith"
+                });
 
-                onDrop: {
-                    if (containsAcceptableDrag) {
-                        // Strip file:// prefix, we already verified in onDragEnter that we have only local URLs.
-                        iconDialog.setCustomButtonImage(event.mimeData.url.toString().substr("file://".length));
-                    }
-                    containsAcceptableDrag = false;
+                if (!containsAcceptableDrag) {
+                    event.ignore();
                 }
             }
+            onDragLeave: containsAcceptableDrag = false
 
-            KQuickAddons.IconDialog {
-                id: iconDialog
-
-                function setCustomButtonImage(image) {
-                    cfg_customButtonImage = image || cfg_icon || "start-here-kde"
-                    cfg_useCustomButtonImage = true;
+            onDrop: {
+                if (containsAcceptableDrag) {
+                    // Strip file:// prefix, we already verified in onDragEnter that we have only local URLs.
+                    iconDialog.setCustomButtonImage(event.mimeData.url.toString().substr("file://".length));
                 }
-
-                onIconNameChanged: setCustomButtonImage(iconName);
-            }
-
-            // just to provide some visual feedback, cannot have checked without checkable enabled
-            checkable: true
-            checked: dropArea.containsAcceptableDrag
-            onClicked: {
-                checked = Qt.binding(function() { // never actually allow it being checked
-                    return iconMenu.status === PlasmaComponents.DialogStatus.Open || dropArea.containsAcceptableDrag;
-                })
-
-                iconMenu.open(0, height)
-            }
-
-            PlasmaCore.FrameSvgItem {
-                id: previewFrame
-                anchors.centerIn: parent
-                imagePath: plasmoid.location === PlasmaCore.Types.Vertical || plasmoid.location === PlasmaCore.Types.Horizontal
-                            ? "widgets/panel-background" : "widgets/background"
-                width: units.iconSizes.large + fixedMargins.left + fixedMargins.right
-                height: units.iconSizes.large + fixedMargins.top + fixedMargins.bottom
-
-                PlasmaCore.IconItem {
-                    anchors.centerIn: parent
-                    width: units.iconSizes.large
-                    height: width
-                    source: cfg_useCustomButtonImage ? cfg_customButtonImage : cfg_icon
-                }
+                containsAcceptableDrag = false;
             }
         }
 
-        // QQC Menu can only be opened at cursor position, not a random one
-        PlasmaComponents.ContextMenu {
-            id: iconMenu
-            visualParent: iconButton
+        KQuickAddons.IconDialog {
+            id: iconDialog
 
-            PlasmaComponents.MenuItem {
-                text: i18nc("@item:inmenu Open icon chooser dialog", "Choose...")
-                icon: "document-open-folder"
+            function setCustomButtonImage(image) {
+                cfg_customButtonImage = image || cfg_icon || "start-here-kde"
+                cfg_useCustomButtonImage = true;
+            }
+
+            onIconNameChanged: setCustomButtonImage(iconName);
+        }
+
+        PlasmaCore.FrameSvgItem {
+            id: previewFrame
+            anchors.centerIn: parent
+            imagePath: plasmoid.location === PlasmaCore.Types.Vertical || plasmoid.location === PlasmaCore.Types.Horizontal
+                    ? "widgets/panel-background" : "widgets/background"
+            width: units.iconSizes.large + fixedMargins.left + fixedMargins.right
+            height: units.iconSizes.large + fixedMargins.top + fixedMargins.bottom
+
+            PlasmaCore.IconItem {
+                anchors.centerIn: parent
+                width: units.iconSizes.large
+                height: width
+                source: cfg_useCustomButtonImage ? cfg_customButtonImage : cfg_icon
+            }
+        }
+
+        Menu {
+            id: iconMenu
+
+            // Appear below the button
+            y: +parent.height
+
+            onClosed: iconButton.checked = false;
+
+            MenuItem {
+                text: i18nc("@item:inmenu Open icon chooser dialog", "Choose…")
+                icon.name: "document-open-folder"
                 onClicked: iconDialog.open()
             }
-            PlasmaComponents.MenuItem {
+            MenuItem {
                 text: i18nc("@item:inmenu Reset icon to default", "Clear Icon")
-                icon: "edit-clear"
+                icon.name: "edit-clear"
                 onClicked: {
-                    cfg_useCustomButtonImage = false;
+                    cfg_icon = "start-here-kde"
+                    cfg_useCustomButtonImage = false
                 }
             }
         }
@@ -162,127 +147,62 @@ Kirigami.FormLayout {
     Item {
         Kirigami.FormData.isSection: true
     }
-    RowLayout{
-        Kirigami.FormData.label: i18n("Appearance:")
 
+    RowLayout {
         Layout.fillWidth: true
+        Kirigami.FormData.label: i18n("Appearance:")
+        
         Label {
             text: i18n("Size of application icons:")
         }
-        SpinBox{
+        ComboBox {
             id: iconSize
-            minimumValue: 24
-            maximumValue: 256
-            stepSize: 4
+            textRole: "text"
+            valueRole: "value"
+            model: [ 
+                {text: i18n("Medium"), value: "medium"}, 
+                {text: i18n("Large"), value: "large"}, 
+                {text: i18n("Huge"), value: "huge"}, 
+                {text: i18n("Enormous"), value: "enormous"} 
+            ]
+            onActivated: {
+                cfg_iconSize = units.iconSizes[currentValue];
+            }
+            Component.onCompleted: {
+                console.log(model);
+                currentIndex = model.findIndex((size) => units.iconSizes[size.value] == cfg_iconSize);
+            }
         }
     }
-    RowLayout{
+
+    
+    RowLayout {
         Layout.fillWidth: true
+        
         Label {
-            text: i18n("Space between columns:")
+            text: i18n("Number of columns:")
         }
         SpinBox{
-            id: spaceWidth
-            minimumValue: 10
-            maximumValue: 128
-            stepSize: 4
+            id: numberColumns
+            from: 3
+            to: 20
         }
     }
-    RowLayout{
-        Layout.fillWidth: true
-        Label {
-            text: i18n("Space between rows:")
-        }
-        SpinBox{
-            id: spaceHeight
-            minimumValue: 10
-            maximumValue: 128
-            stepSize: 4
-        }
-    }
-    RowLayout{
+    
+    RowLayout {
         Layout.fillWidth: true
         Label {
             text: i18n("Background opacity:")
         }
         Slider{
             id: backgroundOpacity
-            minimumValue: 0
-            maximumValue: 100
-            stepSize: 10
-            implicitWidth: 100
+            from: 0
+            to: 100
+            stepSize: 5
+            implicitWidth: 200
         }
         Label {
             text: i18n(backgroundOpacity.value + "%");
-        }
-    }
-
-    
-    // ----------------- Custom Sized Grid -----------------
-    Item {
-        Kirigami.FormData.isSection: true
-    }
-    RowLayout{
-        Kirigami.FormData.label: i18n("Custom Grid:")
-
-        spacing: units.smallSpacing
-        CheckBox{
-            id: useCustomSizeGrid
-            text:  i18n("Enable custom grid")
-        }
-    }
-    GroupBox {
-        flat: true
-        enabled: useCustomSizeGrid.checked
-        ColumnLayout {
-            RowLayout{
-                Layout.fillWidth: true
-                Label {
-                    Layout.leftMargin: units.smallSpacing
-                    text: i18n("Number of columns:")
-                }
-                SpinBox{
-                    id: numberColumns
-                    minimumValue: 4
-                    maximumValue: 20
-                }
-            }
-
-            RowLayout{
-                Layout.fillWidth: true
-                Label {
-                    Layout.leftMargin: units.smallSpacing
-                    text: i18n("Number of rows:")
-                }
-                SpinBox{
-                    id: numberRows
-                    minimumValue: 4
-                    maximumValue: 20
-                }
-            }
-        }
-    }
-
-    
-    // ----------------- Favorites -----------------
-    Item {
-        Kirigami.FormData.isSection: true
-    }
-    CheckBox{
-        Kirigami.FormData.label: i18n("Favorite Applications:")
-
-        id: showFavorites
-        text:  i18n("Show favorites")
-        onClicked: {
-            startOnFavorites.checked = checked;
-        }
-    }
-    RowLayout{
-        spacing: units.smallSpacing
-        enabled: showFavorites.checked
-        CheckBox{
-            id: startOnFavorites
-            text:  i18n("Start on favorites page")
         }
     }
 
@@ -297,7 +217,7 @@ Kirigami.FormLayout {
         id: showSystemActions
         text:  i18n("Show system actions")
     }
-    RowLayout{
+    RowLayout {
         Layout.fillWidth: true
         enabled: showSystemActions.checked
         Label {
@@ -305,12 +225,12 @@ Kirigami.FormLayout {
         }
         SpinBox{
             id: systemActionIconSize
-            minimumValue: 24
-            maximumValue: 128
+            from: 24
+            to: 128
             stepSize: 4
         }
     }
-    RowLayout{
+    RowLayout {
         Layout.fillWidth: true
         enabled: showSystemActions.checked
         Button {
@@ -331,22 +251,11 @@ Kirigami.FormLayout {
     Item {
         Kirigami.FormData.isSection: true
     }
+
     RowLayout {
+        Layout.fillWidth: true
         Kirigami.FormData.label: i18n("Other:")
 
-        Layout.fillWidth: true
-        Label {
-            text: i18n("Scroll animation duration (ms):")
-        }
-        SpinBox{
-            id: scrollAnimationDuration
-            minimumValue: 0
-            maximumValue: 2000
-            stepSize: 200
-        }
-    }
-    RowLayout{
-        //Layout.fillWidth: true
         Button {
             text: i18n("Unhide all hidden applications")
             onClicked: {
