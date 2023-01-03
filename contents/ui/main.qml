@@ -33,8 +33,6 @@ Item {
 
     signal reset
 
-    property bool isDash: false
-
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
 
     Plasmoid.compactRepresentation: null
@@ -42,25 +40,27 @@ Item {
 
     property Item dragSource: null
 
-    function logModelChildren(modelId, leadingSpace=0) {
+    property alias systemFavoritesModel: systemModel.favoritesModel
+
+    function logModelChildren(model, leadingSpace=0) {
         let spacing = Array(leadingSpace + 1).join(" ");
-        // console.log(modelId.description);
-        // console.log(modelId.data(modelId.index(0, 0), 0));
+        // console.log(model.description);
+        // console.log(model.data(model.index(0, 0), 0));
         
-        for (let i = 0; i < modelId.count; i++) {
-            let hasChildren = modelId.data(modelId.index(i, 0), 0x0107);
+        for (let i = 0; i < model.count; i++) {
+            let hasChildren = model.data(model.index(i, 0), 0x0107);
             
-            console.log(spacing + `${modelId.data(modelId.index(i, 0), 0)} - `
-                            // + hasChildren ? `(${modelId.modelForRow(i).count}) - ` : ' - '
-                            + `${modelId.data(modelId.index(i, 0), 0x0101)}, `
-                            // + `Deco: ${modelId.data(modelId.index(0, 0), 1)}, `
-                            // + `IsParent: ${modelId.data(modelId.index(i, 0), 0x0106)}, `
+            console.log(spacing + `${model.data(model.index(i, 0), 0)} - `
+                            // + hasChildren ? `(${model.modelForRow(i).count}) - ` : ' - '
+                            + `${model.data(model.index(i, 0), 0x0101)}, `
+                            // + `Deco: ${model.data(model.index(0, 0), 1)}, `
+                            // + `IsParent: ${model.data(model.index(i, 0), 0x0106)}, `
                             // + `HasChildren: ${hasChildren}, `
-                            // + `Group: ${modelId.data(modelId.index(i, 0), 0x0102)}`
+                            // + `Group: ${model.data(model.index(i, 0), 0x0102)}`
                         );
             
             if (hasChildren) {
-                logModelChildren(modelId.modelForRow(i), leadingSpace + 2);
+                logModelChildren(model.modelForRow(i), leadingSpace + 2);
                 continue;
             }
         }
@@ -81,16 +81,30 @@ Item {
     }
 
     Connections {
+        target: systemFavoritesModel
+
+        function onCountChanged() {
+            if (systemFavoritesModel.count == 0) {
+                plasmoid.configuration.showSystemActions = false;
+            }
+        }
+
+        function onFavoritesChanged() {
+            plasmoid.configuration.favoriteSystemActions = target.favorites;
+        }
+    }
+
+    Connections {
         target: plasmoid.configuration
 
-        // TODO - update
         function onFavoriteSystemActionsChanged() {
-            systemFavorites.favorites = plasmoid.configuration.favoriteSystemActions;
+            systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
         }
 
         function onHiddenApplicationsChanged() {
+            // TODO: handle case when hiding applications nested in directories
             // Force refresh on hidden
-            rootModel.refresh();
+            appsModel.refresh();
         }
     }
 
@@ -110,6 +124,22 @@ Item {
 
         Component.onCompleted: {
             appsModel.refresh();
+        }
+    }
+
+    Kicker.SystemModel {
+        id: systemModel
+
+        onModelReset: {
+            // Reassign favorites on every reset in case any of them have since become valid
+            systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
+        }
+
+        Component.onCompleted: {
+            systemFavoritesModel.enabled = true;
+            systemFavoritesModel.maxFavorites = 8;
+            // systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
+            // systemModel.refresh();
         }
     }
 

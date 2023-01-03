@@ -35,6 +35,9 @@ Kicker.DashboardWindow {
     
     id: root
 
+    property int maxContentHeight: height * 0.6
+    property int topBottomMargin: units.iconSizes.large // (height - maxContentHeight) / 4
+
     property int iconSize:    plasmoid.configuration.iconSize
     
     // TODO - polish cell sizes for different resolutions
@@ -51,7 +54,7 @@ Kicker.DashboardWindow {
     backgroundColor: "transparent"
 
     property int gridNumCols:  plasmoid.configuration.numberColumns
-    property int gridNumRows:  Math.floor(height * 0.6  /  cellSizeHeight)
+    property int gridNumRows:  Math.floor(maxContentHeight / cellSizeHeight)
     property int gridWidth:  gridNumCols * cellSizeWidth
     property int gridHeight: gridNumRows * cellSizeHeight
 
@@ -218,6 +221,36 @@ Kicker.DashboardWindow {
                     // }
                 }
             }
+        }
+
+        ItemGridView {
+            id: systemActionsGrid
+            
+            model: systemFavoritesModel
+
+            visible: count > 0 && plasmoid.configuration.showSystemActions
+            enabled: visible
+
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                bottom: parent.bottom
+                margins: units.largeSpacing
+                bottomMargin: topBottomMargin
+            }
+
+            iconSize: plasmoid.configuration.systemActionIconSize
+            cellWidth: iconSize + units.largeSpacing
+            cellHeight: cellWidth
+            height: cellHeight
+            width: cellWidth * count
+            
+            opacity: 0.9
+
+            dragEnabled: true
+            showLabels: false
+            usesPlasmaTheme: true
+
+            populateTransition: null
         }
     }
 

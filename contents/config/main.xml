@@ -35,7 +35,7 @@
 
     <entry name="showSystemActions" type="Bool">
       <label>Determines whether or not the system actions are displayed</label>
-      <default>false</default>
+      <default>true</default>
     </entry>
     <entry name="systemActionIconSize" type="Int">
       <label>The size of the system action icons (if displayed)</label>
@@ -48,7 +48,7 @@
     </entry>
     <entry name="favoriteSystemActions" type="StringList">
       <label>List of system action favorites.</label>
-      <default>logout,reboot,shutdown</default>
+      <default>shutdown,reboot,logout</default>
     </entry>
     <entry name="hiddenApplications" type="StringList">
       <label>List of menu id's (usually .desktop file names) of apps that should not be shown in the menu.</label>

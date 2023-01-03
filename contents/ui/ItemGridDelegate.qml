@@ -34,22 +34,33 @@ Item {
 
     property bool showLabel: true
 
-    readonly property bool isDirectory: model.hasChildren
+    readonly property bool isDirectory: model.hasChildren ?? false
     readonly property var directoryModel: isDirectory ? GridView.view.model.modelForRow(itemIndex) : undefined
+
+    // For this widget, the only favoritable actions should be system actions
+    readonly property bool isSystemAction: (model.favoriteId 
+                                            && GridView.view.model.favoritesModel 
+                                            && GridView.view.model.favoritesModel.enabled) ?? false
 
     readonly property int itemIndex: model.index
     readonly property url url: model.url != undefined ? model.url : ""
     property bool pressed: false
     readonly property bool hasActionList: ((("hasActionList" in model) && (model.hasActionList == true))
-                                           || isDirectory)
+                                           || isDirectory
+                                           || isSystemAction)
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: model.display
 
     function openActionMenu(x, y) {
-        var actionList = hasActionList ? model.actionList : [];
-        //Tools.fillActionMenu(i18n, actionMenu, actionList, GridView.view.model.favoritesModel, model.favoriteId, isDirectory);
-        actionMenu.actionList = isDirectory ? Tools.createDirectoryActions(i18n) : actionList;
+        if (isDirectory) {
+            actionMenu.actionList = Tools.createDirectoryActions(i18n);
+        } else if (isSystemAction) {
+            actionMenu.actionList = Tools.createSystemActionActions(i18n, GridView.view.model.favoritesModel, model.favoriteId);
+        } else if (hasActionList) {
+            actionMenu.actionList = model.actionList;
+        }
+
         actionMenu.visualParent = item;
         actionMenu.open(x, y);
     }

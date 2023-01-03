@@ -41,6 +41,7 @@ Kirigami.FormLayout {
     
     property alias cfg_showSystemActions:       showSystemActions.checked
     property alias cfg_systemActionIconSize:    systemActionIconSize.value
+    property var cfg_favoriteSystemActions:     plasmoid.configuration.favoriteSystemActions
 
     
     // ----------------- Icon -----------------
@@ -211,11 +212,19 @@ Kirigami.FormLayout {
     Item {
         Kirigami.FormData.isSection: true
     }
-    CheckBox{
+    CheckBox {
         Kirigami.FormData.label: i18n("System Actions:")
 
         id: showSystemActions
         text:  i18n("Show system actions")
+
+        onToggled: {
+            if (plasmoid.configuration.favoriteSystemActions.length == 0) {
+                cfg_favoriteSystemActions = !checked
+                                            ? plasmoid.configuration.favoriteSystemActions 
+                                            : ["shutdown", "reboot", "logout", "hibernate", "suspend", "save-session", "lock-screen", "switch-user"];
+            }
+        }
     }
     RowLayout {
         Layout.fillWidth: true
@@ -230,21 +239,18 @@ Kirigami.FormLayout {
             stepSize: 4
         }
     }
-    RowLayout {
-        Layout.fillWidth: true
-        enabled: showSystemActions.checked
-        Button {
-            enabled: showSystemActions.checked
-            text: i18n("Unhide all system actions")
-            onClicked: {
-                plasmoid.configuration.favoriteSystemActions = ["lock-screen", "switch-user", "suspend", "logout", "reboot", "shutdown"];
-                unhideSystemActionsPopup.text = i18n("Unhidden!");
-            }
-        }
-        Label {
-            id: unhideSystemActionsPopup
-        }
-    }
+
+    // RowLayout {
+    //     Layout.fillWidth: true
+    //     enabled: showSystemActions.checked
+    //     Button {
+    //         enabled: showSystemActions.checked
+    //         text: i18n("Unhide all system actions")
+    //         onClicked: {
+    //             cfg_favoriteSystemActions = ["shutdown", "reboot", "logout", "suspend", "lock-screen", "switch-user"];
+    //         }
+    //     }
+    // }
 
     
     // ----------------- Other -----------------

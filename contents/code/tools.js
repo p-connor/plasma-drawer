@@ -20,17 +20,64 @@
 
 .pragma library
 
+const CUSTOM_ACTION_PREFIX = "_kicker";
 
 function createDirectoryActions(i18n) {
     var action = {};    
     action.text = i18n("Empty folder here");
     action.icon = "edit-reset";
-    action.actionId = "_kicker_directory_empty";
+    action.actionId = CUSTOM_ACTION_PREFIX + "_directory_empty";
     // action.actionArgument = { favoriteModel: favoriteModel, favoriteId: favoriteId };
     return [action];
 }
 
+function createSystemActionActions(i18n, favoriteModel, favoriteId) {
+    if (!favoriteId || !favoriteModel) {
+        return null;
+    }
+
+    var actions;
+
+    if (favoriteModel.isFavorite(favoriteId)) {
+        actions = [
+            {
+                text: i18n("Remove action"),
+                icon: "remove",
+                actionId: CUSTOM_ACTION_PREFIX + "_favorite_remove"
+            },
+            {
+                text: i18n("Show all"),
+                icon: "view-visible",
+                actionId: CUSTOM_ACTION_PREFIX + "_favorite_reset"
+            }
+        ];
+    } else if (favoriteModel.maxFavorites === -1 || favoriteModel.count < favoriteModel.maxFavorites) {
+        actions = [
+            {
+                text: i18n("Add to system actions bar"),
+                icon: "add",
+                actionId: CUSTOM_ACTION_PREFIX + "_favorite_add"
+            }
+        ];
+    } else {
+        return null;
+    }
+
+    actions.forEach((action) => action.actionArgument = { favoriteModel: favoriteModel, favoriteId: favoriteId });
+    return actions;
+}
+
+function startsWith(txt, needle) {
+    return txt.substr(0, needle.length) === needle;
+}
+
 function triggerAction(plasmoid, model, index, actionId, actionArgument) {
+    
+    if (startsWith(actionId, CUSTOM_ACTION_PREFIX)) {
+        handleCustomAction(actionId, actionArgument);
+        return;
+    }
+    
     var closeRequested = model.trigger(index, actionId, actionArgument);
 
     if (closeRequested) {
@@ -40,4 +87,26 @@ function triggerAction(plasmoid, model, index, actionId, actionArgument) {
     }
 
     return false;
+}
+
+function handleCustomAction(actionId, actionArgument) {
+    if (actionArgument.favoriteId && actionArgument.favoriteModel) {
+        var favoriteId = actionArgument.favoriteId;
+        var favoriteModel = actionArgument.favoriteModel;
+
+        if (actionId === CUSTOM_ACTION_PREFIX + "_favorite_remove") {
+            favoriteModel.removeFavorite(favoriteId);
+        } else if (actionId === CUSTOM_ACTION_PREFIX + "_favorite_add") {
+            favoriteModel.addFavorite(favoriteId);
+        } else if (actionId == CUSTOM_ACTION_PREFIX + "_favorite_reset") {
+            favoriteModel.favorites = [ "shutdown", 
+                                        "reboot", 
+                                        "logout", 
+                                        "hibernate", 
+                                        "suspend", 
+                                        "save-session", 
+                                        "lock-screen", 
+                                        "switch-user" ];
+        }
+    }
 }
