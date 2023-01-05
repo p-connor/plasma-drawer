@@ -29,6 +29,10 @@ import org.kde.plasma.private.kicker 0.1 as Kicker
 Item {
     id: kicker
 
+    // onActiveFocusItemChanged: {
+    //     console.log("activeFocusItem", activeFocusItem);
+    // }
+
     anchors.fill: parent
 
     signal reset
@@ -42,24 +46,26 @@ Item {
 
     property alias systemFavoritesModel: systemModel.favoritesModel
 
-    function logModelChildren(model, leadingSpace=0) {
+    function logModelChildren(model, leadingSpace = 0) {
         let spacing = Array(leadingSpace + 1).join(" ");
         // console.log(model.description);
         // console.log(model.data(model.index(0, 0), 0));
         
-        for (let i = 0; i < model.count; i++) {
+        var count = ("count" in model ? model.count : 1);
+
+        for (let i = 0; i < count; i++) {
             let hasChildren = model.data(model.index(i, 0), 0x0107);
             
             console.log(spacing + `${model.data(model.index(i, 0), 0)} - `
                             // + hasChildren ? `(${model.modelForRow(i).count}) - ` : ' - '
                             + `${model.data(model.index(i, 0), 0x0101)}, `
-                            // + `Deco: ${model.data(model.index(0, 0), 1)}, `
-                            // + `IsParent: ${model.data(model.index(i, 0), 0x0106)}, `
-                            // + `HasChildren: ${hasChildren}, `
-                            // + `Group: ${model.data(model.index(i, 0), 0x0102)}`
+                            + `Deco: ${model.data(model.index(0, 0), 1)}, `
+                            + `IsParent: ${model.data(model.index(i, 0), 0x0106)}, `
+                            + `HasChildren: ${hasChildren}, `
+                            + `Group: ${model.data(model.index(i, 0), 0x0102)}`
                         );
             
-            if (hasChildren) {
+            if (hasChildren || count > 1) {
                 logModelChildren(model.modelForRow(i), leadingSpace + 2);
                 continue;
             }
@@ -145,10 +151,13 @@ Item {
 
     Kicker.RunnerModel {
         id: runnerModel
-        // favoritesModel: globalFavorites
-        runners: plasmoid.configuration.useExtraRunners ? new Array("services").concat(plasmoid.configuration.extraRunners) : "services"
+
         appletInterface: plasmoid
-        deleteWhenEmpty: false
+        
+        // runners: plasmoid.configuration.useExtraRunners ? new Array("services").concat(plasmoid.configuration.extraRunners) : "services"
+
+        // mergeResults: true
+        deleteWhenEmpty: true
     }
 
     Kicker.DragHelper {

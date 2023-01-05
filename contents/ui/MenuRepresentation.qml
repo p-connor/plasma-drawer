@@ -35,7 +35,7 @@ Kicker.DashboardWindow {
     
     id: root
 
-    property int maxContentHeight: height * 0.6
+    property int maxContentHeight: height * 0.7
     property int topBottomMargin: units.iconSizes.large // (height - maxContentHeight) / 4
 
     property int iconSize:    plasmoid.configuration.iconSize
@@ -46,9 +46,6 @@ Kicker.DashboardWindow {
                                 + (2 * Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
                                                 highlightItemSvg.margins.left + highlightItemSvg.margins.right))
     property int cellSizeHeight: cellSizeWidth - (iconSize * .25)
-
-
-    // property bool searching: (searchField.text != "")
 
     // keyEventProxy: searchField
     backgroundColor: "transparent"
@@ -61,6 +58,11 @@ Kicker.DashboardWindow {
     property var modelStack: [appsModel]
     property int modelStackLength: modelStack.length;
     readonly property var currentModel: modelStack[modelStackLength - 1]
+
+    property bool searching: searchField.text != ""
+
+    // TODO: remove this and all focus debug rectangles
+    property bool debugFocus: false
     
     // property bool showFavorites: plasmoid.configuration.showFavorites
     
@@ -68,26 +70,23 @@ Kicker.DashboardWindow {
         return Qt.rgba(color.r, color.g, color.b, alpha)
     }
 
-    onKeyEscapePressed: {
-        // if (searching) {
-        //     searchField.text = ""
-        // } else {
-            root.leave();
-        // }
-    }
-
     onVisibleChanged: {
         reset();
     }
 
-    // onSearchingChanged: {
-    //     if (searching) {
-    //         currentModel = runnerModel;
-    //         paginationBar.model = runnerModel;
-    //     } else {
-    //         reset();
-    //     }
-    // }
+    onSearchingChanged: {
+        if (!searching) {
+            reset();
+        }
+    }
+
+    onKeyEscapePressed: {
+        if (searching) {
+            searchField.text = "";
+        } else {
+            root.leave();
+        }
+    }
 
     function enterDirectoryAtCurrentIndex() {
         // if (rootMouseArea.mouseX != false) {
@@ -108,7 +107,7 @@ Kicker.DashboardWindow {
 
     function leave() {
         itemGridView.setupEnterTransitionAnimation(true);
-        if (modelStack.length > 1) {
+        if (!searching && modelStack.length > 1) {
             //modelStack.pop();
             // Note: need to reassign array to cause 'changed' signal
             modelStack = modelStack.slice(0, -1);
@@ -118,11 +117,9 @@ Kicker.DashboardWindow {
     }
 
     function reset() {
-        // if (!searching) {
-        //     currentModel = appsModel;
-        // }
         modelStack = [appsModel]
-        // searchField.text = "";
+        searchField.text = "";
+        itemGridView.focus = true;
     }
 
     mainItem: MouseArea {
@@ -131,13 +128,13 @@ Kicker.DashboardWindow {
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
         LayoutMirroring.childrenInherit: true
-        hoverEnabled: true
+        // hoverEnabled: true
 
         onClicked: {
             root.leave();
         }
 
-        Rectangle{
+        Rectangle {
             anchors.fill: parent
             color: colorWithAlpha(theme.backgroundColor, plasmoid.configuration.backgroundOpacity / 100)
         }
@@ -162,63 +159,131 @@ Kicker.DashboardWindow {
             }
         }
 
+        PlasmaComponents.TextField {
+            id: searchField
+
+            anchors.top: parent.top
+            anchors.topMargin: topBottomMargin
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width * 0.2
+            
+            style: TextFieldStyle {
+                textColor: theme.textColor
+                background: Rectangle {
+                    radius: height * 0.25
+                    color: theme.textColor
+                    opacity: 0.2
+                }
+            }
+            horizontalAlignment: TextInput.AlignHCenter
+            placeholderText: i18n("<font color='"+colorWithAlpha(theme.textColor,0.5) +"'>Plasma Search</font>")
+            
+            onTextChanged: {
+                runnerModel.query = text;
+            }
+
+            PlasmaCore.IconItem {
+                id: searchIcon
+                source: "search-icon"
+                visible: true
+                width:  parent.height - 2
+                height: width
+                anchors {
+                    left: parent.left
+                    leftMargin: 10
+                    verticalCenter: parent.verticalCenter
+                }
+            }
+
+            Keys.onDownPressed: {
+                event.accepted = true;
+                if (searching) {
+                    runnerResultsView.focus = true;
+                    runnerResultsView.selectFirst();
+                } else {
+                    itemGridView.focus = true;
+                }
+            }
+
+            Rectangle {
+                anchors.fill: parent
+                color: "red"
+                opacity: 0.05
+                visible: root.debugFocus && searchField.activeFocus
+                z: 100
+            }
+        }
+
         Rectangle{
+            id: content
             width: gridWidth
-            height: gridHeight
+            height: maxContentHeight
             color: "transparent"
             anchors {
                 verticalCenter: parent.verticalCenter
                 horizontalCenter: parent.horizontalCenter
             }
 
+            RunnerResultsView {
+                id: runnerResultsView
+
+                height: parent.height
+                width: units.gridUnit * 30
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                visible: searching
+                enabled: visible
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: "red"
+                    opacity: 0.05
+                    visible: root.debugFocus && parent.activeFocus
+                    z: 100
+                }
+
+                onKeyNavUp: {
+                    searchField.focus = true;
+                }
+                onKeyNavDown: {
+                    if (systemActionsGrid.visible) {
+                        systemActionsGrid.focus = true;
+                        systemActionsGrid.tryActivate(0, 0);
+                    }
+                }
+
+                model: runnerModel
+            }
+
             ItemGridView {
                 id: itemGridView
 
-                visible: model.count > 0
-                anchors.fill: parent
+                width: gridWidth
+                height: gridHeight
+                anchors.centerIn: parent
 
                 cellWidth:  cellSizeWidth
                 cellHeight: cellSizeHeight
+
+                visible: !searching && model.count > 0
+                enabled: visible
+
+                focus: true
 
                 model: currentModel
                 
                 dragEnabled: false
                 hoverEnabled: true
 
-                // onCurrentIndexChanged: {
-                //     if (currentIndex != -1 && !searching) {
-                //         pageListScrollArea.focus = true;
-                //         focus = true;
-                //     }
-                // }
-
-                // onCountChanged: {
-                //     if (index == 0) {
-                //         if (searching) {
-                //             currentIndex = 0;
-                //         } else if (count == 0) {
-                //             root.showFavorites = false;
-                //             root.startIndex = 1;
-                //             if (pageList.currentIndex == 0) {
-                //                 pageList.currentIndex = 1;
-                //             }
-                //         } else {
-                //             root.showFavorites = plasmoid.configuration.showFavorites;
-                //             root.startIndex = (showFavorites && plasmoid.configuration.startOnFavorites) ? 0 : 1
-                //         }
-                //     }
-                // }
-
                 onKeyNavUp: {
                     currentIndex = -1;
+                    searchField.focus = true;
                 }
-
                 onKeyNavDown: {
-                    // if(systemFavoritesGrid.visible) {
-                    //     currentIndex = -1;
-                    //     systemFavoritesGrid.focus = true;
-                    //     systemFavoritesGrid.tryActivate(0, 0);
-                    // }
+                    if (systemActionsGrid.visible) {
+                        systemActionsGrid.focus = true;
+                        systemActionsGrid.tryActivate(0, 0);
+                    }
                 }
             }
         }
@@ -251,13 +316,36 @@ Kicker.DashboardWindow {
             usesPlasmaTheme: true
 
             populateTransition: null
+
+            onKeyNavUp: {
+                currentIndex = -1;
+                if (searching) {
+                    runnerResultsView.focus = true;
+                    runnerResultsView.selectFirst();
+                } else {
+                    itemGridView.focus = true;
+                }
+            }
+        }
+ 
+        Keys.onPressed: {
+            if (searchField.focus) {
+                return;
+            }
+
+            if (event.key == Qt.Key_Backspace) {
+                event.accepted = true;
+                searchField.focus = true;
+                searchField.text = searchField.text.slice(0, -1);
+            } else if (event.text != "") {
+                event.accepted = true;
+                searchField.focus = true;
+                searchField.text = searchField.text + event.text;
+            }
         }
     }
 
     Component.onCompleted: {
         kicker.reset.connect(reset);
-
-        // console.log("\n\n ---- PRINTING ---- \n\n");
-        // logModelChildren(appsModel);
     }
 }

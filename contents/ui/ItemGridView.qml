@@ -288,7 +288,8 @@ FocusScope {
 
             acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-            hoverEnabled: true
+            enabled: itemGrid.enabled
+            hoverEnabled: enabled
 
             function updatePositionProperties(x, y) {
                 var cPos = mapToItem(gridView.contentItem, x, y);
