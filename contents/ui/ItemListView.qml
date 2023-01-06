@@ -17,9 +17,15 @@ FocusScope {
     signal keyNavDown
 
     width: PlasmaCore.Units.gridUnit * 20
-    height: listView.contentHeight
+    height: listView.contentHeight + units.smallSpacing * 2
 
     property int iconSize: units.iconSizes.large
+    
+    // If this property is true, the icon size will shrink when shrinkThreshold percent
+    // of the model items have a source icon size less than the target
+    property bool shrinkIconsToNative: false
+    property var shrinkThreshold: shrinkIconsToNative ? .30 : 1.0
+
     readonly property alias rowWidth: itemList.width
     readonly property int rowHeight: iconSize * 1.5
 
@@ -41,9 +47,21 @@ FocusScope {
     //     }
     // }
 
+    Rectangle {
+        id: background
+        anchors.fill: listView
+        anchors.topMargin: -units.smallSpacing
+        anchors.bottomMargin: -units.smallSpacing
+        color: "white"
+        opacity: 0.033
+        radius: units.smallSpacing * 3
+    }
+
     ListView {
         id: listView
-        anchors.fill: parent
+        width: parent.width
+        height: contentHeight
+        anchors.centerIn: parent
 
         focus: true
 
@@ -51,6 +69,29 @@ FocusScope {
         highlightFollowsCurrentItem: true
         highlight: PlasmaComponents.Highlight {}
         highlightMoveDuration: 0
+
+        property int targetIconSize: itemList.iconSize
+        onCountChanged: {
+            if (shrinkIconsToNative) {
+                let smaller = 0;
+                let nextSmallestSize = units.iconSizes.tiny;
+                for (let i = 0; i < count; i++) {
+                    let item = itemAtIndex(i);
+                    if (!item) {
+                        continue;
+                    }
+                    if (item.sourceIconSize < itemList.iconSize) {
+                        smaller++;
+                        nextSmallestSize = Math.max(nextSmallestSize, item.sourceIconSize);
+                    }
+                }
+                if (smaller / count > itemList.shrinkThreshold) {
+                    itemList.iconSize = nextSmallestSize;
+                } else {
+                    itemList.iconSize = targetIconSize;
+                }
+            }
+        }
 
         delegate: ItemListDelegate {
             width: rowWidth
@@ -64,6 +105,10 @@ FocusScope {
                 visible: root.debugFocus && parent.activeFocus
                 z: 100
             }
+        }
+
+        Component.onCompleted: {
+            targetIconSize = itemList.iconSize;
         }
     }
 

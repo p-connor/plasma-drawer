@@ -72,7 +72,7 @@ FocusScope {
 
         delegate: FocusScope {
             width: searchResults.width
-            height: matchesList.height + runnerName.height + units.smallSpacing * 2
+            height: matchesList.height + runnerName.height + units.smallSpacing * 5
 
             visible: matchesList.model && matchesList.model.count > 0
 
@@ -85,27 +85,28 @@ FocusScope {
                 level: 2
             }
 
-            Rectangle {
-                id: sectionSeparator
-                anchors.left: runnerName.right
-                anchors.right: parent.right
-                anchors.verticalCenter: runnerName.verticalCenter
-                anchors.leftMargin: units.smallSpacing * 2
-                // width: root.width
-                height: 2 * units.devicePixelRatio
-                color: theme.textColor
-                opacity: .05
-            }
+            // Rectangle {
+            //     id: sectionSeparator
+            //     anchors.left: runnerName.right
+            //     anchors.right: parent.right
+            //     anchors.verticalCenter: runnerName.verticalCenter
+            //     anchors.leftMargin: units.smallSpacing * 2
+            //     // width: root.width
+            //     height: 2 * units.devicePixelRatio
+            //     color: theme.textColor
+            //     opacity: .05
+            // }
 
             ItemListView {
                 id: matchesList
                 width: searchResults.width
                 anchors.top: runnerName.bottom
-                anchors.topMargin: units.smallSpacing
+                anchors.topMargin: units.smallSpacing * 2
 
                 focus: true
 
-                iconSize: units.iconSizes.large
+                iconSize: units.iconSizes.huge
+                shrinkIconsToNative: true
 
                 interactive: false
 

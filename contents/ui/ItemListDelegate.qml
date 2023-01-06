@@ -17,6 +17,8 @@ Item {
     property int iconSize: units.iconSizes.large
     property bool usesPlasmaTheme: true
 
+    readonly property int sourceIconSize: matchIcon.implicitWidth
+
     PlasmaCore.IconItem {
         id: matchIcon
 
@@ -42,11 +44,12 @@ Item {
             right: parent.right
             verticalCenter: parent.verticalCenter
             leftMargin: units.largeSpacing
+            rightMargin: units.largeSpacing
         }
 
         height: parent.height
         verticalAlignment: Text.AlignVCenter
-        // elide: Text.ElideRight
+        elide: Text.ElideRight
         wrapMode: Text.Wrap
 
         text: model.display
