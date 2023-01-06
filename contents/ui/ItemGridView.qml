@@ -98,22 +98,6 @@ FocusScope {
         gridView.forceLayout();
     }
 
-    function setupEnterTransitionAnimation(isReverse = false, pos = null) {        
-        if (pos) {
-            gridView.populateOrigin = pos;
-        } else if (currentItem) {
-            gridView.populateOrigin = Qt.point(currentItem.x, currentItem.y);
-        } else {
-            gridView.populateOrigin = Qt.point(gridView.width / 2, gridView.height / 2);
-        }
-        
-        if (!isReverse) {
-            gridView.populate = directoryEnterTransition;
-        } else {
-            gridView.populate = directoryReturnTransition;
-        }
-    }
-
     ActionMenu {
         id: actionMenu
 
@@ -145,7 +129,6 @@ FocusScope {
             anchors.fill: parent
 
             property bool usesPlasmaTheme: false
-            property var populateOrigin: Qt.point(gridView.width / 2, gridView.height / 2)
 
             focus: true
             visible: model ? model.count > 0 : false
@@ -169,50 +152,6 @@ FocusScope {
             onModelChanged: {
                 currentIndex = -1;
             }
-
-            Transition {
-                id: directoryEnterTransition
-                // PauseAnimation {
-                //     duration: (directoryEnterTransition.ViewTransition.index) * 300
-                // }
-                SequentialAnimation {
-                    PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: false }
-                    NumberAnimation { property: "opacity"; to: 0; duration: 0 }
-                    PauseAnimation {
-                        duration: (directoryEnterTransition.ViewTransition.index) * 5
-                    }
-                    ParallelAnimation {
-                        NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: units.veryLongDuration * .75 }
-                        NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: units.veryLongDuration * .75; easing.type: Easing.OutCubic }
-                        NumberAnimation { property: "x"; from: gridView.populateOrigin.x; duration: units.veryLongDuration; easing.type: Easing.OutCubic }
-                        NumberAnimation { property: "y"; from: gridView.populateOrigin.y; duration: units.veryLongDuration; easing.type: Easing.OutCubic }
-                    }
-                    PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: true }
-                }
-            }
-
-            Transition {
-                id: directoryReturnTransition
-                // PauseAnimation {
-                //     duration: (directoryEnterTransition.ViewTransition.index) * 300
-                // }
-                property var destination: ViewTransition.destination
-
-                SequentialAnimation {
-                    PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: false }
-                    PropertyAction { target: gridView; property: "clip"; value: false }
-                    ParallelAnimation {
-                        NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: units.veryLongDuration * .8 }
-                        NumberAnimation { property: "scale"; from: 0.5; to: 1.0; duration: units.veryLongDuration * .8; easing.type: Easing.OutCubic }
-                        NumberAnimation { property: "x"; from: directoryReturnTransition.destination.x + ((directoryReturnTransition.destination.x - (gridView.width / 2)) * .4); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
-                        NumberAnimation { property: "y"; from: directoryReturnTransition.destination.y + ((directoryReturnTransition.destination.y - (gridView.height / 2)) * .4); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
-                    }
-                    PropertyAction { target: gridView; property: "clip"; value: true }
-                    PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: true }
-                }
-            }
-
-            populate: directoryEnterTransition
 
             Keys.onLeftPressed: {
                 if (currentIndex == -1) {

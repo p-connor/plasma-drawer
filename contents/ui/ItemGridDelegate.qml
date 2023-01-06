@@ -84,7 +84,7 @@ Item {
         height: width
         y: iconSize * 0.2
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: !showLabel ? parent.verticalCenter : undefined
+        // anchors.verticalCenter: parent.verticalCenter
         color:"transparent"
 
         // Icon shown if not directory or TODO: setting enabled
@@ -173,7 +173,6 @@ Item {
         wrapMode: Text.NoWrap
 
         text: model.display
-        font.bold: isDirectory
     }
 
     // PlasmaComponents.Label {

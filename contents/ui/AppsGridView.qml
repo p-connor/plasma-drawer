@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -11,6 +12,10 @@ import "../code/tools.js" as Tools
 FocusScope {
     id: appsGrid
 
+    signal keyNavLeft
+    signal keyNavRight
+    signal keyNavUp
+    signal keyNavDown
 
     property int iconSize: units.iconSizes.huge
     
@@ -29,31 +34,42 @@ FocusScope {
 
     required property var model
 
-    property var modelStack: [model]
-    readonly property int modelStackLength: modelStack.length
-    readonly property var currentModel: modelStack[modelStackLength - 1]
+    readonly property var currentItemGrid: stackView.currentItem
+    readonly property var currentModel: currentItemGrid ? currentItemGrid.model : null //modelStack[modelStackLength - 1]
 
-    readonly property bool isAtRoot: modelStackLength <= 1
+    readonly property bool isAtRoot: stackView.depth <= 1
 
     function tryEnterDirectory(directoryIndex) {
         let dir = currentModel.modelForRow(directoryIndex);
         if (dir && dir.hasChildren) {
-            itemGridView.setupEnterTransitionAnimation();
-            // Note: need to reassign array to cause 'changed' signal
-            modelStack = [...modelStack, dir];
+            // itemGridView.setupEnterTransitionAnimation();
+            // // Note: need to reassign array to cause 'changed' signal
+            // modelStack = [...modelStack, dir];
+
+            let origin = Qt.point(0, 0);
+            if (currentItemGrid && currentItemGrid.currentItem) {
+                origin = Qt.point(  (currentItemGrid.currentItem.x + (cellSizeWidth / 2)) - (currentItemGrid.width / 2), 
+                                    (currentItemGrid.currentItem.y + (cellSizeHeight / 2)) - (currentItemGrid.height / 2) )
+            }
+            stackView.push(directoryView, {model: dir, origin: origin});
         }
     }
 
     function tryExitDirectory() {
         if (!isAtRoot) {
-            itemGridView.setupEnterTransitionAnimation(true);
-            modelStack = modelStack.slice(0, -1);
+            // itemGridView.setupEnterTransitionAnimation(true);
+            // modelStack = modelStack.slice(0, -1);
+
+            stackView.pop();
         }
     }
 
     function returnToRootDirectory() {
         if (!isAtRoot) {
-            modelStack = [model];
+            // modelStack = [model];
+
+            // Pops all items up until root
+            stackView.pop(null);
         }
     }
 
@@ -61,38 +77,124 @@ FocusScope {
         id: actionMenu
         onActionClicked: visualParent.actionTriggered(actionId, actionArgument)
         onClosed: {
-            itemGrid.currentIndex = -1;
+            currentItemGrid.currentIndex = -1;
         }
     }
 
-    ItemGridView {
-        id: itemGridView
+    // I believe StackView requires that the component be defined this way
+    Component {
+        id: directoryView
+        ItemGridView {
+            property var origin: Qt.point(0, 0)
 
-        width: numberColumns * cellSizeWidth
-        height: numberRows * cellSizeHeight
-        anchors.centerIn: parent
+            showLabels: StackView.status == StackView.Active || StackView.status == StackView.Activating
 
-        cellWidth:  cellSizeWidth
-        cellHeight: cellSizeHeight
+            width: numberColumns * cellSizeWidth
+            height: numberRows * cellSizeHeight
+            // anchors.centerIn: stackView
 
-        iconSize: appsGrid.iconSize
+            cellWidth:  cellSizeWidth
+            cellHeight: cellSizeHeight
 
+            iconSize: appsGrid.iconSize
+
+            model: appsGrid.model
+            
+            dragEnabled: false
+            hoverEnabled: true
+
+            onKeyNavUp: {
+                currentIndex = -1;
+                appsGrid.keyNavUp();
+            }
+            onKeyNavDown: {
+                currentIndex = -1;
+                appsGrid.keyNavDown();
+            }
+
+            Component.onCompleted: {
+                keyNavLeft.connect(appsGrid.keyNavLeft);
+                keyNavRight.connect(appsGrid.keyNavRight);
+            }
+        }
+    }
+
+    StackView {
+        id: stackView
+        initialItem: directoryView
+        anchors.fill: parent
         focus: true
 
-        model: currentModel
-        
-        dragEnabled: false
-        hoverEnabled: true
+        property var transitionDuration: units.veryLongDuration
 
-        onKeyNavUp: {
-            currentIndex = -1;
-            searchField.focus = true;
-        }
-        onKeyNavDown: {
-            if (systemActionsGrid.visible) {
-                systemActionsGrid.focus = true;
-                systemActionsGrid.tryActivate(0, 0);
+        pushEnter: Transition {
+            id: pushEnterTransition
+
+            NumberAnimation { 
+                property: "x"; 
+                from: pushEnterTransition.ViewTransition.item.origin.x
+                to: 0
+                duration: stackView.transitionDuration
+                easing.type: Easing.OutCubic
             }
+
+            NumberAnimation {
+                property: "y"
+                from: pushEnterTransition.ViewTransition.item.origin.y
+                to: 0
+                duration: stackView.transitionDuration
+                easing.type: Easing.OutCubic
+            }
+            
+            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: stackView.transitionDuration * .5 }
+            NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
+        }
+
+        pushExit: Transition {
+            id: pushExitTransition
+            YAnimator {
+                from: 0
+                to: -units.gridUnit * 3
+                duration: stackView.transitionDuration
+                easing.type: Easing.OutCubic
+            }
+            NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: stackView.transitionDuration * .5; easing.type: Easing.OutCubic }
+            NumberAnimation { property: "scale"; from: 1.0; to: .8; duration: stackView.transitionDuration * .5; easing.type: Easing.OutCubic }
+        }
+
+        popEnter: Transition {
+            id: popEnterTransition
+           
+            YAnimator {
+                from: -units.gridUnit * 3
+                to: 0
+                duration: stackView.transitionDuration
+                easing.type: Easing.OutCubic
+            }
+            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { property: "scale"; from: 0.8; to: 1; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
+        }
+
+        popExit: Transition {
+            id: popExitTransition
+            NumberAnimation {
+                property: "x"
+                from: 0
+                to: popExitTransition.ViewTransition.item.origin.x
+                duration: stackView.transitionDuration * 1.5
+                easing.type: Easing.OutCubic
+            }
+
+            NumberAnimation {
+                property: "y"
+                from: 0
+                to: popExitTransition.ViewTransition.item.origin.y
+                duration: stackView.transitionDuration * 1.5
+                easing.type: Easing.OutCubic
+            }
+            
+            NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: stackView.transitionDuration * .75; easing.type: Easing.OutQuint }
+            NumberAnimation { property: "scale"; from: 1.0; to: 0; duration: stackView.transitionDuration * 1.5; easing.type: Easing.OutCubic }
         }
     }
 }

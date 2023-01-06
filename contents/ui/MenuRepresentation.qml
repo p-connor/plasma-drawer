@@ -221,6 +221,16 @@ Kicker.DashboardWindow {
                 numberColumns: plasmoid.configuration.numberColumns
 
                 model: appsModel
+
+                onKeyNavUp: {
+                    searchField.focus = true;
+                }
+                onKeyNavDown: {
+                    if (systemActionsGrid.visible) {
+                        systemActionsGrid.focus = true;
+                        systemActionsGrid.tryActivate(0, 0);
+                    }
+                }
             }
         }
 
