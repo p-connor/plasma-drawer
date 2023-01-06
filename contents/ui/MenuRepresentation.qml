@@ -38,33 +38,13 @@ Kicker.DashboardWindow {
     property int maxContentHeight: height * 0.7
     property int topBottomMargin: units.iconSizes.large // (height - maxContentHeight) / 4
 
-    property int iconSize:    plasmoid.configuration.iconSize
-    
-    // TODO - polish cell sizes for different resolutions
-    property int cellSizeWidth: (iconSize * 1.5) + theme.mSize(theme.defaultFont).height
-                                + (2 * units.smallSpacing)
-                                + (2 * Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
-                                                highlightItemSvg.margins.left + highlightItemSvg.margins.right))
-    property int cellSizeHeight: cellSizeWidth - (iconSize * .25)
-
     // keyEventProxy: searchField
     backgroundColor: "transparent"
-
-    property int gridNumCols:  plasmoid.configuration.numberColumns
-    property int gridNumRows:  Math.floor(maxContentHeight / cellSizeHeight)
-    property int gridWidth:  gridNumCols * cellSizeWidth
-    property int gridHeight: gridNumRows * cellSizeHeight
-
-    property var modelStack: [appsModel]
-    property int modelStackLength: modelStack.length;
-    readonly property var currentModel: modelStack[modelStackLength - 1]
 
     property bool searching: searchField.text != ""
 
     // TODO: remove this and all focus debug rectangles
     property bool debugFocus: false
-    
-    // property bool showFavorites: plasmoid.configuration.showFavorites
     
     function colorWithAlpha(color, alpha) {
         return Qt.rgba(color.r, color.g, color.b, alpha)
@@ -88,38 +68,18 @@ Kicker.DashboardWindow {
         }
     }
 
-    function enterDirectoryAtCurrentIndex() {
-        // if (rootMouseArea.mouseX != false) {
-        //     let point = rootMouseArea.mapToItem(itemGridView.contentItem, rootMouseArea.mouseX, rootMouseArea.mouseY);
-        //     directoryEnterTransition.populateOrigin = (point.x, point.y);
-        //     itemGridView.populateTransition = directoryEnterTransition;
-        // } else {
-        //     itemGridView.zoomFromPos = (gridWidth / 2, gridHeight / 2);
-        // }
-
-        itemGridView.setupEnterTransitionAnimation();
-        let dir = currentModel.modelForRow(itemGridView.currentIndex);
-        if (dir.hasChildren) {
-            //modelStack.push(dir);
-            modelStack = [...modelStack, dir];
-        }
-    }
-
     function leave() {
-        itemGridView.setupEnterTransitionAnimation(true);
-        if (!searching && modelStack.length > 1) {
-            //modelStack.pop();
-            // Note: need to reassign array to cause 'changed' signal
-            modelStack = modelStack.slice(0, -1);
+        if (!searching && !appsGridView.isAtRoot) {
+            appsGridView.tryExitDirectory();
         } else {
             root.toggle();
         }
     }
 
     function reset() {
-        modelStack = [appsModel]
         searchField.text = "";
-        itemGridView.focus = true;
+        appsGridView.returnToRootDirectory();
+        appsGridView.focus = true;
     }
 
     mainItem: MouseArea {
@@ -131,6 +91,7 @@ Kicker.DashboardWindow {
         // hoverEnabled: true
 
         onClicked: {
+            mouse.accepted = true;
             root.leave();
         }
 
@@ -149,14 +110,6 @@ Kicker.DashboardWindow {
         TextMetrics {
             id: headingMetrics
             font: dummyHeading.font
-        }
-
-        ActionMenu {
-            id: actionMenu
-            onActionClicked: visualParent.actionTriggered(actionId, actionArgument)
-            onClosed: {
-                itemGrid.currentIndex = -1;
-            }
         }
 
         PlasmaComponents.TextField {
@@ -201,7 +154,7 @@ Kicker.DashboardWindow {
                     runnerResultsView.focus = true;
                     runnerResultsView.selectFirst();
                 } else {
-                    itemGridView.focus = true;
+                    appsGridView.focus = true;
                 }
             }
 
@@ -216,7 +169,7 @@ Kicker.DashboardWindow {
 
         Rectangle{
             id: content
-            width: gridWidth
+            width: appsGridView.width
             height: maxContentHeight
             color: "transparent"
             anchors {
@@ -255,36 +208,19 @@ Kicker.DashboardWindow {
                 model: runnerModel
             }
 
-            ItemGridView {
-                id: itemGridView
+            AppsGridView {
+                id: appsGridView
 
-                width: gridWidth
-                height: gridHeight
-                anchors.centerIn: parent
+                anchors.fill: parent
 
-                cellWidth:  cellSizeWidth
-                cellHeight: cellSizeHeight
-
-                visible: !searching && model.count > 0
+                visible: !searching && appsModel.count > 0
                 enabled: visible
-
                 focus: true
 
-                model: currentModel
-                
-                dragEnabled: false
-                hoverEnabled: true
+                iconSize: plasmoid.configuration.iconSize
+                numberColumns: plasmoid.configuration.numberColumns
 
-                onKeyNavUp: {
-                    currentIndex = -1;
-                    searchField.focus = true;
-                }
-                onKeyNavDown: {
-                    if (systemActionsGrid.visible) {
-                        systemActionsGrid.focus = true;
-                        systemActionsGrid.tryActivate(0, 0);
-                    }
-                }
+                model: appsModel
             }
         }
 
@@ -323,7 +259,7 @@ Kicker.DashboardWindow {
                     runnerResultsView.focus = true;
                     runnerResultsView.selectFirst();
                 } else {
-                    itemGridView.focus = true;
+                    appsGridView.focus = true;
                 }
             }
         }

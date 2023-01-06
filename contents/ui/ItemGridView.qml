@@ -36,7 +36,7 @@ FocusScope {
     property bool showLabels: true
     property alias usesPlasmaTheme: gridView.usesPlasmaTheme
 
-    property int iconSize: root.iconSize
+    property int iconSize: units.iconSizes.large
 
     property alias currentIndex: gridView.currentIndex
     property alias currentItem: gridView.currentItem
@@ -121,7 +121,7 @@ FocusScope {
             var closeRequested = visualParent.actionTriggered(actionId, actionArgument);
 
             if (closeRequested) {
-                root.leave();
+                root.toggle();
             }
         }
     }
@@ -148,7 +148,7 @@ FocusScope {
             property var populateOrigin: Qt.point(gridView.width / 2, gridView.height / 2)
 
             focus: true
-            visible: model.count > 0  
+            visible: model ? model.count > 0 : false
             currentIndex: -1
             clip: true
             
@@ -196,14 +196,16 @@ FocusScope {
                 // PauseAnimation {
                 //     duration: (directoryEnterTransition.ViewTransition.index) * 300
                 // }
+                property var destination: ViewTransition.destination
+
                 SequentialAnimation {
                     PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: false }
                     PropertyAction { target: gridView; property: "clip"; value: false }
                     ParallelAnimation {
                         NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: units.veryLongDuration * .8 }
                         NumberAnimation { property: "scale"; from: 0.5; to: 1.0; duration: units.veryLongDuration * .8; easing.type: Easing.OutCubic }
-                        NumberAnimation { property: "x"; from: directoryReturnTransition.ViewTransition.item.x + ((directoryReturnTransition.ViewTransition.item.x - (width / 2)) * .4); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
-                        NumberAnimation { property: "y"; from: directoryReturnTransition.ViewTransition.item.y + ((directoryReturnTransition.ViewTransition.item.y - (height / 2)) * .4); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
+                        NumberAnimation { property: "x"; from: directoryReturnTransition.destination.x + ((directoryReturnTransition.destination.x - (gridView.width / 2)) * .4); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
+                        NumberAnimation { property: "y"; from: directoryReturnTransition.destination.y + ((directoryReturnTransition.destination.y - (gridView.height / 2)) * .4); duration: units.veryLongDuration; easing.type: Easing.OutCubic }
                     }
                     PropertyAction { target: gridView; property: "clip"; value: true }
                     PropertyAction { target: gridView; property: "highlightFollowsCurrentItem"; value: true }
@@ -328,7 +330,7 @@ FocusScope {
                 if (gridView.currentItem && gridView.currentItem == pressedItem) {
                     
                     if (gridView.model.modelForRow(gridView.currentIndex) != null) {
-                        root.enterDirectoryAtCurrentIndex();
+                        appsGrid.tryEnterDirectory(gridView.currentIndex);
                     } else if ("trigger" in gridView.model) {
                         gridView.model.trigger(pressedItem.itemIndex, "", null);
 
