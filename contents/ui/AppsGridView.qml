@@ -41,15 +41,12 @@ FocusScope {
 
     function tryEnterDirectory(directoryIndex) {
         let dir = currentModel.modelForRow(directoryIndex);
-        if (dir && dir.hasChildren) {
-            // itemGridView.setupEnterTransitionAnimation();
-            // // Note: need to reassign array to cause 'changed' signal
-            // modelStack = [...modelStack, dir];
-
+        if (dir && dir.hasChildren && currentItemGrid) {
             let origin = Qt.point(0, 0);
-            if (currentItemGrid && currentItemGrid.currentItem) {
-                origin = Qt.point(  (currentItemGrid.currentItem.x + (cellSizeWidth / 2)) - (currentItemGrid.width / 2), 
-                                    (currentItemGrid.currentItem.y + (cellSizeHeight / 2)) - (currentItemGrid.height / 2) )
+            let item = currentItemGrid.itemAtIndex(directoryIndex);
+            if (item) {
+                origin = Qt.point(  (item.x + (cellSizeWidth / 2)) - (currentItemGrid.width / 2), 
+                                    (item.y + (cellSizeHeight / 2)) - (currentItemGrid.height / 2) )
             }
             stackView.push(directoryView, {model: dir, origin: origin});
         }
@@ -57,29 +54,24 @@ FocusScope {
 
     function tryExitDirectory() {
         if (!isAtRoot) {
-            // itemGridView.setupEnterTransitionAnimation(true);
-            // modelStack = modelStack.slice(0, -1);
-
             stackView.pop();
         }
     }
 
-    function returnToRootDirectory() {
+    function returnToRootDirectory(doTransition = true) {
         if (!isAtRoot) {
-            // modelStack = [model];
-
             // Pops all items up until root
-            stackView.pop(null);
+            stackView.pop(null, doTransition ? undefined : StackView.ReplaceTransition);
         }
     }
 
-    ActionMenu {
-        id: actionMenu
-        onActionClicked: visualParent.actionTriggered(actionId, actionArgument)
-        onClosed: {
-            currentItemGrid.currentIndex = -1;
-        }
-    }
+    // ActionMenu {
+    //     id: actionMenu
+    //     onActionClicked: visualParent.actionTriggered(actionId, actionArgument)
+    //     onClosed: {
+    //         currentItemGrid.currentIndex = -1;
+    //     }
+    // }
 
     // I believe StackView requires that the component be defined this way
     Component {
@@ -87,7 +79,7 @@ FocusScope {
         ItemGridView {
             property var origin: Qt.point(0, 0)
 
-            showLabels: StackView.status == StackView.Active || StackView.status == StackView.Activating
+            showLabels: opacity > 0.25
 
             width: numberColumns * cellSizeWidth
             height: numberRows * cellSizeHeight
@@ -165,14 +157,19 @@ FocusScope {
         popEnter: Transition {
             id: popEnterTransition
            
-            YAnimator {
-                from: -units.gridUnit * 3
-                to: 0
-                duration: stackView.transitionDuration
-                easing.type: Easing.OutCubic
+            SequentialAnimation {
+                PauseAnimation { duration: stackView.transitionDuration * .2 }
+                ParallelAnimation {
+                    YAnimator {
+                        from: -units.gridUnit * 3
+                        to: 0
+                        duration: stackView.transitionDuration
+                        easing.type: Easing.OutCubic
+                    }
+                    NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
+                    NumberAnimation { property: "scale"; from: 0.8; to: 1; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
+                }
             }
-            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
-            NumberAnimation { property: "scale"; from: 0.8; to: 1; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
         }
 
         popExit: Transition {
@@ -195,6 +192,20 @@ FocusScope {
             
             NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: stackView.transitionDuration * .75; easing.type: Easing.OutQuint }
             NumberAnimation { property: "scale"; from: 1.0; to: 0; duration: stackView.transitionDuration * 1.5; easing.type: Easing.OutCubic }
+        }
+
+        replaceEnter: Transition {
+            id: replaceEnterTransition
+
+            PropertyAction { property: "opacity"; value: 1.0 }
+            PropertyAction { property: "scale"; value: 1.0 }
+        }
+
+        replaceExit: Transition {
+            id: replaceExitTransition
+
+            PropertyAction { property: "opacity"; value: 0 }
+            PropertyAction { property: "scale"; value: 0 }
         }
     }
 }

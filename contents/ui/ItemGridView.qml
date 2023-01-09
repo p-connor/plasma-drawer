@@ -59,6 +59,10 @@ FocusScope {
         }
     }
 
+    function itemAtIndex(index) {
+        return gridView.itemAtIndex(index);
+    }
+
     function currentRow() {
         if (currentIndex == -1) {
             return -1;

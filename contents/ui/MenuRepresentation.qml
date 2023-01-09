@@ -78,7 +78,7 @@ Kicker.DashboardWindow {
 
     function reset() {
         searchField.text = "";
-        appsGridView.returnToRootDirectory();
+        appsGridView.returnToRootDirectory(false);
         appsGridView.focus = true;
     }
 
