@@ -1,8 +1,10 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 
@@ -68,6 +70,21 @@ FocusScope {
             if (currentItem && "count" in currentItem) {
                 currentItem.currentIndex = 0;
             }
+        }
+
+        contentHeight: {
+            let h = 0;
+            for (let i = 0; i < count; i++) {
+                let item = itemAtIndex(i);
+                h += item != null ? item.height : (model.modelForRow(i).count + 1) * units.iconSizes.large;
+            }
+            return h;
+        }
+        ScrollBar.vertical: PlasmaComponents3.ScrollBar {
+            parent: runnerSectionsList.parent
+            anchors.top: runnerSectionsList.top
+            anchors.left: runnerSectionsList.right
+            anchors.bottom: runnerSectionsList.bottom
         }
 
         delegate: FocusScope {
