@@ -32,6 +32,15 @@ FocusScope {
         }
     }
 
+    function selectLast() {
+        if (sectionsCount > 0) {
+            let lastList = runnerSectionsList.itemAtIndex(sectionsCount - 1);
+            if (lastList && lastList.count > 0) {
+                lastList.currentIndex = lastList.count - 1;
+            }
+        }
+    }
+
     ListView {
         id: runnerSectionsList
         anchors.fill: parent

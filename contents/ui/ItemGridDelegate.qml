@@ -203,9 +203,8 @@ Item {
             openActionMenu(item);
         } else if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
             event.accepted = true;
-            GridView.view.model.trigger(index, "", null);
-            root.toggle();
-
+            itemGrid.trigger(index);
+            // root.toggle();
         }
     }
 }

@@ -84,7 +84,7 @@ FocusScope {
         return Math.ceil(count / columns) - 1;
     }
 
-    function tryActivate(row, col) {
+    function trySelect(row, col) {
         if (count) {
             var columns = Math.floor(width / cellWidth);
             var rows = Math.ceil(count / columns);
@@ -95,6 +95,15 @@ FocusScope {
                 count - 1);
 
             gridView.forceActiveFocus();
+        }
+    }
+
+    function trigger(index) {
+        if (gridView.model.modelForRow(index) != null) {
+            appsGrid.tryEnterDirectory(index);
+        } else if ("trigger" in gridView.model) {
+            gridView.model.trigger(index, "", null);
+            root.toggle();
         }
     }
 
@@ -271,14 +280,7 @@ FocusScope {
             onReleased: {
                 mouse.accepted = true;
                 if (gridView.currentItem && gridView.currentItem == pressedItem) {
-                    
-                    if (gridView.model.modelForRow(gridView.currentIndex) != null) {
-                        appsGrid.tryEnterDirectory(gridView.currentIndex);
-                    } else if ("trigger" in gridView.model) {
-                        gridView.model.trigger(pressedItem.itemIndex, "", null);
-
-                        root.toggle();
-                    }
+                    itemGrid.trigger(gridView.currentIndex);
                 } else if (!pressedItem && mouse.button == Qt.LeftButton && !dragHelper.dragging) {
                     root.leave();
                 }

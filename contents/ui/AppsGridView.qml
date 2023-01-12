@@ -65,6 +65,18 @@ FocusScope {
         }
     }
 
+    function selectFirst() {
+        if (currentItemGrid && currentItemGrid.count > 0) {
+            currentItemGrid.trySelect(0, 0);
+        }
+    }
+
+    function selectLast() {
+        if (currentItemGrid && currentItemGrid.count > 0) {
+            currentItemGrid.trySelect(currentItemGrid.lastRow(), 0);
+        }
+    }
+
     // ActionMenu {
     //     id: actionMenu
     //     onActionClicked: visualParent.actionTriggered(actionId, actionArgument)

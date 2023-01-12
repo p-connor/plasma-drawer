@@ -155,6 +155,7 @@ Kicker.DashboardWindow {
                     runnerResultsView.selectFirst();
                 } else {
                     appsGridView.focus = true;
+                    appsGridView.selectFirst();
                 }
             }
 
@@ -201,7 +202,7 @@ Kicker.DashboardWindow {
                 onKeyNavDown: {
                     if (systemActionsGrid.visible) {
                         systemActionsGrid.focus = true;
-                        systemActionsGrid.tryActivate(0, 0);
+                        systemActionsGrid.trySelect(0, 0);
                     }
                 }
 
@@ -228,7 +229,7 @@ Kicker.DashboardWindow {
                 onKeyNavDown: {
                     if (systemActionsGrid.visible) {
                         systemActionsGrid.focus = true;
-                        systemActionsGrid.tryActivate(0, 0);
+                        systemActionsGrid.trySelect(0, 0);
                     }
                 }
             }
@@ -267,9 +268,10 @@ Kicker.DashboardWindow {
                 currentIndex = -1;
                 if (searching) {
                     runnerResultsView.focus = true;
-                    runnerResultsView.selectFirst();
+                    runnerResultsView.selectLast();
                 } else {
                     appsGridView.focus = true;
+                    appsGridView.selectLast();
                 }
             }
         }
