@@ -19,7 +19,7 @@
       <default></default>
     </entry>
 
-    <entry name="iconSize" type="Int">
+    <entry name="appIconSize" type="Int">
       <label>The size of the icons in the applications grid</label>
       <default>128</default>
     </entry>
@@ -27,10 +27,18 @@
       <label>The number of columns in the applications grid</label>
       <default>5</default>
     </entry>
+    <entry name="useDirectoryIcons" type="Bool">
+      <label>Determines whether directories should be displayed by their icon rather than a collection of their contents</label>
+      <default>false</default>
+    </entry>
 
     <entry name="backgroundOpacity" type="Int">
       <label>The opacity of the background in the fullscreen menu representaion</label>
       <default>60</default>
+    </entry>
+    <entry name="disableAnimations" type="Bool">
+      <label>Disables animations for app grid navigation and search results</label>
+      <default>false</default>
     </entry>
 
     <entry name="showSystemActions" type="Bool">
@@ -46,6 +54,7 @@
       <label>The format used in the display of application names: 0 = NameOnly, 1 = GenericNameOnly, 2 = NameAndGenericName, 3 = GenericNameAndName</label>
       <default>0</default>
     </entry>
+
     <entry name="favoriteSystemActions" type="StringList">
       <label>List of system action favorites.</label>
       <default>shutdown,reboot,logout</default>
@@ -54,6 +63,16 @@
       <label>List of menu id's (usually .desktop file names) of apps that should not be shown in the menu.</label>
       <default></default>
     </entry>
+
+    <entry name="searchIconSize" type="Int">
+      <label>The size of the icons in the search results list. If adaptiveSearchIconSize is true, this value specifies the max value.</label>
+      <default>48</default>
+    </entry>
+    <entry name="adaptiveSearchIconSize" type="Bool">
+      <label>Determines whether the icons in the search results list should be shrunk to match their native resolution.</label>
+      <default>false</default>
+    </entry>
+
     <entry name="useExtraRunners" type="Bool">
       <label>Whether to use additional KRunner plugins to produce results in the search.</label>
       <default>false</default>
@@ -62,6 +81,7 @@
       <label>The plugin id's of additional KRunner plugins to use. Only used if useExtraRunners is true.</label>
       <default>shell,bookmarks,baloosearch,locations</default>
     </entry>
+
     <entry name="favoritesPortedToKAstats" type="Bool">
       <label>Whether the favorites are ported to use KActivitiesStats to allow per-activity favorites</label>
       <default>false</default>

@@ -170,7 +170,7 @@ Kicker.DashboardWindow {
 
         Rectangle{
             id: content
-            width: appsGridView.width
+            width: Math.max(appsGridView.width, runnerResultsView.width)
             height: maxContentHeight
             color: "transparent"
             anchors {
@@ -187,6 +187,9 @@ Kicker.DashboardWindow {
 
                 visible: searching
                 enabled: visible
+
+                iconSize: plasmoid.configuration.searchIconSize
+                shrinkIconsToNative: plasmoid.configuration.adaptiveSearchIconSize
 
                 Rectangle {
                     anchors.fill: parent
@@ -212,13 +215,14 @@ Kicker.DashboardWindow {
             AppsGridView {
                 id: appsGridView
 
-                anchors.fill: parent
+                anchors.centerIn: parent
+                height: parent.height
 
                 visible: !searching && appsModel.count > 0
                 enabled: visible
                 focus: true
 
-                iconSize: plasmoid.configuration.iconSize
+                iconSize: plasmoid.configuration.appIconSize
                 numberColumns: plasmoid.configuration.numberColumns
 
                 model: appsModel
@@ -261,8 +265,6 @@ Kicker.DashboardWindow {
             dragEnabled: true
             showLabels: false
             usesPlasmaTheme: true
-
-            populateTransition: null
 
             onKeyNavUp: {
                 currentIndex = -1;

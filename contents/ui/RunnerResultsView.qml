@@ -26,6 +26,9 @@ FocusScope {
     property alias currentSection: runnerSectionsList.currentItem
     property alias sectionsCount: runnerSectionsList.count
 
+    property int iconSize: units.iconSizes.huge
+    property bool shrinkIconsToNative: false
+
     function selectFirst() {
         if (sectionsCount > 0) {
             runnerSectionsList.itemAtIndex(0).currentIndex = 0;
@@ -114,8 +117,8 @@ FocusScope {
 
                 focus: true
 
-                iconSize: units.iconSizes.huge
-                shrinkIconsToNative: true
+                iconSize: searchResults.iconSize
+                shrinkIconsToNative: searchResults.shrinkIconsToNative
 
                 interactive: false
 
