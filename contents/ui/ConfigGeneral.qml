@@ -33,14 +33,18 @@ Kirigami.FormLayout {
     property bool cfg_useCustomButtonImage:     plasmoid.configuration.useCustomButtonImage
     property string cfg_customButtonImage:      plasmoid.configuration.customButtonImage
     
-    property int cfg_iconSize:                  plasmoid.configuration.iconSize
-    
     property alias cfg_backgroundOpacity:       backgroundOpacity.value
-    
+    property alias cfg_disableAnimations:       disableAnimations.checked
+
+    property int cfg_appIconSize:               plasmoid.configuration.appIconSize
+    property alias cfg_useDirectoryIcons:       useDirectoryIcons.checked
     property alias cfg_numberColumns:           numberColumns.value
+
+    property alias cfg_adaptiveSearchIconSize:  adaptSearchIcons.checked
+    property int cfg_searchIconSize:            plasmoid.configuration.searchIconSize  
     
     property alias cfg_showSystemActions:       showSystemActions.checked
-    property alias cfg_systemActionIconSize:    systemActionIconSize.value
+    property int cfg_systemActionIconSize:      plasmoid.configuration.systemActionIconSize
     property var cfg_favoriteSystemActions:     plasmoid.configuration.favoriteSystemActions
 
     
@@ -143,55 +147,15 @@ Kirigami.FormLayout {
         }
     }
 
-
-    // ----------------- Appearance -----------------
+    // ----------------- General -----------------
     Item {
         Kirigami.FormData.isSection: true
     }
 
     RowLayout {
         Layout.fillWidth: true
-        Kirigami.FormData.label: i18n("Appearance:")
-        
-        Label {
-            text: i18n("Size of application icons:")
-        }
-        ComboBox {
-            id: iconSize
-            textRole: "text"
-            valueRole: "value"
-            model: [ 
-                {text: i18n("Medium"), value: "medium"}, 
-                {text: i18n("Large"), value: "large"}, 
-                {text: i18n("Huge"), value: "huge"}, 
-                {text: i18n("Enormous"), value: "enormous"} 
-            ]
-            onActivated: {
-                cfg_iconSize = units.iconSizes[currentValue];
-            }
-            Component.onCompleted: {
-                console.log(model);
-                currentIndex = model.findIndex((size) => units.iconSizes[size.value] == cfg_iconSize);
-            }
-        }
-    }
+        Kirigami.FormData.label: i18n("General:")
 
-    
-    RowLayout {
-        Layout.fillWidth: true
-        
-        Label {
-            text: i18n("Number of columns:")
-        }
-        SpinBox{
-            id: numberColumns
-            from: 3
-            to: 20
-        }
-    }
-    
-    RowLayout {
-        Layout.fillWidth: true
         Label {
             text: i18n("Background opacity:")
         }
@@ -207,7 +171,105 @@ Kirigami.FormLayout {
         }
     }
 
+    CheckBox {        
+        id: disableAnimations
+        text:  i18n("Disable animations")
+    }
+
+    // ----------------- Application Grid -----------------
+    Item {
+        Kirigami.FormData.isSection: true
+    }
+
+    RowLayout {
+        Layout.fillWidth: true
+        Kirigami.FormData.label: i18n("Applications:")
+        
+        Label {
+            text: i18n("Number of columns in grid:")
+        }
+        SpinBox{
+            id: numberColumns
+            from: 3
+            to: 20
+        }
+    }
+
+    RowLayout {
+        Layout.fillWidth: true
+        
+        Label {
+            text: i18n("Size of application icons:")
+        }
+        ComboBox {
+            id: appIconSize
+            model: [ 
+                i18n(units.iconSizes.medium), 
+                i18n(units.iconSizes.large), 
+                i18n(units.iconSizes.huge), 
+                i18n(units.iconSizes.huge + ((units.iconSizes.enormous - units.iconSizes.huge) / 2)),
+                i18n(units.iconSizes.enormous),
+                i18n(units.iconSizes.enormous + (units.iconSizes.enormous / 2)),
+                i18n(units.iconSizes.enormous * 2)
+            ]
+            onActivated: {
+                cfg_appIconSize = parseInt(currentText);
+            }
+            Component.onCompleted: {
+                currentIndex = model.findIndex((size) => size == cfg_appIconSize);
+            }
+        }
+    }
+
+    CheckBox {        
+        id: useDirectoryIcons
+        text:  i18n("Use directory icons")
+    }
+
+    // ----------------- Search -----------------
+    Item {
+        Kirigami.FormData.isSection: true
+    }
+
+    Button {
+        Kirigami.FormData.label: i18n("Search:")
+        
+        enabled: KQuickAddons.KCMShell.authorize("kcm_plasmasearch.desktop").length > 0
+        icon.name: "settings-configure"
+        text: i18nc("@action:button", "Configure Enabled Search Plugins…")
+        onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_plasmasearch")
+    }
     
+    CheckBox {        
+        id: adaptSearchIcons
+        text:  i18n("Adaptive search result size")
+    }
+    
+    RowLayout {
+        Layout.fillWidth: true
+        
+        Label {
+            text: i18n((adaptSearchIcons.checked ? "Max s" : "S") + "ize of search result icons:")
+        }
+        ComboBox {
+            id: searchIconSize
+            model: [ 
+                i18n(units.iconSizes.small),
+                i18n(units.iconSizes.smallMedium),
+                i18n(units.iconSizes.medium), 
+                i18n(units.iconSizes.large), 
+                i18n(units.iconSizes.huge), 
+                i18n(units.iconSizes.enormous)
+            ]
+            onActivated: {
+                cfg_searchIconSize = parseInt(currentText);
+            }
+            Component.onCompleted: {
+                currentIndex = model.findIndex((size) => size == cfg_searchIconSize);
+            }
+        }
+    }
+
     // ----------------- System Actions -----------------
     Item {
         Kirigami.FormData.isSection: true
@@ -232,11 +294,20 @@ Kirigami.FormLayout {
         Label {
             text: i18n("Size of system actions icons:")
         }
-        SpinBox{
+        ComboBox {
             id: systemActionIconSize
-            from: 24
-            to: 128
-            stepSize: 4
+            model: [ 
+                i18n(units.iconSizes.medium), 
+                i18n(units.iconSizes.large), 
+                i18n(units.iconSizes.huge), 
+                i18n(units.iconSizes.enormous)
+            ]
+            onActivated: {
+                cfg_systemActionIconSize = parseInt(currentText);
+            }
+            Component.onCompleted: {
+                currentIndex = model.findIndex((size) => size == cfg_systemActionIconSize);
+            }
         }
     }
 
@@ -264,6 +335,7 @@ Kirigami.FormLayout {
 
         Button {
             text: i18n("Unhide all hidden applications")
+            icon.name: "view-visible"
             onClicked: {
                 plasmoid.configuration.hiddenApplications = [""];
                 unhideAllAppsPopup.text = i18n("Unhidden!");

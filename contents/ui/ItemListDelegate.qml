@@ -34,6 +34,8 @@ Item {
         animated: false
         usesPlasmaTheme: usesPlasmaTheme
         source: model.decoration
+
+        roundToIconSize: width > units.iconSizes.huge ? false : true
     }
 
     PlasmaComponents.Label {

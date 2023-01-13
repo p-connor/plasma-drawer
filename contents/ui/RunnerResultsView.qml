@@ -4,7 +4,7 @@ import QtQuick.Controls 2.15
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 
@@ -26,11 +26,32 @@ FocusScope {
     property alias model: runnerSectionsList.model
     property alias currentSectionIndex: runnerSectionsList.currentIndex
     property alias currentSection: runnerSectionsList.currentItem
+    readonly property var currentMatch: currentSection ? currentSection.currentItem : null
     property alias sectionsCount: runnerSectionsList.count
+
+    property int iconSize: units.iconSizes.huge
+    property bool shrinkIconsToNative: false
 
     function selectFirst() {
         if (sectionsCount > 0) {
+            runnerSectionsList.positionViewAtBeginning();
             runnerSectionsList.itemAtIndex(0).currentIndex = 0;
+        }
+    }
+
+    function selectLast() {
+        if (sectionsCount > 0) {
+            runnerSectionsList.positionViewAtEnd();
+            let lastList = runnerSectionsList.itemAtIndex(sectionsCount - 1);
+            if (lastList && lastList.count > 0) {
+                lastList.currentIndex = lastList.count - 1;
+            }
+        }
+    }
+
+    function triggerSelected() {
+        if (currentSection && currentSection.currentIndex != -1) {
+            currentSection.matchesList.trigger(currentSection.currentIndex);
         }
     }
 
@@ -45,6 +66,7 @@ FocusScope {
         keyNavigationEnabled: false
         boundsBehavior: Flickable.StopAtBounds
 
+        highlightFollowsCurrentItem: false
         highlightMoveDuration: 0
         highlightResizeDuration: 0
 
@@ -80,11 +102,33 @@ FocusScope {
             }
             return h;
         }
-        ScrollBar.vertical: PlasmaComponents3.ScrollBar {
+        
+        ScrollBar.vertical: PC3.ScrollBar {
             parent: runnerSectionsList.parent
             anchors.top: runnerSectionsList.top
             anchors.left: runnerSectionsList.right
             anchors.bottom: runnerSectionsList.bottom
+        }
+
+        function ensureCurrentMatchInView() {
+            let section = currentItem;
+            if (!section) {
+                return;
+            }
+            let match = section.currentItem;
+            if (!match) {
+                return;
+            }
+
+            let headerHeight = section.matchesList.mapToItem(section, 0, 0).y;
+            let matchY = section.y + match.y + headerHeight + units.smallSpacing; // Match's y relative to runnerSectionsList's start
+            let mappedY = matchY - contentY; // Match's y adjusted to scrolled position
+
+            if (mappedY < 0) {
+                contentY += mappedY;
+            } else if (mappedY + section.matchesList.rowHeight > height) {
+                contentY += ((mappedY + section.matchesList.rowHeight) - height);
+            }
         }
 
         delegate: FocusScope {
@@ -95,6 +139,8 @@ FocusScope {
 
             property alias count: matchesList.count
             property alias currentIndex: matchesList.currentIndex
+            property alias currentItem: matchesList.currentItem
+            property alias matchesList: matchesList
 
             PlasmaExtras.Heading {
                 id: runnerName
@@ -122,14 +168,16 @@ FocusScope {
 
                 focus: true
 
-                iconSize: units.iconSizes.huge
-                shrinkIconsToNative: true
+                iconSize: searchResults.iconSize
+                shrinkIconsToNative: searchResults.shrinkIconsToNative
 
                 interactive: false
 
+                // currentIndex: index == 0 ? 0 : -1
                 onCurrentIndexChanged: {
                     if (currentIndex != -1) {
                         runnerSectionsList.currentIndex = index;
+                        runnerSectionsList.ensureCurrentMatchInView();
                     }
                 }
 

@@ -155,6 +155,18 @@ Kicker.DashboardWindow {
                     runnerResultsView.selectFirst();
                 } else {
                     appsGridView.focus = true;
+                    appsGridView.selectFirst();
+                }
+            }
+
+            Keys.onPressed: {
+                if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
+                    event.accepted = true;
+                    if (!runnerResultsView.currentMatch) {
+                        runnerResultsView.selectFirst();
+                    }
+                    runnerResultsView.triggerSelected();
+                    return;
                 }
             }
 
@@ -169,7 +181,7 @@ Kicker.DashboardWindow {
 
         Rectangle{
             id: content
-            width: appsGridView.width
+            width: Math.max(appsGridView.width, runnerResultsView.width)
             height: maxContentHeight
             color: "transparent"
             anchors {
@@ -187,6 +199,9 @@ Kicker.DashboardWindow {
                 visible: searching
                 enabled: visible
 
+                iconSize: plasmoid.configuration.searchIconSize
+                shrinkIconsToNative: plasmoid.configuration.adaptiveSearchIconSize
+
                 Rectangle {
                     anchors.fill: parent
                     color: "red"
@@ -201,7 +216,7 @@ Kicker.DashboardWindow {
                 onKeyNavDown: {
                     if (systemActionsGrid.visible) {
                         systemActionsGrid.focus = true;
-                        systemActionsGrid.tryActivate(0, 0);
+                        systemActionsGrid.trySelect(0, 0);
                     }
                 }
 
@@ -211,13 +226,14 @@ Kicker.DashboardWindow {
             AppsGridView {
                 id: appsGridView
 
-                anchors.fill: parent
+                anchors.centerIn: parent
+                height: parent.height
 
                 visible: !searching && appsModel.count > 0
                 enabled: visible
                 focus: true
 
-                iconSize: plasmoid.configuration.iconSize
+                iconSize: plasmoid.configuration.appIconSize
                 numberColumns: plasmoid.configuration.numberColumns
 
                 model: appsModel
@@ -228,7 +244,7 @@ Kicker.DashboardWindow {
                 onKeyNavDown: {
                     if (systemActionsGrid.visible) {
                         systemActionsGrid.focus = true;
-                        systemActionsGrid.tryActivate(0, 0);
+                        systemActionsGrid.trySelect(0, 0);
                     }
                 }
             }
@@ -261,15 +277,14 @@ Kicker.DashboardWindow {
             showLabels: false
             usesPlasmaTheme: true
 
-            populateTransition: null
-
             onKeyNavUp: {
                 currentIndex = -1;
                 if (searching) {
                     runnerResultsView.focus = true;
-                    runnerResultsView.selectFirst();
+                    runnerResultsView.selectLast();
                 } else {
                     appsGridView.focus = true;
+                    appsGridView.selectLast();
                 }
             }
         }

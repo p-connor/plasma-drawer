@@ -65,6 +65,18 @@ FocusScope {
         }
     }
 
+    function selectFirst() {
+        if (currentItemGrid && currentItemGrid.count > 0) {
+            currentItemGrid.trySelect(0, 0);
+        }
+    }
+
+    function selectLast() {
+        if (currentItemGrid && currentItemGrid.count > 0) {
+            currentItemGrid.trySelect(currentItemGrid.lastRow(), 0);
+        }
+    }
+
     // ActionMenu {
     //     id: actionMenu
     //     onActionClicked: visualParent.actionTriggered(actionId, actionArgument)
@@ -89,6 +101,7 @@ FocusScope {
             cellHeight: cellSizeHeight
 
             iconSize: appsGrid.iconSize
+            usesPlasmaTheme: false
 
             model: appsGrid.model
             
@@ -117,9 +130,17 @@ FocusScope {
         anchors.fill: parent
         focus: true
 
-        property var transitionDuration: units.veryLongDuration
+        property var transitionDuration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration
 
-        pushEnter: Transition {
+        pushEnter: !plasmoid.configuration.disableAnimations ? pushEnterTransition : instantEnterTransition
+        pushExit:  !plasmoid.configuration.disableAnimations ? pushExitTransition  : instantExitTransition
+        popEnter:  !plasmoid.configuration.disableAnimations ? popEnterTransition  : instantEnterTransition
+        popExit:   !plasmoid.configuration.disableAnimations ? popExitTransition   : instantExitTransition
+
+        replaceEnter: instantEnterTransition
+        replaceExit: instantExitTransition
+
+        Transition {
             id: pushEnterTransition
 
             NumberAnimation { 
@@ -142,7 +163,7 @@ FocusScope {
             NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
         }
 
-        pushExit: Transition {
+        Transition {
             id: pushExitTransition
             YAnimator {
                 from: 0
@@ -154,7 +175,7 @@ FocusScope {
             NumberAnimation { property: "scale"; from: 1.0; to: .8; duration: stackView.transitionDuration * .5; easing.type: Easing.OutCubic }
         }
 
-        popEnter: Transition {
+        Transition {
             id: popEnterTransition
            
             SequentialAnimation {
@@ -172,7 +193,7 @@ FocusScope {
             }
         }
 
-        popExit: Transition {
+        Transition {
             id: popExitTransition
             NumberAnimation {
                 property: "x"
@@ -194,15 +215,15 @@ FocusScope {
             NumberAnimation { property: "scale"; from: 1.0; to: 0; duration: stackView.transitionDuration * 1.5; easing.type: Easing.OutCubic }
         }
 
-        replaceEnter: Transition {
-            id: replaceEnterTransition
+        Transition {
+            id: instantEnterTransition
 
             PropertyAction { property: "opacity"; value: 1.0 }
             PropertyAction { property: "scale"; value: 1.0 }
         }
 
-        replaceExit: Transition {
-            id: replaceExitTransition
+        Transition {
+            id: instantExitTransition
 
             PropertyAction { property: "opacity"; value: 0 }
             PropertyAction { property: "scale"; value: 0 }

@@ -78,34 +78,29 @@ Item {
     //     color: "transparent"
     // }
 
-    Rectangle {
-        id: displayBox
-        width: iconSize
-        height: width
-        y: iconSize * 0.2
-        anchors.horizontalCenter: parent.horizontalCenter
-        // anchors.verticalCenter: parent.verticalCenter
-        color:"transparent"
+    Component {
+        id: iconComponent
 
-        // Icon shown if not directory or TODO: setting enabled
         PlasmaCore.IconItem {
             id: icon
-            visible: !isDirectory
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width
-            height: parent.height
+            // width: parent.width
+            // height: parent.height
             animated: false
-            usesPlasmaTheme: item.GridView.view.usesPlasmaTheme
+            usesPlasmaTheme: loaderUsesPlasmaTheme
             source: model.decoration
+            roundToIconSize: width > units.iconSizes.huge ? false : true
         }
+    }
 
-        // Otherwise if directory, show directory box instead
+    Component {
+        id: directoryViewComponent
+
         Rectangle {
             id: directoryBackgroundBox
-            visible: isDirectory
 
-            anchors.fill: parent
+            // anchors.fill: parent
             radius: width / 4
             //border.color: theme.textColor
             //border.width: 2
@@ -134,12 +129,33 @@ Item {
 
                         anchors.fill: parent
                         animated: false
-                        usesPlasmaTheme: item.GridView.view.usesPlasmaTheme
+                        usesPlasmaTheme: loaderUsesPlasmaTheme
                         source: model.decoration
+                        roundToIconSize: width > units.iconSizes.huge ? false : true
                     }
                 }
             }
         }
+    }
+
+    Rectangle {
+        id: displayBox
+        width: iconSize
+        height: width
+        y: iconSize * 0.2
+        anchors.horizontalCenter: parent.horizontalCenter
+        // anchors.verticalCenter: parent.verticalCenter
+        color:"transparent"
+
+        // Load either icon or directory view
+        Loader {
+            id: displayLoader
+            anchors.fill: parent
+
+            property bool loaderUsesPlasmaTheme: item.GridView.view.usesPlasmaTheme
+
+            sourceComponent: isDirectory && !plasmoid.configuration.useDirectoryIcons ? directoryViewComponent : iconComponent
+        }        
     }
 
     // Rectangle{
@@ -203,9 +219,8 @@ Item {
             openActionMenu(item);
         } else if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
             event.accepted = true;
-            GridView.view.model.trigger(index, "", null);
-            root.toggle();
-
+            itemGrid.trigger(index);
+            // root.toggle();
         }
     }
 }
