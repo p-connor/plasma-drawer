@@ -66,6 +66,7 @@ FocusScope {
         keyNavigationEnabled: false
         boundsBehavior: Flickable.StopAtBounds
 
+        highlightFollowsCurrentItem: false
         highlightMoveDuration: 0
         highlightResizeDuration: 0
 
@@ -90,6 +91,27 @@ FocusScope {
             incrementCurrentIndex();
             if (currentItem && "count" in currentItem) {
                 currentItem.currentIndex = 0;
+            }
+        }
+
+        function ensureCurrentMatchInView() {
+            let section = currentItem;
+            if (!section) {
+                return;
+            }
+            let match = section.currentItem;
+            if (!match) {
+                return;
+            }
+
+            let headerHeight = section.matchesList.mapToItem(section, 0, 0).y;
+            let matchY = section.y + match.y + headerHeight + units.smallSpacing; // Match's y relative to runnerSectionsList's start
+            let mappedY = matchY - contentY; // Match's y adjusted to scrolled position
+
+            if (mappedY < 0) {
+                contentY += mappedY;
+            } else if (mappedY + section.matchesList.rowHeight > height) {
+                contentY += ((mappedY + section.matchesList.rowHeight) - height);
             }
         }
 
@@ -139,6 +161,7 @@ FocusScope {
                 onCurrentIndexChanged: {
                     if (currentIndex != -1) {
                         runnerSectionsList.currentIndex = index;
+                        runnerSectionsList.ensureCurrentMatchInView();
                     }
                 }
 
