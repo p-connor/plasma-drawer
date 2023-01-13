@@ -44,7 +44,7 @@ Kirigami.FormLayout {
     property int cfg_searchIconSize:            plasmoid.configuration.searchIconSize  
     
     property alias cfg_showSystemActions:       showSystemActions.checked
-    property alias cfg_systemActionIconSize:    systemActionIconSize.value
+    property int cfg_systemActionIconSize:      plasmoid.configuration.systemActionIconSize
     property var cfg_favoriteSystemActions:     plasmoid.configuration.favoriteSystemActions
 
     
@@ -203,20 +203,20 @@ Kirigami.FormLayout {
         }
         ComboBox {
             id: appIconSize
-            textRole: "text"
-            valueRole: "value"
             model: [ 
-                {text: i18n("Medium"), value: "medium"}, 
-                {text: i18n("Large"), value: "large"}, 
-                {text: i18n("Huge"), value: "huge"}, 
-                {text: i18n("Enormous"), value: "enormous"} 
+                i18n(units.iconSizes.medium), 
+                i18n(units.iconSizes.large), 
+                i18n(units.iconSizes.huge), 
+                i18n(units.iconSizes.huge + ((units.iconSizes.enormous - units.iconSizes.huge) / 2)),
+                i18n(units.iconSizes.enormous),
+                i18n(units.iconSizes.enormous + (units.iconSizes.enormous / 2)),
+                i18n(units.iconSizes.enormous * 2)
             ]
             onActivated: {
-                cfg_appIconSize = units.iconSizes[currentValue];
+                cfg_appIconSize = parseInt(currentText);
             }
             Component.onCompleted: {
-                console.log(model);
-                currentIndex = model.findIndex((size) => units.iconSizes[size.value] == cfg_appIconSize);
+                currentIndex = model.findIndex((size) => size == cfg_appIconSize);
             }
         }
     }
@@ -253,22 +253,19 @@ Kirigami.FormLayout {
         }
         ComboBox {
             id: searchIconSize
-            textRole: "text"
-            valueRole: "value"
             model: [ 
-                {text: i18n("Tiny"), value: "small"},
-                {text: i18n("Small"), value: "smallMedium"},
-                {text: i18n("Medium"), value: "medium"}, 
-                {text: i18n("Large"), value: "large"}, 
-                {text: i18n("Huge"), value: "huge"}, 
-                {text: i18n("Enormous"), value: "enormous"} 
+                i18n(units.iconSizes.small),
+                i18n(units.iconSizes.smallMedium),
+                i18n(units.iconSizes.medium), 
+                i18n(units.iconSizes.large), 
+                i18n(units.iconSizes.huge), 
+                i18n(units.iconSizes.enormous)
             ]
             onActivated: {
-                cfg_searchIconSize = units.iconSizes[currentValue];
+                cfg_searchIconSize = parseInt(currentText);
             }
             Component.onCompleted: {
-                console.log(model);
-                currentIndex = model.findIndex((size) => units.iconSizes[size.value] == cfg_searchIconSize);
+                currentIndex = model.findIndex((size) => size == cfg_searchIconSize);
             }
         }
     }
@@ -297,11 +294,20 @@ Kirigami.FormLayout {
         Label {
             text: i18n("Size of system actions icons:")
         }
-        SpinBox{
+        ComboBox {
             id: systemActionIconSize
-            from: 24
-            to: 128
-            stepSize: 4
+            model: [ 
+                i18n(units.iconSizes.medium), 
+                i18n(units.iconSizes.large), 
+                i18n(units.iconSizes.huge), 
+                i18n(units.iconSizes.enormous)
+            ]
+            onActivated: {
+                cfg_systemActionIconSize = parseInt(currentText);
+            }
+            Component.onCompleted: {
+                currentIndex = model.findIndex((size) => size == cfg_systemActionIconSize);
+            }
         }
     }
 

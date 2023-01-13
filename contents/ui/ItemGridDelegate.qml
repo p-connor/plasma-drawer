@@ -90,6 +90,7 @@ Item {
             animated: false
             usesPlasmaTheme: loaderUsesPlasmaTheme
             source: model.decoration
+            roundToIconSize: width > units.iconSizes.huge ? false : true
         }
     }
 
@@ -130,6 +131,7 @@ Item {
                         animated: false
                         usesPlasmaTheme: loaderUsesPlasmaTheme
                         source: model.decoration
+                        roundToIconSize: width > units.iconSizes.huge ? false : true
                     }
                 }
             }
