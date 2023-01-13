@@ -36,7 +36,7 @@ FocusScope {
     property alias model: listView.model
     property alias interactive: listView.interactive
 
-    function triggerItem(itemIndex) {
+    function trigger(itemIndex) {
         model.trigger(itemIndex, "", null);
         root.toggle();
     }
@@ -128,7 +128,7 @@ FocusScope {
 
         onReleased: {
             mouse.accepted = true;
-            triggerItem(currentIndex);
+            itemList.trigger(currentIndex);
         }
 
         onPositionChanged: {
@@ -143,7 +143,7 @@ FocusScope {
     Keys.onPressed: {
         if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
             event.accepted = true;
-            triggerItem(currentIndex);
+            itemList.trigger(currentIndex);
             return;
         }
         

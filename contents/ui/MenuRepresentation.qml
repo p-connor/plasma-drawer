@@ -159,6 +159,17 @@ Kicker.DashboardWindow {
                 }
             }
 
+            Keys.onPressed: {
+                if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
+                    event.accepted = true;
+                    if (!runnerResultsView.currentMatch) {
+                        runnerResultsView.selectFirst();
+                    }
+                    runnerResultsView.triggerSelected();
+                    return;
+                }
+            }
+
             Rectangle {
                 anchors.fill: parent
                 color: "red"

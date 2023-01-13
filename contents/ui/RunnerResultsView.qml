@@ -1,8 +1,10 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 
@@ -24,6 +26,7 @@ FocusScope {
     property alias model: runnerSectionsList.model
     property alias currentSectionIndex: runnerSectionsList.currentIndex
     property alias currentSection: runnerSectionsList.currentItem
+    readonly property var currentMatch: currentSection ? currentSection.currentItem : null
     property alias sectionsCount: runnerSectionsList.count
 
     property int iconSize: units.iconSizes.huge
@@ -31,16 +34,24 @@ FocusScope {
 
     function selectFirst() {
         if (sectionsCount > 0) {
+            runnerSectionsList.positionViewAtBeginning();
             runnerSectionsList.itemAtIndex(0).currentIndex = 0;
         }
     }
 
     function selectLast() {
         if (sectionsCount > 0) {
+            runnerSectionsList.positionViewAtEnd();
             let lastList = runnerSectionsList.itemAtIndex(sectionsCount - 1);
             if (lastList && lastList.count > 0) {
                 lastList.currentIndex = lastList.count - 1;
             }
+        }
+    }
+
+    function triggerSelected() {
+        if (currentSection && currentSection.currentIndex != -1) {
+            currentSection.matchesList.trigger(currentSection.currentIndex);
         }
     }
 
@@ -90,6 +101,8 @@ FocusScope {
 
             property alias count: matchesList.count
             property alias currentIndex: matchesList.currentIndex
+            property alias currentItem: matchesList.currentItem
+            property alias matchesList: matchesList
 
             PlasmaExtras.Heading {
                 id: runnerName
@@ -122,6 +135,7 @@ FocusScope {
 
                 interactive: false
 
+                // currentIndex: index == 0 ? 0 : -1
                 onCurrentIndexChanged: {
                     if (currentIndex != -1) {
                         runnerSectionsList.currentIndex = index;
