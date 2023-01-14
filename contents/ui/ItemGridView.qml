@@ -51,6 +51,8 @@ FocusScope {
 
     property alias cellWidth: gridView.cellWidth
     property alias cellHeight: gridView.cellHeight
+    readonly property int numberColumns: Math.floor(width / cellWidth)
+    readonly property int numberRows: Math.ceil(count / numberColumns)
 
     property alias hoverEnabled: mouseArea.hoverEnabled
 
@@ -71,7 +73,7 @@ FocusScope {
             return -1;
         }
 
-        return Math.floor(currentIndex / Math.floor(width / cellWidth));
+        return Math.floor(currentIndex / numberColumns);
     }
 
     function currentCol() {
@@ -79,23 +81,19 @@ FocusScope {
             return -1;
         }
 
-        return currentIndex - (currentRow() * Math.floor(width / cellWidth));
+        return currentIndex - (currentRow() * numberColumns);
     }
 
     function lastRow() {
-        var columns = Math.floor(width / cellWidth);
-        return Math.ceil(count / columns) - 1;
+        return numberRows - 1;
     }
 
     function trySelect(row, col) {
         if (count) {
-            var columns = Math.floor(width / cellWidth);
-            var rows = Math.ceil(count / columns);
-            row = Math.min(row, rows - 1);
-            col = Math.min(col, columns - 1);
-            currentIndex = Math.min(row ? ((Math.max(1, row) * columns) + col)
-                : col,
-                count - 1);
+            // Constrains between 0 and numberRows - 1
+            row = Math.min(Math.max(row, 0), numberRows - 1);
+            col = Math.min(Math.max(col, 0), numberColumns - 1);
+            currentIndex = Math.min(((row * numberColumns) + col), count - 1);
 
             gridView.forceActiveFocus();
         }
@@ -247,6 +245,42 @@ FocusScope {
                     positionViewAtIndex(currentIndex, GridView.Contain);
                 } else {
                     itemGrid.keyNavDown();
+                }
+            }
+
+            Keys.onPressed: {
+                let rowsInPage = Math.floor(gridView.height / cellSizeHeight);
+
+                if (event.key == Qt.Key_PageUp) {
+                    if (currentIndex == -1) {
+                        currentIndex = 0;
+                        return;
+                    }
+
+                    if (currentRow() != 0) {
+                        event.accepted = true;
+                        trySelect(currentRow() - rowsInPage, currentCol());
+                        positionViewAtIndex(currentIndex, GridView.Beginning);
+                    } else {
+                        itemGrid.keyNavUp();
+                    }
+                    return;
+                }
+                
+                if (event.key == Qt.Key_PageDown) {
+                    if (currentIndex == -1) {
+                        currentIndex = 0;
+                        return;
+                    }
+
+                    if (currentRow() != numberRows - 1) {
+                        event.accepted = true;
+                        trySelect(currentRow() + rowsInPage, currentCol());
+                        positionViewAtIndex(currentIndex, GridView.Beginning);
+                    } else {
+                        itemGrid.keyNavDown();
+                    }
+                    return;
                 }
             }
         }

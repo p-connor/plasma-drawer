@@ -200,5 +200,27 @@ FocusScope {
             keyNavRight();
             return;
         }
+
+        if (event.key == Qt.Key_PageUp) {
+            if (currentIndex == -1) {
+                currentIndex = 0;
+                return;
+            }
+            
+            currentIndex = -1;
+            keyNavUp();
+            return;
+        }
+        
+        if (event.key == Qt.Key_PageDown) {
+            if (currentIndex == -1) {
+                currentIndex = 0;
+                return;
+            }
+            
+            currentIndex = -1;
+            keyNavDown();
+            return;
+        }
     }
 }

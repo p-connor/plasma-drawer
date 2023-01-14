@@ -93,8 +93,8 @@ FocusScope {
 
             showLabels: opacity > 0.25
 
-            width: numberColumns * cellSizeWidth
-            height: numberRows * cellSizeHeight
+            width: appsGrid.numberColumns * cellSizeWidth
+            height: appsGrid.numberRows * cellSizeHeight
             // anchors.centerIn: stackView
 
             cellWidth:  cellSizeWidth
