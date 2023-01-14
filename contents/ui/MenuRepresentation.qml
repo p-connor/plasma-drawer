@@ -51,7 +51,12 @@ Kicker.DashboardWindow {
     }
 
     onVisibleChanged: {
-        reset();
+        if (visible) {
+            // Set favorites here to ensure system actions are available
+            systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
+        } else {
+            reset();
+        }
     }
 
     onSearchingChanged: {

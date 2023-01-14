@@ -96,7 +96,7 @@ Item {
         }
 
         function onFavoritesChanged() {
-            if (target.favorites.toString() != plasmoid.configuration.favoriteSystemActions.toString()) {
+            if (target.count > 0 && target.favorites.toString() != plasmoid.configuration.favoriteSystemActions.toString()) {
                 plasmoid.configuration.favoriteSystemActions = target.favorites;
             }
         }
@@ -104,10 +104,6 @@ Item {
 
     Connections {
         target: plasmoid.configuration
-
-        function onFavoriteSystemActionsChanged() {
-            systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
-        }
 
         function onHiddenApplicationsChanged() {
             // TODO: handle case when hiding applications nested in directories
@@ -141,7 +137,10 @@ Item {
         Component.onCompleted: {
             systemFavoritesModel.enabled = true;
             systemFavoritesModel.maxFavorites = 8;
-            systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
+
+            // Favorites set on MenuRepresentation visible instead to ensure that system actions are
+            // available at set time
+            // systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
         }
     }
 
