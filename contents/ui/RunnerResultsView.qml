@@ -95,22 +95,6 @@ FocusScope {
             }
         }
 
-        contentHeight: {
-            let h = 0;
-            for (let i = 0; i < count; i++) {
-                let item = itemAtIndex(i);
-                h += item != null ? item.height : (model.modelForRow(i).count + 1) * units.iconSizes.large;
-            }
-            return h;
-        }
-        
-        ScrollBar.vertical: PC3.ScrollBar {
-            parent: runnerSectionsList.parent
-            anchors.top: runnerSectionsList.top
-            anchors.left: runnerSectionsList.right
-            anchors.bottom: runnerSectionsList.bottom
-        }
-
         Kirigami.WheelHandler {
             target: runnerSectionsList
             filterMouseEvents: true
