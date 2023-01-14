@@ -7,15 +7,15 @@
             }
         ],
         "Category": "Application Launchers",
-        "Description": "A fullscreen customizable launcher",
+        "Description": "A fullscreen customizable launcher with application directories and krunner-like search",
         "Icon": "start-here-kde",
-        "Id": "com.github.p-connor.launcher",
-        "Name": "Launcher",
+        "Id": "P-Connor.PlasmaDrawer",
+        "Name": "Plasma Drawer",
         "ServiceTypes": [
             "Plasma/Applet"
         ],
-        "Version": "1",
-        "Website": ""
+        "Version": "1.0",
+        "Website": "https://github.com/P-Connor/plasma-drawer"
     },
     "X-Plasma-API": "declarativeappletscript",
     "X-Plasma-MainScript": "ui/main.qml",
