@@ -46,7 +46,7 @@ FocusScope {
             let item = currentItemGrid.itemAtIndex(directoryIndex);
             if (item) {
                 origin = Qt.point(  (item.x + (cellSizeWidth / 2)) - (currentItemGrid.width / 2), 
-                                    (item.y + (cellSizeHeight / 2)) - (currentItemGrid.height / 2) )
+                                    (item.y + (cellSizeHeight / 2)) - (currentItemGrid.height / 2) - currentItemGrid.contentY )
             }
             stackView.push(directoryView, {model: dir, origin: origin});
         }

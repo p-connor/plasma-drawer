@@ -44,6 +44,7 @@ FocusScope {
     property alias currentIndex: gridView.currentIndex
     property alias currentItem: gridView.currentItem
     property alias contentItem: gridView.contentItem
+    property alias contentY: gridView.contentY
     property alias count: gridView.count
     property alias flow: gridView.flow
     property alias snapMode: gridView.snapMode
