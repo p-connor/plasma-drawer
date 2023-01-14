@@ -21,7 +21,7 @@ import QtQuick 2.4
 import QtQuick.Controls 2.15
 
 import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0
@@ -168,7 +168,7 @@ FocusScope {
                 currentIndex = -1;
             }
 
-            ScrollBar.vertical: PlasmaComponents3.ScrollBar {
+            ScrollBar.vertical: PC3.ScrollBar {
                 parent: gridView.parent
                 anchors.top: gridView.top
                 anchors.left: gridView.right
