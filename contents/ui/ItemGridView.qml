@@ -25,6 +25,7 @@ import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0
+import org.kde.kirigami 2.16 as Kirigami
 
 FocusScope {
     id: itemGrid
@@ -173,6 +174,16 @@ FocusScope {
                 anchors.top: gridView.top
                 anchors.left: gridView.right
                 anchors.bottom: gridView.bottom
+            }
+
+            Kirigami.WheelHandler {
+                target: gridView
+                filterMouseEvents: true
+                // `20 * Qt.styleHints.wheelScrollLines` is the default speed.
+                // `* PlasmaCore.Units.devicePixelRatio` is needed on X11
+                // because Plasma doesn't support Qt scaling.
+                horizontalStepSize: 20 * Qt.styleHints.wheelScrollLines * units.devicePixelRatio
+                verticalStepSize: 20 * Qt.styleHints.wheelScrollLines * units.devicePixelRatio
             }
 
             Keys.onLeftPressed: {

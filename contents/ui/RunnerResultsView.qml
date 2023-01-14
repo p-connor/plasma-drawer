@@ -7,6 +7,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
+import org.kde.kirigami 2.16 as Kirigami
 
 import "../code/tools.js" as Tools
 
@@ -108,6 +109,16 @@ FocusScope {
             anchors.top: runnerSectionsList.top
             anchors.left: runnerSectionsList.right
             anchors.bottom: runnerSectionsList.bottom
+        }
+
+        Kirigami.WheelHandler {
+            target: runnerSectionsList
+            filterMouseEvents: true
+            // `20 * Qt.styleHints.wheelScrollLines` is the default speed.
+            // `* PlasmaCore.Units.devicePixelRatio` is needed on X11
+            // because Plasma doesn't support Qt scaling.
+            horizontalStepSize: 20 * Qt.styleHints.wheelScrollLines * units.devicePixelRatio
+            verticalStepSize: 20 * Qt.styleHints.wheelScrollLines * units.devicePixelRatio
         }
 
         function ensureCurrentMatchInView() {
