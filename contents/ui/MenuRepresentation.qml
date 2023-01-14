@@ -41,7 +41,7 @@ Kicker.DashboardWindow {
     // keyEventProxy: searchField
     backgroundColor: "transparent"
 
-    property bool searching: searchField.text != ""
+    readonly property bool searching: searchField.text != ""
 
     // TODO: remove this and all focus debug rectangles
     property bool debugFocus: false
@@ -69,8 +69,8 @@ Kicker.DashboardWindow {
     }
 
     function leave() {
-        if (!searching && !appsGridView.isAtRoot) {
-            appsGridView.tryExitDirectory();
+        if (!searching && !content.item.isAtRoot) {
+            content.item.tryExitDirectory();
         } else {
             root.toggle();
         }
@@ -78,8 +78,8 @@ Kicker.DashboardWindow {
 
     function reset() {
         searchField.text = "";
-        appsGridView.returnToRootDirectory(false);
-        appsGridView.focus = true;
+        // appsGridView.returnToRootDirectory(false);
+        content.focus = true;
     }
 
     mainItem: MouseArea {
@@ -150,22 +150,17 @@ Kicker.DashboardWindow {
 
             Keys.onDownPressed: {
                 event.accepted = true;
-                if (searching) {
-                    runnerResultsView.focus = true;
-                    runnerResultsView.selectFirst();
-                } else {
-                    appsGridView.focus = true;
-                    appsGridView.selectFirst();
-                }
+                content.focus = true;
+                content.item.selectFirst();
             }
 
             Keys.onPressed: {
-                if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
+                if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
-                    if (!runnerResultsView.currentMatch) {
-                        runnerResultsView.selectFirst();
+                    if (!content.item.currentMatch) {
+                        content.item.selectFirst();
                     }
-                    runnerResultsView.triggerSelected();
+                    content.item.triggerSelected();
                     return;
                 }
             }
@@ -179,25 +174,19 @@ Kicker.DashboardWindow {
             }
         }
 
-        Rectangle{
-            id: content
-            width: Math.max(appsGridView.width, runnerResultsView.width)
-            height: maxContentHeight
-            color: "transparent"
-            anchors {
-                verticalCenter: parent.verticalCenter
-                horizontalCenter: parent.horizontalCenter
-            }
-
+        Component {
+            id: runnerResultsViewComponent
             RunnerResultsView {
                 id: runnerResultsView
 
-                height: parent.height
+                height: maxContentHeight
                 width: units.gridUnit * 30
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 visible: searching
                 enabled: visible
+                
+                focus: true
 
                 iconSize: plasmoid.configuration.searchIconSize
                 shrinkIconsToNative: plasmoid.configuration.adaptiveSearchIconSize
@@ -222,12 +211,15 @@ Kicker.DashboardWindow {
 
                 model: runnerModel
             }
+        }
 
+        Component {
+            id: appsGridViewComponent
             AppsGridView {
                 id: appsGridView
 
                 anchors.centerIn: parent
-                height: parent.height
+                height: maxContentHeight
 
                 visible: !searching && appsModel.count > 0
                 enabled: visible
@@ -248,6 +240,18 @@ Kicker.DashboardWindow {
                     }
                 }
             }
+        }
+
+        // Switch between apps grid or runner results based on whether searching or not
+        Loader {
+            id: content
+            anchors {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+            }
+            sourceComponent: !searching ? appsGridViewComponent : runnerResultsViewComponent
+            active: root.visible
+            focus: true
         }
 
         ItemGridView {
@@ -279,13 +283,8 @@ Kicker.DashboardWindow {
 
             onKeyNavUp: {
                 currentIndex = -1;
-                if (searching) {
-                    runnerResultsView.focus = true;
-                    runnerResultsView.selectLast();
-                } else {
-                    appsGridView.focus = true;
-                    appsGridView.selectLast();
-                }
+                content.focus = true;
+                content.item.selectLast();
             }
         }
  
