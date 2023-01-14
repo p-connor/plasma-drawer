@@ -281,11 +281,9 @@ Kirigami.FormLayout {
         text:  i18n("Show system actions")
 
         onToggled: {
-            if (plasmoid.configuration.favoriteSystemActions.length == 0) {
-                cfg_favoriteSystemActions = !checked
-                                            ? plasmoid.configuration.favoriteSystemActions 
-                                            : ["shutdown", "reboot", "logout", "hibernate", "suspend", "save-session", "lock-screen", "switch-user"];
-            }
+            cfg_favoriteSystemActions = !checked
+                                        ? plasmoid.configuration.favoriteSystemActions 
+                                        : ["shutdown", "reboot", "logout", "hibernate", "suspend", "save-session", "lock-screen", "switch-user"];
         }
     }
     RowLayout {

@@ -96,7 +96,9 @@ Item {
         }
 
         function onFavoritesChanged() {
-            plasmoid.configuration.favoriteSystemActions = target.favorites;
+            if (target.favorites.toString() != plasmoid.configuration.favoriteSystemActions.toString()) {
+                plasmoid.configuration.favoriteSystemActions = target.favorites;
+            }
         }
     }
 
@@ -136,16 +138,10 @@ Item {
     Kicker.SystemModel {
         id: systemModel
 
-        onModelReset: {
-            // Reassign favorites on every reset in case any of them have since become valid
-            systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
-        }
-
         Component.onCompleted: {
             systemFavoritesModel.enabled = true;
             systemFavoritesModel.maxFavorites = 8;
-            // systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
-            // systemModel.refresh();
+            systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
         }
     }
 

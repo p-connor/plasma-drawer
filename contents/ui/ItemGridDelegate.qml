@@ -217,7 +217,7 @@ Item {
         if (event.key == Qt.Key_Menu && hasActionList) {
             event.accepted = true;
             openActionMenu(item);
-        } else if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
+        } else if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return && GridView.view.currentIndex == index)) {
             event.accepted = true;
             itemGrid.trigger(index);
             // root.toggle();
