@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -117,38 +118,47 @@ Kicker.DashboardWindow {
             font: dummyHeading.font
         }
 
-        PlasmaComponents.TextField {
+        TextField {
             id: searchField
 
             anchors.top: parent.top
             anchors.topMargin: topBottomMargin
             anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width * 0.2
-            
-            style: TextFieldStyle {
-                textColor: theme.textColor
-                background: Rectangle {
-                    radius: height * 0.25
-                    color: theme.textColor
-                    opacity: 0.2
-                }
-            }
+            width: units.gridUnit * 20
+            leftInset: -(searchIcon.width + units.smallSpacing * 4)
+            rightInset: -(searchIcon.width + units.smallSpacing * 4)
+
+            color: theme.textColor
+            // font.pointSize: theme.defaultFont.pointSize + 2
             horizontalAlignment: TextInput.AlignHCenter
-            placeholderText: i18n("<font color='"+colorWithAlpha(theme.textColor,0.5) +"'>Plasma Search</font>")
+            verticalAlignment: TextInput.AlignVCenter
             
+            placeholderText: "Search"
+            placeholderTextColor: theme.disabledTextColor
+
             onTextChanged: {
                 runnerModel.query = text;
+            }
+
+            background: Rectangle {
+                id: searchFieldBackground
+                anchors.verticalCenter: parent.verticalCenter
+                height: parent.height * 0.85
+                radius: height * 0.25
+                color: theme.textColor
+                opacity: 0.2
             }
 
             PlasmaCore.IconItem {
                 id: searchIcon
                 source: "search-icon"
                 visible: true
-                width:  parent.height - 2
+                width:  searchFieldBackground.height
                 height: width
+                roundToIconSize: true
                 anchors {
-                    left: parent.left
-                    leftMargin: 10
+                    left: searchFieldBackground.left
+                    leftMargin: units.smallSpacing * 2
                     verticalCenter: parent.verticalCenter
                 }
             }
