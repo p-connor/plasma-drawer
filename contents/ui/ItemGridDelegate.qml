@@ -142,9 +142,9 @@ Item {
         id: displayBox
         width: iconSize
         height: width
-        y: iconSize * 0.2
+        y: (item.height / 2) - (height / 2) - (showLabel ? label.height / 2 : 0)
         anchors.horizontalCenter: parent.horizontalCenter
-        // anchors.verticalCenter: parent.verticalCenter
+        // anchors.verticalCenter: parent.verticalCenter - (showLabel ? label.height / 2 : 0)
         color:"transparent"
 
         // Load either icon or directory view
