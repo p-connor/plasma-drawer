@@ -102,9 +102,7 @@ Item {
         }
     }
 
-    Kicker.AppsModel {
-        id: appsModel
-
+    readonly property Kicker.AppsModel appsModel: Kicker.AppsModel {
         autoPopulate: true
 
         flat: false

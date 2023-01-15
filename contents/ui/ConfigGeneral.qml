@@ -337,6 +337,7 @@ Kirigami.FormLayout {
             onClicked: {
                 plasmoid.configuration.hiddenApplications = [""];
                 unhideAllAppsPopup.text = i18n("Unhidden!");
+                plasmoid.rootItem.appsModel.refresh();
             }
         }
         Label {
