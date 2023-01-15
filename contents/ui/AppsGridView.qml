@@ -171,12 +171,7 @@ FocusScope {
 
         Transition {
             id: pushExitTransition
-            YAnimator {
-                from: 0
-                to: -units.gridUnit * 3
-                duration: stackView.transitionDuration
-                easing.type: Easing.OutCubic
-            }
+            NumberAnimation { property: "y"; from: 0; to: -units.gridUnit * 3; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
             NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: stackView.transitionDuration * .5; easing.type: Easing.OutCubic }
             NumberAnimation { property: "scale"; from: 1.0; to: .8; duration: stackView.transitionDuration * .5; easing.type: Easing.OutCubic }
         }
@@ -187,12 +182,7 @@ FocusScope {
             SequentialAnimation {
                 PauseAnimation { duration: stackView.transitionDuration * .2 }
                 ParallelAnimation {
-                    YAnimator {
-                        from: -units.gridUnit * 3
-                        to: 0
-                        duration: stackView.transitionDuration
-                        easing.type: Easing.OutCubic
-                    }
+                    NumberAnimation { property: "y"; from: -units.gridUnit * 3; to: 0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
                     NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
                     NumberAnimation { property: "scale"; from: 0.8; to: 1; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
                 }
