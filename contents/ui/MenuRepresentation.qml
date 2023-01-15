@@ -129,7 +129,7 @@ Kicker.DashboardWindow {
             rightInset: -(searchIcon.width + units.smallSpacing * 4)
 
             color: theme.textColor
-            // font.pointSize: theme.defaultFont.pointSize + 2
+            font.pointSize: theme.defaultFont.pointSize + 1
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
             
