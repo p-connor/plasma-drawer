@@ -20,11 +20,11 @@ FocusScope {
     property int iconSize: units.iconSizes.huge
     
     // TODO - polish cell sizes for different resolutions
-    property int cellSizeWidth: (iconSize * 1.5) + theme.mSize(theme.defaultFont).height
+    readonly property int cellSizeWidth: (iconSize * 1.5) + theme.mSize(theme.defaultFont).height
                                 + (2 * units.smallSpacing)
                                 + (2 * Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
                                                 highlightItemSvg.margins.left + highlightItemSvg.margins.right))
-    property int cellSizeHeight: cellSizeWidth - (iconSize * .25)
+    readonly property int cellSizeHeight: cellSizeWidth - (iconSize * .25)
 
     property int numberColumns:  5
     property int numberRows:  Math.floor(height / cellSizeHeight)
@@ -133,7 +133,10 @@ FocusScope {
     StackView {
         id: stackView
         initialItem: directoryView
-        anchors.fill: parent
+        // anchors.fill: parent
+        width: appsGrid.numberColumns * cellSizeWidth
+        height: parent.height
+        anchors.centerIn: parent
         focus: true
 
         property var transitionDuration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration
@@ -171,9 +174,9 @@ FocusScope {
 
         Transition {
             id: pushExitTransition
-            NumberAnimation { property: "y"; from: 0; to: -units.gridUnit * 3; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
+            NumberAnimation { property: "y"; from: 0; to: -(appsGrid.iconSize * .5); duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
             NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: stackView.transitionDuration * .5; easing.type: Easing.OutCubic }
-            NumberAnimation { property: "scale"; from: 1.0; to: .8; duration: stackView.transitionDuration * .5; easing.type: Easing.OutCubic }
+            NumberAnimation { property: "scale"; from: 1.0; to: 0.8; duration: stackView.transitionDuration * .5; easing.type: Easing.OutCubic }
         }
 
         Transition {
@@ -182,9 +185,9 @@ FocusScope {
             SequentialAnimation {
                 PauseAnimation { duration: stackView.transitionDuration * .2 }
                 ParallelAnimation {
-                    NumberAnimation { property: "y"; from: -units.gridUnit * 3; to: 0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
-                    NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
-                    NumberAnimation { property: "scale"; from: 0.8; to: 1; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
+                    NumberAnimation { property: "y"; from: -(appsGrid.iconSize * .5); to: 0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
+                    NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: stackView.transitionDuration * .5; easing.type: Easing.OutCubic }
+                    NumberAnimation { property: "scale"; from: 0.8; to: 1.0; duration: stackView.transitionDuration; easing.type: Easing.OutCubic }
                 }
             }
         }

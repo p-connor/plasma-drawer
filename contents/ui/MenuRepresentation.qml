@@ -36,8 +36,7 @@ Kicker.DashboardWindow {
     
     id: root
 
-    property int maxContentHeight: height * 0.7
-    property int topBottomMargin: units.iconSizes.large // (height - maxContentHeight) / 4
+    property int topBottomContentMargin: Math.max(units.iconSizes.huge, height * .15)
 
     // keyEventProxy: searchField
     backgroundColor: "transparent"
@@ -122,9 +121,9 @@ Kicker.DashboardWindow {
             id: searchField
 
             anchors.top: parent.top
-            anchors.topMargin: topBottomMargin
+            anchors.topMargin: (topBottomContentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
-            width: units.gridUnit * 20
+            width: Math.min(units.gridUnit * 20, (root.width * 0.25) + (leftInset * 2))
             leftInset: -(searchIcon.width + units.smallSpacing * 4)
             rightInset: -(searchIcon.width + units.smallSpacing * 4)
 
@@ -198,8 +197,7 @@ Kicker.DashboardWindow {
             RunnerResultsView {
                 id: runnerResultsView
 
-                height: maxContentHeight
-                width: units.gridUnit * 30
+                width: Math.min(units.gridUnit * 30, root.width * 0.33)
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 visible: searching
@@ -227,9 +225,6 @@ Kicker.DashboardWindow {
             AppsGridView {
                 id: appsGridView
 
-                anchors.centerIn: parent
-                height: maxContentHeight
-
                 visible: !searching && appsModel.count > 0
                 enabled: visible
                 focus: true
@@ -245,13 +240,20 @@ Kicker.DashboardWindow {
         Loader {
             id: content
             anchors {
-                verticalCenter: parent.verticalCenter
                 horizontalCenter: parent.horizontalCenter
+                top: parent.top
+                bottom: parent.bottom
+                margins: topBottomContentMargin
             }
             sourceComponent: !searching ? appsGridViewComponent : runnerResultsViewComponent
             active: root.visible
             focus: true
 
+            // Rectangle {
+            //     color: "red"
+            //     opacity: 0.2
+            //     anchors.fill: parent
+            // }
             function keyNavUp() {
                 item.removeSelection();
                 searchField.focus = true;
@@ -292,7 +294,7 @@ Kicker.DashboardWindow {
                 horizontalCenter: parent.horizontalCenter
                 bottom: parent.bottom
                 margins: units.largeSpacing
-                bottomMargin: topBottomMargin
+                bottomMargin: (topBottomContentMargin / 2) - (height / 2)
             }
 
             iconSize: plasmoid.configuration.systemActionIconSize
