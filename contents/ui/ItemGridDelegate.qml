@@ -46,16 +46,13 @@ Item {
     readonly property url url: model.url != undefined ? model.url : ""
     property bool pressed: false
     readonly property bool hasActionList: ((("hasActionList" in model) && (model.hasActionList == true))
-                                           || isDirectory
                                            || isSystemAction)
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: model.display
 
     function openActionMenu(x, y) {
-        if (isDirectory) {
-            actionMenu.actionList = Tools.createDirectoryActions(i18n);
-        } else if (isSystemAction) {
+        if (isSystemAction) {
             actionMenu.actionList = Tools.createSystemActionActions(i18n, GridView.view.model.favoritesModel, model.favoriteId);
         } else if (hasActionList) {
             actionMenu.actionList = model.actionList;

@@ -22,15 +22,6 @@
 
 const CUSTOM_ACTION_PREFIX = "_kicker";
 
-function createDirectoryActions(i18n) {
-    var action = {};    
-    action.text = i18n("Empty folder here");
-    action.icon = "edit-reset";
-    action.actionId = CUSTOM_ACTION_PREFIX + "_directory_empty";
-    // action.actionArgument = { favoriteModel: favoriteModel, favoriteId: favoriteId };
-    return [action];
-}
-
 function createSystemActionActions(i18n, favoriteModel, favoriteId) {
     if (!favoriteId || !favoriteModel) {
         return null;
