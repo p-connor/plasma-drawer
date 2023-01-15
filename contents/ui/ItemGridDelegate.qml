@@ -108,7 +108,7 @@ Item {
                 
                 anchors.fill: parent
                 anchors.margins: parent.width / 10
-                cellWidth: width / 2 > units.iconSizes.small ? width / 2 : width
+                cellWidth: (width / 2) * 0.9 > units.iconSizes.small ? width / 2 : width
                 cellHeight: cellWidth
                 
                 // TODO - don't use clip here for performance reasons
@@ -124,11 +124,14 @@ Item {
                     PlasmaCore.IconItem {
                         id: directoryIconItem
 
-                        anchors.fill: parent
+                        width: parent.width * 0.9
+                        height: parent.height * 0.9
+                        anchors.centerIn: parent
+
                         animated: false
                         usesPlasmaTheme: loaderUsesPlasmaTheme
                         source: model.decoration
-                        roundToIconSize: width > units.iconSizes.huge ? false : true
+                        roundToIconSize: width > units.iconSizes.medium ? false : true
                     }
                 }
             }
