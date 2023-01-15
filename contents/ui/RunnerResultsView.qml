@@ -50,6 +50,12 @@ FocusScope {
         }
     }
 
+    function removeSelection() {
+        if (currentSection) {
+            currentSection.currentIndex = -1;
+        }
+    }
+
     function triggerSelected() {
         if (currentSection && currentSection.currentIndex != -1) {
             currentSection.matchesList.trigger(currentSection.currentIndex);

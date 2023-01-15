@@ -153,12 +153,6 @@ Kicker.DashboardWindow {
                 }
             }
 
-            Keys.onDownPressed: {
-                event.accepted = true;
-                content.focus = true;
-                content.item.selectFirst();
-            }
-
             Keys.onPressed: {
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
@@ -167,6 +161,16 @@ Kicker.DashboardWindow {
                     }
                     content.item.triggerSelected();
                     return;
+                }
+
+                if (event.key == Qt.Key_Tab || event.key == Qt.Key_Down || (event.key == Qt.Key_Backtab && !systemActionsGrid.visible)) {
+                    event.accepted = true;
+                    content.focus = true;
+                    content.item.selectFirst();
+                } else if (event.key == Qt.Key_Backtab) {
+                    event.accepted = true;
+                    systemActionsGrid.focus = true;
+                    systemActionsGrid.trySelect(0, 0);
                 }
             }
 
@@ -204,16 +208,6 @@ Kicker.DashboardWindow {
                     z: 100
                 }
 
-                onKeyNavUp: {
-                    searchField.focus = true;
-                }
-                onKeyNavDown: {
-                    if (systemActionsGrid.visible) {
-                        systemActionsGrid.focus = true;
-                        systemActionsGrid.trySelect(0, 0);
-                    }
-                }
-
                 model: runnerModel
             }
         }
@@ -234,16 +228,6 @@ Kicker.DashboardWindow {
                 numberColumns: plasmoid.configuration.numberColumns
 
                 model: appsModel
-
-                onKeyNavUp: {
-                    searchField.focus = true;
-                }
-                onKeyNavDown: {
-                    if (systemActionsGrid.visible) {
-                        systemActionsGrid.focus = true;
-                        systemActionsGrid.trySelect(0, 0);
-                    }
-                }
             }
         }
 
@@ -257,6 +241,33 @@ Kicker.DashboardWindow {
             sourceComponent: !searching ? appsGridViewComponent : runnerResultsViewComponent
             active: root.visible
             focus: true
+
+            function keyNavUp() {
+                item.removeSelection();
+                searchField.focus = true;
+            }
+            function keyNavDown() {
+                if (systemActionsGrid.visible) {
+                    item.removeSelection();
+                    systemActionsGrid.focus = true;
+                    systemActionsGrid.trySelect(0, 0);
+                }
+            }
+
+            onLoaded: {
+                item.keyNavUp.connect(keyNavUp);
+                item.keyNavDown.connect(keyNavDown);
+            }
+
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Backtab || (event.key == Qt.Key_Tab && !systemActionsGrid.visible)) {
+                    event.accepted = true;
+                    keyNavUp();
+                } else if (event.key == Qt.Key_Tab) {
+                    event.accepted = true;
+                    keyNavDown();
+                }
+            }
         }
 
         ItemGridView {
@@ -290,6 +301,17 @@ Kicker.DashboardWindow {
                 currentIndex = -1;
                 content.focus = true;
                 content.item.selectLast();
+            }
+
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Tab) {
+                    event.accepted = true;
+                    currentIndex = -1;
+                    searchField.focus = true;
+                } else if (event.key == Qt.Key_Backtab) {
+                    event.accepted = true;
+                    keyNavUp();
+                }
             }
         }
  

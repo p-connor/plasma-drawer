@@ -77,6 +77,12 @@ FocusScope {
         }
     }
 
+    function removeSelection() {
+        if (currentItemGrid) {
+            currentItemGrid.currentIndex = -1;
+        }
+    }
+
     // ActionMenu {
     //     id: actionMenu
     //     onActionClicked: visualParent.actionTriggered(actionId, actionArgument)
