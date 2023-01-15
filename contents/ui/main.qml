@@ -102,16 +102,6 @@ Item {
         }
     }
 
-    Connections {
-        target: plasmoid.configuration
-
-        function onHiddenApplicationsChanged() {
-            // TODO: handle case when hiding applications nested in directories
-            // Force refresh on hidden
-            appsModel.refresh();
-        }
-    }
-
     Kicker.AppsModel {
         id: appsModel
 
