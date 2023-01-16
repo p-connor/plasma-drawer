@@ -97,7 +97,8 @@ FocusScope {
         ItemGridView {
             property var origin: Qt.point(0, 0)
 
-            showLabels: opacity > 0.25
+            // showLabels: opacity > 0.5
+            layer.enabled: true
 
             width: appsGrid.numberColumns * cellSizeWidth
             height: appsGrid.numberRows * cellSizeHeight
