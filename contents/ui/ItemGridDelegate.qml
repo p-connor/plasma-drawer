@@ -147,6 +147,11 @@ Item {
         // anchors.verticalCenter: parent.verticalCenter - (showLabel ? label.height / 2 : 0)
         color:"transparent"
 
+        Behavior on y {
+            enabled: !plasmoid.configuration.disableAnimations
+            NumberAnimation { duration: units.longDuration; easing.type: Easing.OutCubic }
+        }
+
         // Load either icon or directory view
         Loader {
             id: displayLoader

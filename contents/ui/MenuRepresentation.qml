@@ -121,7 +121,7 @@ Kicker.DashboardWindow {
             id: searchField
 
             anchors.top: parent.top
-            anchors.topMargin: (topBottomContentMargin / 2) - (height / 2)
+            anchors.topMargin: Math.min((topBottomContentMargin / 2) - (height / 2), units.iconSizes.large)
             anchors.horizontalCenter: parent.horizontalCenter
             width: Math.min(units.gridUnit * 20, (root.width * 0.25) + (leftInset * 2))
             leftInset: -(searchIcon.width + units.smallSpacing * 4)
@@ -294,7 +294,7 @@ Kicker.DashboardWindow {
                 horizontalCenter: parent.horizontalCenter
                 bottom: parent.bottom
                 margins: units.largeSpacing
-                bottomMargin: (topBottomContentMargin / 2) - (height / 2)
+                bottomMargin: Math.min((topBottomContentMargin / 2) - (height / 2), units.iconSizes.large)
             }
 
             iconSize: plasmoid.configuration.systemActionIconSize
