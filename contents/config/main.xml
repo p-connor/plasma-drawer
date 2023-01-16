@@ -34,7 +34,7 @@
 
     <entry name="backgroundOpacity" type="Int">
       <label>The opacity of the background in the fullscreen menu representaion</label>
-      <default>60</default>
+      <default>70</default>
     </entry>
     <entry name="disableAnimations" type="Bool">
       <label>Disables animations for app grid navigation and search results</label>
@@ -71,15 +71,6 @@
     <entry name="adaptiveSearchIconSize" type="Bool">
       <label>Determines whether the icons in the search results list should be shrunk to match their native resolution.</label>
       <default>false</default>
-    </entry>
-
-    <entry name="useExtraRunners" type="Bool">
-      <label>Whether to use additional KRunner plugins to produce results in the search.</label>
-      <default>false</default>
-    </entry>
-    <entry name="extraRunners" type="StringList">
-      <label>The plugin id's of additional KRunner plugins to use. Only used if useExtraRunners is true.</label>
-      <default>shell,bookmarks,baloosearch,locations</default>
     </entry>
 
     <entry name="favoritesPortedToKAstats" type="Bool">
