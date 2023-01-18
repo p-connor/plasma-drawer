@@ -23,6 +23,8 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import org.kde.plasma.private.kicker 0.1 as Kicker
+
 Item {
     id: root
 
@@ -34,7 +36,10 @@ Item {
     readonly property bool vertical: (plasmoid.formFactor == PlasmaCore.Types.Vertical)
     readonly property bool useCustomButtonImage: (plasmoid.configuration.useCustomButtonImage
         && plasmoid.configuration.customButtonImage.length != 0)
-    property QtObject dashWindow: null
+
+    readonly property Component dashWindowComponent: Qt.createComponent(Qt.resolvedUrl("./MenuRepresentation.qml"), root)
+    readonly property Kicker.DashboardWindow dashWindow: dashWindowComponent && dashWindowComponent.status === Component.Ready
+        ? dashWindowComponent.createObject(root, { visualParent: root }) : null
 
     Plasmoid.status: dashWindow && dashWindow.visible ? PlasmaCore.Types.RequiresAttentionStatus : PlasmaCore.Types.PassiveStatus
 
@@ -108,7 +113,7 @@ Item {
     }
 
     Component.onCompleted: {
-        dashWindow = Qt.createQmlObject("MenuRepresentation {}", root);
+        // dashWindow = Qt.createQmlObject("MenuRepresentation {}", root);
         plasmoid.activated.connect(function() {
             //<>dashWindow.visible = !dashWindow.visible;
             dashWindow.toggle()
