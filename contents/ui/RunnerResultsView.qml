@@ -85,7 +85,7 @@ FocusScope {
 
             decrementCurrentIndex();
             if (currentItem && "count" in currentItem) {
-                currentItem.currentIndex = currentItem.count - 1;
+                currentItem.currentIndex = Math.min(currentItem.count - 1, currentItem.maxRows - 1);
             }
         }
 
@@ -139,6 +139,7 @@ FocusScope {
             visible: matchesList.model && matchesList.model.count > 0
 
             property alias count: matchesList.count
+            property alias maxRows: matchesList.maxRows
             property alias currentIndex: matchesList.currentIndex
             property alias currentItem: matchesList.currentItem
             property alias matchesList: matchesList
@@ -171,6 +172,8 @@ FocusScope {
 
                 iconSize: searchResults.iconSize
                 shrinkIconsToNative: searchResults.shrinkIconsToNative
+
+                maxRows: 5
 
                 interactive: false
 
