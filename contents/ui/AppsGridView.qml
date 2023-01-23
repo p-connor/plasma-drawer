@@ -28,9 +28,6 @@ FocusScope {
 
     property int numberColumns:  5
     property int numberRows:  Math.floor(height / cellSizeHeight)
-    
-    implicitWidth: numberColumns * cellSizeWidth
-    implicitHeight: cellSizeHeight * 3
 
     required property var model
 
@@ -38,6 +35,9 @@ FocusScope {
     readonly property var currentModel: currentItemGrid ? currentItemGrid.model : null //modelStack[modelStackLength - 1]
 
     readonly property bool isAtRoot: stackView.depth <= 1
+
+    implicitWidth: currentItemGrid.implicitWidth
+    implicitHeight: currentItemGrid.implicitHeight
 
     function tryEnterDirectory(directoryIndex) {
         let dir = currentModel.modelForRow(directoryIndex);
@@ -97,16 +97,15 @@ FocusScope {
         ItemGridView {
             property var origin: Qt.point(0, 0)
 
-            // showLabels: opacity > 0.5
-            layer.enabled: true
-
-            width: appsGrid.numberColumns * cellSizeWidth
-            height: appsGrid.numberRows * cellSizeHeight
-            // anchors.centerIn: stackView
+            // width: appsGrid.numberColumns * cellSizeWidth
+            // height: appsGrid.numberRows * cellSizeHeight
+            numberColumns: appsGrid.numberColumns
+            numberRows: appsGrid.numberRows
 
             cellWidth:  cellSizeWidth
             cellHeight: cellSizeHeight
 
+            
             iconSize: appsGrid.iconSize
             usesPlasmaTheme: false
 
@@ -134,10 +133,11 @@ FocusScope {
     StackView {
         id: stackView
         initialItem: directoryView
-        // anchors.fill: parent
-        width: appsGrid.numberColumns * cellSizeWidth
-        height: parent.height
-        anchors.centerIn: parent
+
+        implicitWidth: currentItemGrid.implicitWidth
+        implicitHeight: currentItemGrid.implicitHeight
+        anchors.top: parent.top
+
         focus: true
 
         property var transitionDuration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration
