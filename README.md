@@ -11,9 +11,13 @@ A fullscreen customizable launcher with application directories and krunner-like
 
 ### Installation
 
-Clone or download the repository, then run the following command:
+Download the [latest release](https://github.com/P-Connor/plasma-drawer/releases/latest) and run the following command:
 
-`plasmapkg2 -i plasma-drawer/`
+`kpackagetool5 -i plasma-drawer-VERSION.tar.gz`
+
+To uninstall, use the following command:
+
+`kpackagetool5 -t Plasma/Applet -r P-Connor.PlasmaDrawer`
 
 ### Usage
 
