@@ -13,7 +13,7 @@ A fullscreen customizable launcher with application directories and krunner-like
 
 Download the [latest release](https://github.com/P-Connor/plasma-drawer/releases/latest) and run the following command:
 
-`kpackagetool5 -i plasma-drawer-VERSION.tar.gz`
+`kpackagetool5 -i plasma-drawer-VERSION.plasmoid`
 
 To uninstall, use the following command:
 
