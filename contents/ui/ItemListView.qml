@@ -20,7 +20,11 @@ FocusScope {
     height: background.height
 
     property int iconSize: units.iconSizes.large
-    property int maxRows: 2147483647 // Max int by default
+    
+    property int maxRows: -1
+    readonly property int lastVisibleIndex: expandable && !expanded ? maxRows - 1 : count - 1
+    property bool expanded: false
+    readonly property bool expandable: maxRows != -1 && maxRows < count
     
     // If this property is true, the icon size will shrink when shrinkThreshold percent
     // of the model items have a source icon size less than the target
@@ -42,6 +46,16 @@ FocusScope {
         root.toggle();
     }
 
+    onExpandedChanged: {
+        if (!expanded && currentIndex > maxRows - 1) {
+            currentIndex = maxRows - 1
+        }
+    }
+
+    onExpandableChanged: {
+        expanded: false
+    }
+
     // onCurrentIndexChanged: {
     //     if (currentIndex != -1) {
     //         itemList.focus = true;
@@ -58,7 +72,8 @@ FocusScope {
         ListView {
             id: listView
             width: parent.width
-            height: Math.min(contentHeight, rowHeight * maxRows)
+            height: contentHeight
+            state: "UNEXPANDED"
             y: units.smallSpacing
 
             clip: true
@@ -90,6 +105,34 @@ FocusScope {
                     } else {
                         itemList.iconSize = targetIconSize;
                     }
+                }
+            }
+
+            states: [
+                State {
+                    name: "UNEXPANDED"
+                    when: !expandable || !expanded
+                    PropertyChanges {
+                        target: listView
+                        height: expandable ? maxRows * rowHeight : contentHeight
+                    }
+                },
+                State {
+                    name: "EXPANDED"
+                    when: expandable && expanded
+                    PropertyChanges {
+                        target: listView
+                        height: contentHeight
+                    }
+                }
+            ]
+            transitions: Transition {
+                from: "*"; to: "*"
+                NumberAnimation { 
+                    target: listView
+                    property: "height"
+                    duration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration
+                    easing.type: Easing.OutCubic 
                 }
             }
 
@@ -171,7 +214,7 @@ FocusScope {
                 return;
             }
             
-            if (currentIndex < Math.min(count - 1, maxRows - 1)) {
+            if (currentIndex < lastVisibleIndex) {
                 event.accepted = true;
                 listView.incrementCurrentIndex();
             } else {
