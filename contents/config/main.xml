@@ -23,8 +23,8 @@
       <label>The size of the icons in the applications grid</label>
       <default>128</default>
     </entry>
-    <entry name="numberColumns" type="Int">
-      <label>The number of columns in the applications grid</label>
+    <entry name="maxNumberColumns" type="Int">
+      <label>The max number of columns in the applications grid</label>
       <default>5</default>
     </entry>
     <entry name="useDirectoryIcons" type="Bool">

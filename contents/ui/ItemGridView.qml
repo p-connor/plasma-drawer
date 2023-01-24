@@ -41,6 +41,13 @@ FocusScope {
 
     property int iconSize: units.iconSizes.large
 
+    property int numberColumns: Math.floor(width / cellWidth)
+    property int numberRows: Math.ceil(count / numberColumns)
+    property alias cellWidth: gridView.cellWidth
+    property alias cellHeight: gridView.cellHeight
+
+    property alias model: gridView.model
+
     property alias currentIndex: gridView.currentIndex
     property alias currentItem: gridView.currentItem
     property alias contentItem: gridView.contentItem
@@ -48,16 +55,13 @@ FocusScope {
     property alias count: gridView.count
     property alias flow: gridView.flow
     property alias snapMode: gridView.snapMode
-    property alias model: gridView.model
-
-    property alias cellWidth: gridView.cellWidth
-    property alias cellHeight: gridView.cellHeight
-    readonly property int numberColumns: Math.floor(width / cellWidth)
-    readonly property int numberRows: Math.ceil(count / numberColumns)
 
     property alias hoverEnabled: mouseArea.hoverEnabled
 
     property alias populateTransition: gridView.populate
+
+    implicitWidth: dropArea.implicitWidth + (gridView.ScrollBar.vertical.width * 2)
+    implicitHeight: dropArea.implicitHeight
 
     onFocusChanged: {
         if (!focus) {
@@ -125,10 +129,20 @@ FocusScope {
         }
     }
 
+    PC3.ScrollBar {
+        id: verticalScrollBar
+        parent: dropArea
+        anchors.top: dropArea.top
+        anchors.left: dropArea.right
+        anchors.bottom: dropArea.bottom
+    }
+
     DropArea {
         id: dropArea
 
-        anchors.fill: parent
+        implicitWidth: numberColumns * cellWidth
+        implicitHeight: numberRows * cellHeight
+        anchors.centerIn: parent
 
         onDragMove: {
             var cPos = mapToItem(gridView.contentItem, event.x, event.y);
@@ -149,6 +163,7 @@ FocusScope {
             visible: model ? model.count > 0 : false
             currentIndex: -1
             clip: true
+            layer.enabled : true
 
             keyNavigationWraps: false
             boundsBehavior: Flickable.StopAtBounds
@@ -168,12 +183,7 @@ FocusScope {
                 currentIndex = -1;
             }
 
-            ScrollBar.vertical: PC3.ScrollBar {
-                parent: gridView.parent
-                anchors.top: gridView.top
-                anchors.left: gridView.right
-                anchors.bottom: gridView.bottom
-            }
+            ScrollBar.vertical: verticalScrollBar
 
             Kirigami.WheelHandler {
                 target: gridView

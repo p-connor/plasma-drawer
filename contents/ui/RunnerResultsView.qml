@@ -45,7 +45,7 @@ FocusScope {
             runnerSectionsList.positionViewAtEnd();
             let lastList = runnerSectionsList.itemAtIndex(sectionsCount - 1);
             if (lastList && lastList.count > 0) {
-                lastList.currentIndex = lastList.count - 1;
+                lastList.currentIndex = lastList.lastVisibleIndex;
             }
         }
     }
@@ -85,7 +85,7 @@ FocusScope {
 
             decrementCurrentIndex();
             if (currentItem && "count" in currentItem) {
-                currentItem.currentIndex = currentItem.count - 1;
+                currentItem.currentIndex = currentItem.lastVisibleIndex;
             }
         }
 
@@ -134,19 +134,84 @@ FocusScope {
 
         delegate: FocusScope {
             width: searchResults.width
-            height: matchesList.height + runnerName.height + units.smallSpacing * 5
+            height: matchesList.height + sectionHeader.height + units.smallSpacing * 5
 
             visible: matchesList.model && matchesList.model.count > 0
 
             property alias count: matchesList.count
+            property alias expanded: matchesList.expanded
+            property alias expandable: matchesList.expandable
+            property alias lastVisibleIndex: matchesList.lastVisibleIndex
+
             property alias currentIndex: matchesList.currentIndex
             property alias currentItem: matchesList.currentItem
             property alias matchesList: matchesList
 
-            PlasmaExtras.Heading {
-                id: runnerName
-                text: model.display ?? ""
-                level: 2
+            Item {
+                id: sectionHeader
+                width: matchesList.width
+                height: runnerName.height
+                anchors.top: parent.top
+
+                PlasmaExtras.Heading {
+                    id: runnerName
+                    
+                    text: model.display ?? ""
+                    level: 2
+                }
+
+                Button {
+                    id: showMoreButton
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+
+                    visible: matchesList.expandable
+
+                    contentItem: PlasmaComponents.Label {
+                        id: showMoreLabel
+                        verticalAlignment: Text.AlignBottom
+                        text: matchesList.expanded ? i18n("Show Less") : i18n("Show More")
+                        color: Qt.darker(theme.disabledTextColor, showMoreButton.hovered ? 1.5: 1);
+                    }
+                    background: Rectangle {         
+                        id: showMoreButtonHighlight
+                        height: 1 * units.devicePixelRatio
+                        anchors.bottom: showMoreLabel.bottom
+                        color: theme.disabledTextColor
+
+                        visible: showMoreButton.activeFocus
+                    }
+
+                    onPressed: {
+                        matchesList.focus = true;
+                        matchesList.expanded = !matchesList.expanded;
+                    }
+
+                    Keys.onPressed: {
+                        if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
+                            // matchesList.focus = true;
+                            matchesList.expanded = !matchesList.expanded;
+                            event.accepted = true;
+                            return;
+                        }
+                        
+                        if (event.key == Qt.Key_Up) {
+                            focus = false;
+                            matchesList.focus = true;
+                            runnerSectionsList.moveUp();
+                            event.accepted = true;
+                            return;
+                        }
+
+                        if (event.key == Qt.Key_Down || event.key == Qt.Key_Left) {
+                            focus = false;
+                            matchesList.focus = true;
+                            matchesList.currentIndex = 0;
+                            event.accepted = true;
+                            return;
+                        }
+                    }
+                }
             }
 
             // Rectangle {
@@ -164,13 +229,15 @@ FocusScope {
             ItemListView {
                 id: matchesList
                 width: searchResults.width
-                anchors.top: runnerName.bottom
+                anchors.top: sectionHeader.bottom
                 anchors.topMargin: units.smallSpacing * 2
 
                 focus: true
 
                 iconSize: searchResults.iconSize
                 shrinkIconsToNative: searchResults.shrinkIconsToNative
+
+                maxRows: 5
 
                 interactive: false
 
@@ -190,6 +257,12 @@ FocusScope {
 
                 onKeyNavDown: {
                     runnerSectionsList.moveDown();
+                }
+
+                onKeyNavRight: {
+                    if (showMoreButton.visible) {
+                        showMoreButton.focus = true;
+                    }
                 }
 
                 Component.onCompleted: {

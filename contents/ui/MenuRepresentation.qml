@@ -230,7 +230,7 @@ Kicker.DashboardWindow {
                 focus: true
 
                 iconSize: plasmoid.configuration.appIconSize
-                numberColumns: plasmoid.configuration.numberColumns
+                numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((root.width - units.largeSpacing * 2) / cellSizeWidth))
 
                 model: appsModel
             }

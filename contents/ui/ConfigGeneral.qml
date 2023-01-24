@@ -38,7 +38,7 @@ Kirigami.FormLayout {
 
     property int cfg_appIconSize:               plasmoid.configuration.appIconSize
     property alias cfg_useDirectoryIcons:       useDirectoryIcons.checked
-    property alias cfg_numberColumns:           numberColumns.value
+    property alias cfg_maxNumberColumns:        maxNumberColumns.value
 
     property alias cfg_adaptiveSearchIconSize:  adaptSearchIcons.checked
     property int cfg_searchIconSize:            plasmoid.configuration.searchIconSize  
@@ -186,10 +186,10 @@ Kirigami.FormLayout {
         Kirigami.FormData.label: i18n("Applications:")
         
         Label {
-            text: i18n("Number of columns in grid:")
+            text: i18n("Max columns in grid:")
         }
         SpinBox{
-            id: numberColumns
+            id: maxNumberColumns
             from: 3
             to: 20
         }

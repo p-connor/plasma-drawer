@@ -17,9 +17,14 @@ FocusScope {
     signal keyNavDown
 
     width: PlasmaCore.Units.gridUnit * 20
-    height: listView.contentHeight + units.smallSpacing * 2
+    height: background.height
 
     property int iconSize: units.iconSizes.large
+    
+    property int maxRows: -1
+    readonly property int lastVisibleIndex: expandable && !expanded ? maxRows - 1 : count - 1
+    property bool expanded: false
+    readonly property bool expandable: maxRows != -1 && maxRows < count
     
     // If this property is true, the icon size will shrink when shrinkThreshold percent
     // of the model items have a source icon size less than the target
@@ -41,6 +46,16 @@ FocusScope {
         root.toggle();
     }
 
+    onExpandedChanged: {
+        if (!expanded && currentIndex > maxRows - 1) {
+            currentIndex = maxRows - 1
+        }
+    }
+
+    onExpandableChanged: {
+        expanded: false
+    }
+
     // onCurrentIndexChanged: {
     //     if (currentIndex != -1) {
     //         itemList.focus = true;
@@ -49,94 +64,124 @@ FocusScope {
 
     Rectangle {
         id: background
-        anchors.fill: listView
-        anchors.topMargin: -units.smallSpacing
-        anchors.bottomMargin: -units.smallSpacing
-        color: "white"
-        opacity: 0.033
+        width: rowWidth
+        height: listView.height + (units.smallSpacing * 2)
+        color: "#08FFFFFF"
         radius: units.smallSpacing * 3
-    }
 
-    ListView {
-        id: listView
-        width: parent.width
-        height: contentHeight
-        anchors.centerIn: parent
+        ListView {
+            id: listView
+            width: parent.width
+            height: contentHeight
+            state: "UNEXPANDED"
+            y: units.smallSpacing
 
-        focus: true
+            clip: true
 
-        currentIndex: -1
-        highlightFollowsCurrentItem: true
-        highlight: PlasmaComponents.Highlight {}
-        highlightMoveDuration: 0
+            focus: true
 
-        property int targetIconSize: itemList.iconSize
-        onCountChanged: {
-            if (shrinkIconsToNative) {
-                let smaller = 0;
-                let nextSmallestSize = units.iconSizes.tiny;
-                for (let i = 0; i < count; i++) {
-                    let item = itemAtIndex(i);
-                    if (!item) {
-                        continue;
+            currentIndex: -1
+            highlightFollowsCurrentItem: true
+            highlight: PlasmaComponents.Highlight {}
+            highlightMoveDuration: 0
+
+            property int targetIconSize: itemList.iconSize
+            onCountChanged: {
+                if (shrinkIconsToNative) {
+                    let smaller = 0;
+                    let nextSmallestSize = units.iconSizes.tiny;
+                    for (let i = 0; i < count; i++) {
+                        let item = itemAtIndex(i);
+                        if (!item) {
+                            continue;
+                        }
+                        if (item.sourceIconSize < itemList.iconSize) {
+                            smaller++;
+                            nextSmallestSize = Math.max(nextSmallestSize, item.sourceIconSize);
+                        }
                     }
-                    if (item.sourceIconSize < itemList.iconSize) {
-                        smaller++;
-                        nextSmallestSize = Math.max(nextSmallestSize, item.sourceIconSize);
+                    if (smaller / count > itemList.shrinkThreshold) {
+                        itemList.iconSize = nextSmallestSize;
+                    } else {
+                        itemList.iconSize = targetIconSize;
                     }
-                }
-                if (smaller / count > itemList.shrinkThreshold) {
-                    itemList.iconSize = nextSmallestSize;
-                } else {
-                    itemList.iconSize = targetIconSize;
                 }
             }
-        }
 
-        delegate: ItemListDelegate {
-            width: rowWidth
-            height: rowHeight
-            iconSize: itemList.iconSize
+            states: [
+                State {
+                    name: "UNEXPANDED"
+                    when: !expandable || !expanded
+                    PropertyChanges {
+                        target: listView
+                        height: expandable ? maxRows * rowHeight : contentHeight
+                    }
+                },
+                State {
+                    name: "EXPANDED"
+                    when: expandable && expanded
+                    PropertyChanges {
+                        target: listView
+                        height: contentHeight
+                    }
+                }
+            ]
+            transitions: Transition {
+                from: "*"; to: "*"
+                NumberAnimation { 
+                    target: listView
+                    property: "height"
+                    duration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration
+                    easing.type: Easing.OutCubic 
+                }
+            }
 
-            Rectangle {
+            delegate: ItemListDelegate {
+                width: rowWidth
+                height: rowHeight
+                iconSize: itemList.iconSize
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: "green"
+                    opacity: 0.1
+                    visible: root.debugFocus && parent.activeFocus
+                    z: 100
+                }
+            }
+
+            Component.onCompleted: {
+                targetIconSize = itemList.iconSize;
+            }
+
+            MouseArea {
+                id: mouseArea
                 anchors.fill: parent
-                color: "green"
-                opacity: 0.1
-                visible: root.debugFocus && parent.activeFocus
-                z: 100
+                anchors.bottomMargin: 2     // Prevents autoscrolling down when mouse at bottom of list
+
+                enabled: itemList.enabled
+                hoverEnabled: enabled
+
+                function updatePositionProperties(x, y) {
+                    var cPos = mapToItem(contentItem, x, y);
+                    var index = listView.indexAt(cPos.x, cPos.y);
+                    currentIndex = index;
+                    // itemList.focus = true;
+                }
+
+                onReleased: {
+                    mouse.accepted = true;
+                    itemList.trigger(currentIndex);
+                }
+
+                onPositionChanged: {
+                    updatePositionProperties(mouse.x, mouse.y);
+                }
+
+                onExited: {
+                    currentIndex = -1;
+                }
             }
-        }
-
-        Component.onCompleted: {
-            targetIconSize = itemList.iconSize;
-        }
-    }
-
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-
-        enabled: itemList.enabled
-        hoverEnabled: enabled
-
-        function updatePositionProperties(x, y) {
-            var cPos = mapToItem(contentItem, x, y);
-            var index = listView.indexAt(cPos.x, cPos.y);
-            currentIndex = index;
-            // itemList.focus = true;
-        }
-
-        onReleased: {
-            mouse.accepted = true;
-            itemList.trigger(currentIndex);
-        }
-
-        onPositionChanged: {
-            updatePositionProperties(mouse.x, mouse.y);
-        }
-
-        onExited: {
-            currentIndex = -1;
         }
     }
 
@@ -169,7 +214,7 @@ FocusScope {
                 return;
             }
             
-            if (currentIndex < count - 1) {
+            if (currentIndex < lastVisibleIndex) {
                 event.accepted = true;
                 listView.incrementCurrentIndex();
             } else {
