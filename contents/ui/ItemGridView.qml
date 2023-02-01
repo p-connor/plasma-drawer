@@ -328,7 +328,6 @@ FocusScope {
 
                     property int pressX: -1
                     property int pressY: -1
-                    property Item pressedItem: null
 
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
@@ -337,22 +336,15 @@ FocusScope {
 
                     function updatePositionProperties(x, y) {
                         var cPos = mapToItem(gridView.contentItem, x, y);
-                        var item = gridView.itemAt(cPos.x, cPos.y);
-
-                        if (!item) {
-                            gridView.currentIndex = -1;
-                            pressedItem = null;
-                        } else if (!gridView.moving) {
-                            gridView.currentIndex = item.itemIndex;
-                        }
+                        var index = gridView.indexAt(cPos.x, cPos.y);
+                        gridView.currentIndex = index;
                         itemGrid.focus = true;
 
-                        return item;
+                        return index;
                     }
 
                     onPressed: {
                         mouse.accepted = true;
-
                         updatePositionProperties(mouse.x, mouse.y);
                         pressX = mouse.x;
                         pressY = mouse.y;
@@ -361,22 +353,25 @@ FocusScope {
                             if (gridView.currentItem && gridView.currentItem.hasActionList) {
                                 openActionMenu(mouse.x, mouse.y, gridView.currentItem.actionList);
                             }
-                        } else {
-                            pressedItem = gridView.currentItem;
                         }
                     }
 
                     onReleased: {
                         mouse.accepted = true;
-                        if (gridView.currentItem && gridView.currentItem == pressedItem) {
+                        if (gridView.currentItem) {
                             itemGrid.trigger(gridView.currentIndex);
-                        } else if (!pressedItem && mouse.button == Qt.LeftButton && !dragHelper.dragging) {
-                            root.leave();
+                        } else if (!dragHelper.dragging) {
+                            // TODO - pass mouse events down to root instead
+                            if (mouse.button == Qt.RightButton) {
+                                var cpos = mapToItem(root.mainItem, mouse.x, mouse.y);
+                                root.openActionMenu(cpos.x, cpos.y);
+                            } else {
+                                root.leave();
+                            }
                         }
 
                         pressX = -1;
                         pressY = -1;
-                        pressedItem = null;
                     }
 
                     onPressAndHold: {
@@ -400,22 +395,21 @@ FocusScope {
 
                         pressX = -1;
                         pressY = -1;
-                        pressedItem = null;
                     }
 
                     onPositionChanged: {
-                        var item = updatePositionProperties(mouse.x, mouse.y);
+                        updatePositionProperties(mouse.x, mouse.y);
 
-                        if (gridView.currentIndex != -1 && item != null && item.m != null) {
+                        if (gridView.currentIndex != -1 && currentItem && currentItem.m != null) {
                             if (dragEnabled && pressX != -1 && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y)) {
-                                if ("pluginName" in item.m) {
-                                    dragHelper.startDrag(kicker, item.url, item.icon,
-                                    "text/x-plasmoidservicename", item.m.pluginName);
+                                if ("pluginName" in currentItem.m) {
+                                    dragHelper.startDrag(kicker, currentItem.url, currentItem.icon,
+                                    "text/x-plasmoidservicename", currentItem.m.pluginName);
                                 } else {
-                                    dragHelper.startDrag(kicker, item.url, item.icon);
+                                    dragHelper.startDrag(kicker, currentItem.url, currentItem.icon);
                                 }
 
-                                kicker.dragSource = item;
+                                kicker.dragSource = currentItem;
 
                                 pressX = -1;
                                 pressY = -1;
@@ -431,7 +425,6 @@ FocusScope {
 
                             pressX = -1;
                             pressY = -1;
-                            pressedItem = null;
                             //hoverEnabled = false;
                         }
                     }
