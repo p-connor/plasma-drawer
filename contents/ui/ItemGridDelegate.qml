@@ -45,12 +45,16 @@ Item {
     readonly property int itemIndex: model.index
     readonly property url url: model.url != undefined ? model.url : ""
     property bool pressed: false
-    readonly property bool hasActionList: ((("hasActionList" in model) && (model.hasActionList == true))
-                                           || isSystemAction)
-    readonly property var actionList: isSystemAction ? Tools.createSystemActionActions(i18n, GridView.view.model.favoritesModel, model.favoriteId) : model.actionList
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: model.display
+
+    readonly property bool hasActionList: ((("hasActionList" in model) && (model.hasActionList == true))
+                                           || isSystemAction)
+    
+    function getActionList() {
+        return isSystemAction ? Tools.createSystemActionActions(i18n, GridView.view.model.favoritesModel, model.favoriteId) : model.actionList;
+    }
 
     // Rectangle{
     //     id: box

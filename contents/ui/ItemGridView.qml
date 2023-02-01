@@ -277,7 +277,7 @@ FocusScope {
                 Keys.onPressed: {
                     if (event.key == Qt.Key_Menu && currentItem && currentItem.hasActionList) {
                         event.accepted = true;
-                        openActionMenu(currentItem.x, currentItem.y, currentItem.actionList);
+                        openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
                         return;
                     } 
                     if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return && currentIndex != -1)) {
@@ -351,7 +351,7 @@ FocusScope {
 
                         if (mouse.button == Qt.RightButton) {
                             if (gridView.currentItem && gridView.currentItem.hasActionList) {
-                                openActionMenu(mouse.x, mouse.y, gridView.currentItem.actionList);
+                                openActionMenu(mouse.x, mouse.y, gridView.currentItem.getActionList());
                             }
                         }
                     }

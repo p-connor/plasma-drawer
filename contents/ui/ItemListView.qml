@@ -201,7 +201,7 @@ FocusScope {
                 onPressed: {
                     if (mouse.button == Qt.RightButton && currentItem && currentItem.hasActionList) {
                         mouse.accepted = true;
-                        itemList.openActionMenu(mouse.x, mouse.y, currentItem.actionList);
+                        itemList.openActionMenu(mouse.x, mouse.y, currentItem.getActionList());
                     }
                 }
 
@@ -233,7 +233,7 @@ FocusScope {
         }
         if (event.key == Qt.Key_Menu && currentItem && currentItem.hasActionList) {
             event.accepted = true;
-            openActionMenu(currentItem.x, currentItem.y, currentItem.actionList);
+            openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
             return;
         } 
         
