@@ -20,7 +20,7 @@
 
 .pragma library
 
-const CUSTOM_ACTION_PREFIX = "_kicker";
+const CUSTOM_ACTION_PREFIX = "_plasmaDrawer";
 
 function createSystemActionActions(i18n, favoriteModel, favoriteId) {
     if (!favoriteId || !favoriteModel) {

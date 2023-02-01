@@ -19,6 +19,9 @@ Item {
 
     readonly property int sourceIconSize: matchIcon.implicitWidth
 
+    readonly property bool hasActionList: ("hasActionList" in model) && (model.hasActionList == true)
+    readonly property var actionList: model.actionList
+
     PlasmaCore.IconItem {
         id: matchIcon
 
@@ -55,11 +58,5 @@ Item {
         wrapMode: Text.Wrap
 
         text: model.display
-    }
-
-    Component.onCompleted: {
-        if (model.hasActionList) {
-            console.log(model.actionList);
-        }
     }
 }

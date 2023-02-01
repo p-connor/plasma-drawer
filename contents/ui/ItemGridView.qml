@@ -124,19 +124,28 @@ FocusScope {
     ActionMenu {
         id: actionMenu
 
-        visualParent: gridView
-        onActionClicked: {
-            var closeRequested = Tools.triggerAction(plasmoid, model, gridView.currentIndex, actionId, actionArgument);
+        property int targetIndex: -1
 
+        visualParent: gridView
+        
+        onActionClicked: {
+            var closeRequested = Tools.triggerAction(plasmoid, model, targetIndex, actionId, actionArgument);
             if (closeRequested) {
                 root.toggle();
             }
         }
+
+        onClosed: {
+            currentIndex = -1;
+        }
     }
 
     function openActionMenu(x, y, actionList) {
-        actionMenu.actionList = actionList;
-        actionMenu.open(x, y);
+        if (actionList && "length" in actionList && actionList.length > 0) {
+            actionMenu.actionList = actionList;
+            actionMenu.targetIndex = currentIndex;
+            actionMenu.open(x, y);
+        }
     }
 
     DropArea {
