@@ -25,7 +25,8 @@ import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0
-import org.kde.kirigami 2.16 as Kirigami
+
+import "../code/tools.js" as Tools
 
 FocusScope {
     id: itemGrid
@@ -123,13 +124,19 @@ FocusScope {
     ActionMenu {
         id: actionMenu
 
+        visualParent: gridView
         onActionClicked: {
-            var closeRequested = visualParent.actionTriggered(actionId, actionArgument);
+            var closeRequested = Tools.triggerAction(plasmoid, model, gridView.currentIndex, actionId, actionArgument);
 
             if (closeRequested) {
                 root.toggle();
             }
         }
+    }
+
+    function openActionMenu(x, y, actionList) {
+        actionMenu.actionList = actionList;
+        actionMenu.open(x, y);
     }
 
     DropArea {
@@ -259,6 +266,17 @@ FocusScope {
                 }
 
                 Keys.onPressed: {
+                    if (event.key == Qt.Key_Menu && currentItem && currentItem.hasActionList) {
+                        event.accepted = true;
+                        openActionMenu(currentItem.x, currentItem.y, currentItem.actionList);
+                        return;
+                    } 
+                    if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return && currentIndex != -1)) {
+                        event.accepted = true;
+                        itemGrid.trigger(currentIndex);
+                        // root.toggle();
+                    }
+
                     let rowsInPage = Math.floor(gridView.height / cellHeight);
 
                     if (event.key == Qt.Key_PageUp) {
@@ -332,8 +350,7 @@ FocusScope {
 
                         if (mouse.button == Qt.RightButton) {
                             if (gridView.currentItem && gridView.currentItem.hasActionList) {
-                                var mapped = mapToItem(gridView.currentItem, mouse.x, mouse.y);
-                                gridView.currentItem.openActionMenu(mapped.x, mapped.y);
+                                openActionMenu(mouse.x, mouse.y, gridView.currentItem.actionList);
                             }
                         } else {
                             pressedItem = gridView.currentItem;

@@ -47,24 +47,10 @@ Item {
     property bool pressed: false
     readonly property bool hasActionList: ((("hasActionList" in model) && (model.hasActionList == true))
                                            || isSystemAction)
+    readonly property var actionList: isSystemAction ? Tools.createSystemActionActions(i18n, GridView.view.model.favoritesModel, model.favoriteId) : model.actionList
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: model.display
-
-    function openActionMenu(x, y) {
-        if (isSystemAction) {
-            actionMenu.actionList = Tools.createSystemActionActions(i18n, GridView.view.model.favoritesModel, model.favoriteId);
-        } else if (hasActionList) {
-            actionMenu.actionList = model.actionList;
-        }
-
-        actionMenu.visualParent = item;
-        actionMenu.open(x, y);
-    }
-
-    function actionTriggered(actionId, actionArgument) {
-        return Tools.triggerAction(plasmoid, GridView.view.model, model.index, actionId, actionArgument);
-    }
 
     // Rectangle{
     //     id: box
@@ -212,15 +198,4 @@ Item {
 
     //     text: "^"
     // }
-
-    Keys.onPressed: {
-        if (event.key == Qt.Key_Menu && hasActionList) {
-            event.accepted = true;
-            openActionMenu(item);
-        } else if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return && GridView.view.currentIndex == index)) {
-            event.accepted = true;
-            itemGrid.trigger(index);
-            // root.toggle();
-        }
-    }
 }

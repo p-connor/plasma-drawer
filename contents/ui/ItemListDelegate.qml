@@ -56,4 +56,10 @@ Item {
 
         text: model.display
     }
+
+    Component.onCompleted: {
+        if (model.hasActionList) {
+            console.log(model.actionList);
+        }
+    }
 }
