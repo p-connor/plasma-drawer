@@ -197,7 +197,7 @@ Kicker.DashboardWindow {
             RunnerResultsView {
                 id: runnerResultsView
 
-                width: Math.min(units.gridUnit * 30, root.width * 0.33)
+                width: Math.min(units.gridUnit * 32, root.width * 0.33)
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 visible: searching
@@ -300,8 +300,10 @@ Kicker.DashboardWindow {
             iconSize: plasmoid.configuration.systemActionIconSize
             cellWidth: iconSize + units.largeSpacing
             cellHeight: cellWidth
-            height: cellHeight
-            width: cellWidth * count
+            // height: cellHeight
+            // width: cellWidth * count
+            numberColumns: model.count
+            numberRows: 1
             
             opacity: 0.9
 

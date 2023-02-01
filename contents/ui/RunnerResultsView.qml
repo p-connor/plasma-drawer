@@ -62,220 +62,229 @@ FocusScope {
         }
     }
 
-    ListView {
-        id: runnerSectionsList
-        anchors.fill: parent
-        clip: true
+    PC3.ScrollView {
+        id: scrollView
+        // Add spacing on the left by right adjusting the ScrollView, which
+        // centers the runnerSectionsList
+        width: parent.width - ScrollBar.vertical.width
+        height: parent.height
+        anchors.right: parent.right
+
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.interactive: true
 
         focus: true
-        currentIndex: -1
 
-        keyNavigationEnabled: false
-        boundsBehavior: Flickable.StopAtBounds
+        ListView {
+            id: runnerSectionsList
+            
+            // ScrollView automatically sizes its child
+            anchors.verticalCenter: parent.verticalCenter
+            clip: true
 
-        highlightFollowsCurrentItem: false
-        highlightMoveDuration: 0
-        highlightResizeDuration: 0
+            // TODO - Find a better way to provide scrollbar content height without buffering delegates
+            cacheBuffer: height * 100
 
-        function moveUp() {
-            if (currentIndex <= 0) {
-                keyNavUp();
-                return;
-            }
+            focus: true
+            currentIndex: -1
 
-            decrementCurrentIndex();
-            if (currentItem && "count" in currentItem) {
-                currentItem.currentIndex = currentItem.lastVisibleIndex;
-            }
-        }
+            keyNavigationEnabled: false
+            boundsBehavior: Flickable.StopAtBounds
 
-        function moveDown() {
-            if (currentIndex >= count - 1) {
-                keyNavDown();
-                return;
-            }
+            highlightFollowsCurrentItem: false
+            highlightMoveDuration: 0
+            highlightResizeDuration: 0
 
-            incrementCurrentIndex();
-            if (currentItem && "count" in currentItem) {
-                currentItem.currentIndex = 0;
-            }
-        }
-
-        Kirigami.WheelHandler {
-            target: runnerSectionsList
-            filterMouseEvents: true
-            // `20 * Qt.styleHints.wheelScrollLines` is the default speed.
-            // `* PlasmaCore.Units.devicePixelRatio` is needed on X11
-            // because Plasma doesn't support Qt scaling.
-            horizontalStepSize: 20 * Qt.styleHints.wheelScrollLines * units.devicePixelRatio
-            verticalStepSize: 20 * Qt.styleHints.wheelScrollLines * units.devicePixelRatio
-        }
-
-        function ensureCurrentMatchInView() {
-            let section = currentItem;
-            if (!section) {
-                return;
-            }
-            let match = section.currentItem;
-            if (!match) {
-                return;
-            }
-
-            let headerHeight = section.matchesList.mapToItem(section, 0, 0).y;
-            let matchY = section.y + match.y + headerHeight + units.smallSpacing; // Match's y relative to runnerSectionsList's start
-            let mappedY = matchY - contentY; // Match's y adjusted to scrolled position
-
-            if (mappedY < 0) {
-                contentY += mappedY;
-            } else if (mappedY + section.matchesList.rowHeight > height) {
-                contentY += ((mappedY + section.matchesList.rowHeight) - height);
-            }
-        }
-
-        delegate: FocusScope {
-            width: searchResults.width
-            height: matchesList.height + sectionHeader.height + units.smallSpacing * 5
-
-            visible: matchesList.model && matchesList.model.count > 0
-
-            property alias count: matchesList.count
-            property alias expanded: matchesList.expanded
-            property alias expandable: matchesList.expandable
-            property alias lastVisibleIndex: matchesList.lastVisibleIndex
-
-            property alias currentIndex: matchesList.currentIndex
-            property alias currentItem: matchesList.currentItem
-            property alias matchesList: matchesList
-
-            Item {
-                id: sectionHeader
-                width: matchesList.width
-                height: runnerName.height
-                anchors.top: parent.top
-
-                PlasmaExtras.Heading {
-                    id: runnerName
-                    
-                    text: model.display ?? ""
-                    level: 2
+            function moveUp() {
+                if (currentIndex <= 0) {
+                    keyNavUp();
+                    return;
                 }
 
-                Button {
-                    id: showMoreButton
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
+                decrementCurrentIndex();
+                if (currentItem && "count" in currentItem) {
+                    currentItem.currentIndex = currentItem.lastVisibleIndex;
+                }
+            }
 
-                    visible: matchesList.expandable
+            function moveDown() {
+                if (currentIndex >= count - 1) {
+                    keyNavDown();
+                    return;
+                }
 
-                    contentItem: PlasmaComponents.Label {
-                        id: showMoreLabel
-                        verticalAlignment: Text.AlignBottom
-                        text: matchesList.expanded ? i18n("Show Less") : i18n("Show More")
-                        color: Qt.darker(theme.disabledTextColor, showMoreButton.hovered ? 1.5: 1);
-                    }
-                    background: Rectangle {         
-                        id: showMoreButtonHighlight
-                        height: 1 * units.devicePixelRatio
-                        anchors.bottom: showMoreLabel.bottom
-                        color: theme.disabledTextColor
+                incrementCurrentIndex();
+                if (currentItem && "count" in currentItem) {
+                    currentItem.currentIndex = 0;
+                }
+            }
 
-                        visible: showMoreButton.activeFocus
-                    }
+            function ensureCurrentMatchInView() {
+                let section = currentItem;
+                if (!section) {
+                    return;
+                }
+                let match = section.currentItem;
+                if (!match) {
+                    return;
+                }
 
-                    onPressed: {
-                        matchesList.focus = true;
-                        matchesList.expanded = !matchesList.expanded;
-                    }
+                let headerHeight = section.matchesList.mapToItem(section, 0, 0).y;
+                let matchY = section.y + match.y + headerHeight + units.smallSpacing; // Match's y relative to runnerSectionsList's start
+                let mappedY = matchY - contentY; // Match's y adjusted to scrolled position
 
-                    Keys.onPressed: {
-                        if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
-                            // matchesList.focus = true;
-                            matchesList.expanded = !matchesList.expanded;
-                            event.accepted = true;
-                            return;
-                        }
+                if (mappedY < 0) {
+                    contentY += mappedY;
+                } else if (mappedY + section.matchesList.rowHeight > height) {
+                    contentY += ((mappedY + section.matchesList.rowHeight) - height);
+                }
+            }
+
+            delegate: FocusScope {
+                width: scrollView.width - scrollView.ScrollBar.vertical.width - units.smallSpacing
+                height: matchesList.height + sectionHeader.height + units.smallSpacing * 5
+
+                visible: matchesList.model && matchesList.model.count > 0
+
+                property alias count: matchesList.count
+                property alias expanded: matchesList.expanded
+                property alias expandable: matchesList.expandable
+                property alias lastVisibleIndex: matchesList.lastVisibleIndex
+
+                property alias currentIndex: matchesList.currentIndex
+                property alias currentItem: matchesList.currentItem
+                property alias matchesList: matchesList
+
+                Item {
+                    id: sectionHeader
+                    width: parent.width
+                    height: runnerName.height
+                    anchors.top: parent.top
+
+                    PlasmaExtras.Heading {
+                        id: runnerName
                         
-                        if (event.key == Qt.Key_Up) {
-                            focus = false;
-                            matchesList.focus = true;
-                            runnerSectionsList.moveUp();
-                            event.accepted = true;
-                            return;
+                        text: model.display ?? ""
+                        level: 2
+                    }
+
+                    Button {
+                        id: showMoreButton
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+
+                        visible: matchesList.expandable
+
+                        contentItem: PlasmaComponents.Label {
+                            id: showMoreLabel
+                            verticalAlignment: Text.AlignBottom
+                            text: matchesList.expanded ? i18n("Show Less") : i18n("Show More")
+                            color: Qt.darker(theme.disabledTextColor, showMoreButton.hovered ? 1.5: 1);
+                        }
+                        background: Rectangle {         
+                            id: showMoreButtonHighlight
+                            height: 1 * units.devicePixelRatio
+                            anchors.bottom: showMoreLabel.bottom
+                            color: theme.disabledTextColor
+
+                            visible: showMoreButton.activeFocus
                         }
 
-                        if (event.key == Qt.Key_Down || event.key == Qt.Key_Left) {
-                            focus = false;
+                        onPressed: {
                             matchesList.focus = true;
-                            matchesList.currentIndex = 0;
-                            event.accepted = true;
-                            return;
+                            matchesList.expanded = !matchesList.expanded;
+                        }
+
+                        Keys.onPressed: {
+                            if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
+                                // matchesList.focus = true;
+                                matchesList.expanded = !matchesList.expanded;
+                                event.accepted = true;
+                                return;
+                            }
+                            
+                            if (event.key == Qt.Key_Up) {
+                                focus = false;
+                                matchesList.focus = true;
+                                runnerSectionsList.moveUp();
+                                event.accepted = true;
+                                return;
+                            }
+
+                            if (event.key == Qt.Key_Down || event.key == Qt.Key_Left) {
+                                focus = false;
+                                matchesList.focus = true;
+                                matchesList.currentIndex = 0;
+                                event.accepted = true;
+                                return;
+                            }
                         }
                     }
                 }
-            }
 
-            // Rectangle {
-            //     id: sectionSeparator
-            //     anchors.left: runnerName.right
-            //     anchors.right: parent.right
-            //     anchors.verticalCenter: runnerName.verticalCenter
-            //     anchors.leftMargin: units.smallSpacing * 2
-            //     // width: root.width
-            //     height: 2 * units.devicePixelRatio
-            //     color: theme.textColor
-            //     opacity: .05
-            // }
+                // Rectangle {
+                //     id: sectionSeparator
+                //     anchors.left: runnerName.right
+                //     anchors.right: parent.right
+                //     anchors.verticalCenter: runnerName.verticalCenter
+                //     anchors.leftMargin: units.smallSpacing * 2
+                //     // width: root.width
+                //     height: 2 * units.devicePixelRatio
+                //     color: theme.textColor
+                //     opacity: .05
+                // }
 
-            ItemListView {
-                id: matchesList
-                width: searchResults.width
-                anchors.top: sectionHeader.bottom
-                anchors.topMargin: units.smallSpacing * 2
+                ItemListView {
+                    id: matchesList
+                    width: parent.width
+                    anchors.top: sectionHeader.bottom
+                    anchors.topMargin: units.smallSpacing * 2
 
-                focus: true
+                    focus: true
 
-                iconSize: searchResults.iconSize
-                shrinkIconsToNative: searchResults.shrinkIconsToNative
+                    iconSize: searchResults.iconSize
+                    shrinkIconsToNative: searchResults.shrinkIconsToNative
 
-                maxRows: 5
+                    maxRows: 5
 
-                interactive: false
+                    interactive: false
 
-                // currentIndex: index == 0 ? 0 : -1
-                onCurrentIndexChanged: {
-                    if (currentIndex != -1) {
-                        runnerSectionsList.currentIndex = index;
-                        runnerSectionsList.ensureCurrentMatchInView();
+                    // currentIndex: index == 0 ? 0 : -1
+                    onCurrentIndexChanged: {
+                        if (currentIndex != -1) {
+                            runnerSectionsList.currentIndex = index;
+                            runnerSectionsList.ensureCurrentMatchInView();
+                        }
                     }
-                }
 
-                model: runnerSectionsList.model.modelForRow(index)
+                    model: runnerSectionsList.model.modelForRow(index)
 
-                onKeyNavUp: {
-                    runnerSectionsList.moveUp();
-                }
-
-                onKeyNavDown: {
-                    runnerSectionsList.moveDown();
-                }
-
-                onKeyNavRight: {
-                    if (showMoreButton.visible) {
-                        showMoreButton.focus = true;
+                    onKeyNavUp: {
+                        runnerSectionsList.moveUp();
                     }
-                }
 
-                Component.onCompleted: {
-                    keyNavRight.connect(searchResults.keyNavRight);
-                    keyNavLeft.connect(searchResults.keyNavLeft);
-                }
+                    onKeyNavDown: {
+                        runnerSectionsList.moveDown();
+                    }
 
-                Rectangle {
-                    anchors.fill: parent
-                    color: "blue"
-                    opacity: 0.05
-                    visible: root.debugFocus && parent.activeFocus
-                    z: 100
+                    onKeyNavRight: {
+                        if (showMoreButton.visible) {
+                            showMoreButton.focus = true;
+                        }
+                    }
+
+                    Component.onCompleted: {
+                        keyNavRight.connect(searchResults.keyNavRight);
+                        keyNavLeft.connect(searchResults.keyNavLeft);
+                    }
+
+                    Rectangle {
+                        anchors.fill: parent
+                        color: "blue"
+                        opacity: 0.05
+                        visible: root.debugFocus && parent.activeFocus
+                        z: 100
+                    }
                 }
             }
         }
