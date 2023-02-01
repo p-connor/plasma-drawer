@@ -21,10 +21,10 @@ FocusScope {
 
     property int iconSize: units.iconSizes.large
     
-    property int maxRows: -1
-    readonly property int lastVisibleIndex: expandable && !expanded ? maxRows - 1 : count - 1
+    property int maxVisibleRows: -1
+    readonly property int lastVisibleIndex: expandable && !expanded ? maxVisibleRows - 1 : count - 1
     property bool expanded: false
-    readonly property bool expandable: maxRows != -1 && maxRows < count
+    readonly property bool expandable: maxVisibleRows != -1 && maxVisibleRows < count
     
     // If this property is true, the icon size will shrink when shrinkThreshold percent
     // of the model items have a source icon size less than the target
@@ -47,8 +47,8 @@ FocusScope {
     }
 
     onExpandedChanged: {
-        if (!expanded && currentIndex > maxRows - 1) {
-            currentIndex = maxRows - 1
+        if (!expanded && currentIndex > maxVisibleRows - 1) {
+            currentIndex = maxVisibleRows - 1
         }
     }
 
@@ -114,7 +114,7 @@ FocusScope {
                     when: !expandable || !expanded
                     PropertyChanges {
                         target: listView
-                        height: expandable ? maxRows * rowHeight : contentHeight
+                        height: expandable ? maxVisibleRows * rowHeight : contentHeight
                     }
                 },
                 State {

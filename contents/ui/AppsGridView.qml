@@ -100,7 +100,7 @@ FocusScope {
             // width: appsGrid.numberColumns * cellSizeWidth
             // height: appsGrid.numberRows * cellSizeHeight
             numberColumns: appsGrid.numberColumns
-            numberRows: appsGrid.numberRows
+            maxVisibleRows: appsGrid.numberRows
 
             cellWidth:  cellSizeWidth
             cellHeight: cellSizeHeight

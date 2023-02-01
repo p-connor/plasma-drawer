@@ -42,7 +42,8 @@ FocusScope {
     property int iconSize: units.iconSizes.large
 
     property int numberColumns: Math.floor(width / cellWidth)
-    property int numberRows: Math.ceil(count / numberColumns)
+    property int maxVisibleRows: -1
+    readonly property int numberRows: Math.ceil(count / numberColumns)
     property alias cellWidth: gridView.cellWidth
     property alias cellHeight: gridView.cellHeight
 
@@ -135,7 +136,7 @@ FocusScope {
         id: dropArea
 
         width: numberColumns * cellWidth
-        height: numberRows * cellHeight
+        height: (maxVisibleRows == -1 ? numberRows : maxVisibleRows) * cellHeight
         anchors.centerIn: parent
 
         onDragMove: {

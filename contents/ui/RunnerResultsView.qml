@@ -245,7 +245,7 @@ FocusScope {
                     iconSize: searchResults.iconSize
                     shrinkIconsToNative: searchResults.shrinkIconsToNative
 
-                    maxRows: 5
+                    maxVisibleRows: 5
 
                     interactive: false
 

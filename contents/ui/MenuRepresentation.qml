@@ -303,7 +303,7 @@ Kicker.DashboardWindow {
             // height: cellHeight
             // width: cellWidth * count
             numberColumns: model.count
-            numberRows: 1
+            // maxVisibleRows: 1
             
             opacity: 0.9
 
