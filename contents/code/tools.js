@@ -20,7 +20,7 @@
 
 .pragma library
 
-const CUSTOM_ACTION_PREFIX = "_kicker";
+const CUSTOM_ACTION_PREFIX = "_plasmaDrawer";
 
 function createSystemActionActions(i18n, favoriteModel, favoriteId) {
     if (!favoriteId || !favoriteModel) {
@@ -58,6 +58,17 @@ function createSystemActionActions(i18n, favoriteModel, favoriteId) {
     return actions;
 }
 
+function createMenuEditAction(i18n, processRunner) {
+    return [
+        {
+            text: i18n("Edit Applications"),
+            icon: "kmenuedit",
+            actionId: CUSTOM_ACTION_PREFIX + "_menuedit",
+            actionArgument: { processRunner: processRunner }
+        }
+    ];
+}
+
 function startsWith(txt, needle) {
     return txt.substr(0, needle.length) === needle;
 }
@@ -65,8 +76,7 @@ function startsWith(txt, needle) {
 function triggerAction(plasmoid, model, index, actionId, actionArgument) {
     
     if (startsWith(actionId, CUSTOM_ACTION_PREFIX)) {
-        handleCustomAction(actionId, actionArgument);
-        return;
+        return handleCustomAction(actionId, actionArgument);
     }
     
     var closeRequested = model.trigger(index, actionId, actionArgument);
@@ -81,6 +91,14 @@ function triggerAction(plasmoid, model, index, actionId, actionArgument) {
 }
 
 function handleCustomAction(actionId, actionArgument) {
+    console.log(`Handling custom action ${actionId}`);
+    
+    if (actionId === CUSTOM_ACTION_PREFIX + "_menuedit") { 
+        console.log("running menu editor from processRunner");
+        actionArgument.processRunner.runMenuEditor();
+        return true;
+    }
+    
     if (actionArgument.favoriteId && actionArgument.favoriteModel) {
         var favoriteId = actionArgument.favoriteId;
         var favoriteModel = actionArgument.favoriteModel;
@@ -99,5 +117,6 @@ function handleCustomAction(actionId, actionArgument) {
                                         "lock-screen", 
                                         "switch-user" ];
         }
+        return false;
     }
 }

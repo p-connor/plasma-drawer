@@ -87,6 +87,15 @@ Kicker.DashboardWindow {
         content.focus = true;
     }
 
+    function openActionMenu(x, y, actionList = undefined) {
+        if (actionList) {
+            actionMenu.actionList = actionList;
+        } else {
+            actionMenu.actionList = Tools.createMenuEditAction(i18n, processRunner);
+        }
+        actionMenu.open(x, y);
+    }
+
     mainItem: MouseArea {
         id: rootMouseArea
         anchors.fill: parent
@@ -95,9 +104,26 @@ Kicker.DashboardWindow {
         LayoutMirroring.childrenInherit: true
         // hoverEnabled: true
 
-        onClicked: {
+        ActionMenu {
+            id: actionMenu
+            // visualParent: rootMouseArea
+            onActionClicked: {
+                var closeRequested = Tools.triggerAction(plasmoid, null, -1, actionId, actionArgument);
+                if (closeRequested) {
+                    root.toggle();
+                }
+            }
+        }
+
+        onReleased: {
             mouse.accepted = true;
-            root.leave();
+            if (mouse.button == Qt.RightButton) {
+                if (!searching) {
+                    root.openActionMenu(mouse.x, mouse.y);
+                }
+            } else {
+                root.leave();
+            }
         }
 
         Rectangle {
@@ -197,7 +223,7 @@ Kicker.DashboardWindow {
             RunnerResultsView {
                 id: runnerResultsView
 
-                width: Math.min(units.gridUnit * 30, root.width * 0.33)
+                width: Math.min(units.gridUnit * 32, root.width * 0.33)
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 visible: searching
@@ -300,8 +326,10 @@ Kicker.DashboardWindow {
             iconSize: plasmoid.configuration.systemActionIconSize
             cellWidth: iconSize + units.largeSpacing
             cellHeight: cellWidth
-            height: cellHeight
-            width: cellWidth * count
+            // height: cellHeight
+            // width: cellWidth * count
+            numberColumns: model.count
+            // maxVisibleRows: 1
             
             opacity: 0.9
 

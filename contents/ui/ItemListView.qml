@@ -21,10 +21,10 @@ FocusScope {
 
     property int iconSize: units.iconSizes.large
     
-    property int maxRows: -1
-    readonly property int lastVisibleIndex: expandable && !expanded ? maxRows - 1 : count - 1
+    property int maxVisibleRows: -1
+    readonly property int lastVisibleIndex: expandable && !expanded ? maxVisibleRows - 1 : count - 1
     property bool expanded: false
-    readonly property bool expandable: maxRows != -1 && maxRows < count
+    readonly property bool expandable: maxVisibleRows != -1 && maxVisibleRows < count
     
     // If this property is true, the icon size will shrink when shrinkThreshold percent
     // of the model items have a source icon size less than the target
@@ -41,14 +41,9 @@ FocusScope {
     property alias model: listView.model
     property alias interactive: listView.interactive
 
-    function trigger(itemIndex) {
-        model.trigger(itemIndex, "", null);
-        root.toggle();
-    }
-
     onExpandedChanged: {
-        if (!expanded && currentIndex > maxRows - 1) {
-            currentIndex = maxRows - 1
+        if (!expanded && currentIndex > maxVisibleRows - 1) {
+            currentIndex = maxVisibleRows - 1
         }
     }
 
@@ -61,6 +56,39 @@ FocusScope {
     //         itemList.focus = true;
     //     }
     // }
+
+    function trigger(itemIndex) {
+        model.trigger(itemIndex, "", null);
+        root.toggle();
+    }
+
+    ActionMenu {
+        id: actionMenu
+
+        property int targetIndex: -1
+
+        visualParent: listView
+        
+        onActionClicked: {
+            var closeRequested = Tools.triggerAction(plasmoid, model, targetIndex, actionId, actionArgument);
+
+            if (closeRequested) {
+                root.toggle();
+            }
+        }
+
+        onClosed: {
+            currentIndex = -1;
+        }
+    }
+
+    function openActionMenu(x, y, actionList) {
+        if (actionList && "length" in actionList && actionList.length > 0) {
+            actionMenu.actionList = actionList;
+            actionMenu.targetIndex = currentIndex;
+            actionMenu.open(x, y);
+        }
+    }
 
     Rectangle {
         id: background
@@ -114,7 +142,7 @@ FocusScope {
                     when: !expandable || !expanded
                     PropertyChanges {
                         target: listView
-                        height: expandable ? maxRows * rowHeight : contentHeight
+                        height: expandable ? maxVisibleRows * rowHeight : contentHeight
                     }
                 },
                 State {
@@ -161,6 +189,7 @@ FocusScope {
 
                 enabled: itemList.enabled
                 hoverEnabled: enabled
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                 function updatePositionProperties(x, y) {
                     var cPos = mapToItem(contentItem, x, y);
@@ -169,9 +198,18 @@ FocusScope {
                     // itemList.focus = true;
                 }
 
+                onPressed: {
+                    if (mouse.button == Qt.RightButton && currentItem && currentItem.hasActionList) {
+                        mouse.accepted = true;
+                        itemList.openActionMenu(mouse.x, mouse.y, currentItem.getActionList());
+                    }
+                }
+
                 onReleased: {
-                    mouse.accepted = true;
-                    itemList.trigger(currentIndex);
+                    if (mouse.button != Qt.RightButton && currentIndex != -1) {
+                        mouse.accepted = true;
+                        itemList.trigger(currentIndex);
+                    }
                 }
 
                 onPositionChanged: {
@@ -179,7 +217,9 @@ FocusScope {
                 }
 
                 onExited: {
-                    currentIndex = -1;
+                    if (!actionMenu.opened) {
+                        currentIndex = -1;
+                    }
                 }
             }
         }
@@ -191,6 +231,11 @@ FocusScope {
             itemList.trigger(currentIndex);
             return;
         }
+        if (event.key == Qt.Key_Menu && currentItem && currentItem.hasActionList) {
+            event.accepted = true;
+            openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
+            return;
+        } 
         
         if (event.key == Qt.Key_Up) {
             if (currentIndex == -1) {
