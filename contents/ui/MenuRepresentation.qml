@@ -36,12 +36,12 @@ Kicker.DashboardWindow {
     
     id: root
 
-    property int topBottomContentMargin: Math.max(units.iconSizes.huge, height * .15)
-
     // keyEventProxy: searchField
     backgroundColor: "transparent"
 
     readonly property bool searching: searchField.text != ""
+
+    readonly property int contentMargin: units.iconSizes.enormous
 
     // TODO: remove this and all focus debug rectangles
     property bool debugFocus: false
@@ -147,7 +147,7 @@ Kicker.DashboardWindow {
             id: searchField
 
             anchors.top: parent.top
-            anchors.topMargin: Math.min((topBottomContentMargin / 2) - (height / 2), units.iconSizes.large)
+            anchors.topMargin: (contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
             width: Math.min(units.gridUnit * 20, (root.width * 0.25) + (leftInset * 2))
             leftInset: -(searchIcon.width + units.smallSpacing * 4)
@@ -269,17 +269,14 @@ Kicker.DashboardWindow {
                 horizontalCenter: parent.horizontalCenter
                 top: parent.top
                 bottom: parent.bottom
-                margins: topBottomContentMargin
+                topMargin: contentMargin
+                bottomMargin: systemActionsGrid.visible ? contentMargin : contentMargin / 2
+                // margins: contentMargin
             }
             sourceComponent: !searching ? appsGridViewComponent : runnerResultsViewComponent
             active: root.visible
             focus: true
 
-            // Rectangle {
-            //     color: "red"
-            //     opacity: 0.2
-            //     anchors.fill: parent
-            // }
             function keyNavUp() {
                 item.removeSelection();
                 searchField.focus = true;
@@ -320,7 +317,7 @@ Kicker.DashboardWindow {
                 horizontalCenter: parent.horizontalCenter
                 bottom: parent.bottom
                 margins: units.largeSpacing
-                bottomMargin: Math.min((topBottomContentMargin / 2) - (height / 2), units.iconSizes.large)
+                bottomMargin: (contentMargin / 2) - (height / 2)
             }
 
             iconSize: plasmoid.configuration.systemActionIconSize
