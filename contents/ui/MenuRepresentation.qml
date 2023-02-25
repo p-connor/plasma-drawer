@@ -99,7 +99,9 @@ Kicker.DashboardWindow {
     mainItem: MouseArea {
         id: rootMouseArea
         anchors.fill: parent
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        
+        // Append Qt.BackButton to allow this control to catch Mouse Back Button
+        acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.BackButton
         LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
         LayoutMirroring.childrenInherit: true
         // hoverEnabled: true
@@ -117,6 +119,13 @@ Kicker.DashboardWindow {
 
         onReleased: {
             mouse.accepted = true;
+            
+            // Click Mouse back button (side button) to move back.
+            if (mouse.button == Qt.BackButton){
+                root.leave();
+                return;
+            }
+            
             if (mouse.button == Qt.RightButton) {
                 if (!searching) {
                     root.openActionMenu(mouse.x, mouse.y);
@@ -259,6 +268,8 @@ Kicker.DashboardWindow {
                 numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((root.width - units.largeSpacing * 2) / cellSizeWidth))
 
                 model: appsModel
+                
+                
             }
         }
 
