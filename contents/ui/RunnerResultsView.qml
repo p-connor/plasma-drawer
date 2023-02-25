@@ -164,6 +164,18 @@ FocusScope {
                     PlasmaExtras.Heading {
                         id: runnerName
                         
+                        // This MouseArea is used for handle mouse back button 
+                        // click event on search result heading area
+                        MouseArea {
+                            anchors.fill: parent
+                            acceptedButtons: Qt.BackButton
+
+                            onReleased: {
+                                mouse.accepted = true;
+                                handleBackButton();
+                                return;
+                            }
+                        }
                         text: model.display ?? ""
                         level: 2
                     }
