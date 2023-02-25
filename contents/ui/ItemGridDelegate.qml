@@ -179,6 +179,7 @@ Item {
         wrapMode: Text.NoWrap
 
         text: model.display
+        font.pointSize: plasmoid.configuration.appLabelPointSize
     }
 
     // PlasmaComponents.Label {
