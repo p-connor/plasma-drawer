@@ -87,6 +87,18 @@ Kicker.DashboardWindow {
         content.focus = true;
     }
 
+    // Use this function to handle back button event.
+    function handleBackButton() {
+        // When search query is not empty, clear it instead.
+        if(searchField.text != ""){
+            reset();
+            return;
+        }
+
+        root.leave();
+        return;
+    }
+
     function openActionMenu(x, y, actionList = undefined) {
         if (actionList) {
             actionMenu.actionList = actionList;
@@ -122,7 +134,7 @@ Kicker.DashboardWindow {
             
             // Click Mouse back button (side button) to move back.
             if (mouse.button == Qt.BackButton){
-                root.leave();
+                handleBackButton();
                 return;
             }
             

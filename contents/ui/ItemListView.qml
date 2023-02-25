@@ -189,7 +189,9 @@ FocusScope {
 
                 enabled: itemList.enabled
                 hoverEnabled: enabled
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+                // Append Qt.BackButton to allow this area to catch Mouse Back Button
+                acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.BackButton
 
                 function updatePositionProperties(x, y) {
                     var cPos = mapToItem(contentItem, x, y);
@@ -206,6 +208,13 @@ FocusScope {
                 }
 
                 onReleased: {
+                    // Click Mouse back button (side button) event handler.
+                    if (mouse.button == Qt.BackButton){
+                        mouse.accepted = true;
+                        handleBackButton();
+                        return;
+                    }
+
                     if (mouse.button != Qt.RightButton && currentIndex != -1) {
                         mouse.accepted = true;
                         itemList.trigger(currentIndex);

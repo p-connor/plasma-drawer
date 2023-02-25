@@ -329,7 +329,7 @@ FocusScope {
                     property int pressX: -1
                     property int pressY: -1
 
-                    // Append Qt.BackButton to allow this control to catch Mouse Back Button
+                    // Append Qt.BackButton to allow this area to catch Mouse Back Button
                     acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.BackButton
 
                     enabled: itemGrid.enabled
@@ -359,13 +359,13 @@ FocusScope {
 
                     onReleased: {
                         mouse.accepted = true;
-                        
-                        // Click Mouse back button (side button) to move back.
+
+                        // Click Mouse back button (side button) event handler.
                         if (mouse.button == Qt.BackButton){
-                            root.leave();
+                            handleBackButton();
                             return;
                         }
-                        
+                                                
                         if (gridView.currentItem) {
                             itemGrid.trigger(gridView.currentIndex);
                         } else if (!dragHelper.dragging) {
