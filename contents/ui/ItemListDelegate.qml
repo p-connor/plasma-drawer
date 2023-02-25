@@ -61,5 +61,6 @@ Item {
         wrapMode: Text.Wrap
 
         text: model.display
+        font.pointSize: plasmoid.configuration.appLabelPointSize
     }
 }
