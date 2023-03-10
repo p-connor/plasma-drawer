@@ -23,8 +23,12 @@
       <label>The size of the icons in the applications grid</label>
       <default>128</default>
     </entry>
-    <entry name="appLabelPointSize" type="Double">
-      <label>Label size of application entry (point size)</label>
+    <entry name="useCustomFontSize" type="Bool">
+      <label>Whether to use user-defined font size instead of an font size in system configuration.</label>
+      <default>false</default>
+    </entry>
+    <entry name="fontPointSize" type="Double">
+      <label>The font size of almost all labels (point size)</label>
       <default>12.0</default>
     </entry>
     <entry name="maxNumberColumns" type="Int">

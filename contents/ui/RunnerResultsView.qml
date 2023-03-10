@@ -172,7 +172,7 @@ FocusScope {
 
                             onReleased: {
                                 mouse.accepted = true;
-                                handleBackButton();
+                                backOrClose();
                                 return;
                             }
                         }
@@ -192,6 +192,8 @@ FocusScope {
                             verticalAlignment: Text.AlignBottom
                             text: matchesList.expanded ? i18n("Show Less") : i18n("Show More")
                             color: Qt.darker(theme.disabledTextColor, showMoreButton.hovered ? 1.5: 1);
+                            // https://github.com/P-Connor/plasma-drawer/pull/48
+                            font.pointSize: fontPointSize
                         }
                         background: Rectangle {         
                             id: showMoreButtonHighlight

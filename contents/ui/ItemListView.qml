@@ -211,7 +211,7 @@ FocusScope {
                     // Click Mouse back button (side button) event handler.
                     if (mouse.button == Qt.BackButton){
                         mouse.accepted = true;
-                        handleBackButton();
+                        backOrClose();
                         return;
                     }
 

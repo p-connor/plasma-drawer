@@ -37,6 +37,7 @@ Kicker.DashboardWindow {
     id: root
 
     property int topBottomContentMargin: Math.max(units.iconSizes.huge, height * .15)
+    readonly property double fontPointSize: plasmoid.configuration.useCustomFontSize ? plasmoid.configuration.fontPointSize : theme.defaultFont.pointSize
 
     // keyEventProxy: searchField
     backgroundColor: "transparent"
@@ -88,9 +89,9 @@ Kicker.DashboardWindow {
     }
 
     // Use this function to handle back button event.
-    function handleBackButton() {
+    function backOrClose() {
         // When search query is not empty, clear it instead.
-        if(searchField.text != ""){
+        if(searching){
             reset();
             return;
         }
@@ -134,7 +135,7 @@ Kicker.DashboardWindow {
             
             // Click Mouse back button (side button) to move back.
             if (mouse.button == Qt.BackButton){
-                handleBackButton();
+                backOrClose();
                 return;
             }
             

@@ -37,7 +37,8 @@ Kirigami.FormLayout {
     property alias cfg_disableAnimations:       disableAnimations.checked
 
     property int cfg_appIconSize:               plasmoid.configuration.appIconSize
-    property alias cfg_appLabelPointSize:       appLabelPointSize.value
+    property alias cfg_useCustomFontSize:       useCustomFontSize.checked
+    property alias cfg_fontPointSize:           fontPointSize.value
     property alias cfg_useDirectoryIcons:       useDirectoryIcons.checked
     property alias cfg_maxNumberColumns:        maxNumberColumns.value
 
@@ -173,6 +174,25 @@ Kirigami.FormLayout {
     }
 
     CheckBox {        
+        id: useCustomFontSize
+        text:  i18n("Use user-defined font size")
+    }
+
+    RowLayout {
+        Layout.fillWidth: true
+        
+        Label {
+            text: i18n("Font size of labels (point size):")
+        }
+        
+        SpinBox{
+            id: fontPointSize
+            from: 1
+            to: 128
+        }
+    }
+
+    CheckBox {        
         id: disableAnimations
         text:  i18n("Disable animations")
     }
@@ -222,20 +242,6 @@ Kirigami.FormLayout {
         }
     }
     
-    RowLayout {
-        Layout.fillWidth: true
-        
-        Label {
-            text: i18n("Label size of application entry (point size):")
-        }
-        
-        SpinBox{
-            id: appLabelPointSize
-            from: 1
-            to: 128
-        }
-    }
-
     CheckBox {        
         id: useDirectoryIcons
         text:  i18n("Use directory icons")
