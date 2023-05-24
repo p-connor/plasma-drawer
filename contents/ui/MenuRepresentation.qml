@@ -41,7 +41,7 @@ Kicker.DashboardWindow {
 
     readonly property bool searching: searchField.text != ""
 
-    readonly property int contentMargin: units.iconSizes.enormous
+    readonly property int contentMargin: Math.max(units.iconSizes.huge, height * .12)
 
     // TODO: remove this and all focus debug rectangles
     property bool debugFocus: false
@@ -270,7 +270,7 @@ Kicker.DashboardWindow {
                 top: parent.top
                 bottom: parent.bottom
                 topMargin: contentMargin
-                bottomMargin: systemActionsGrid.visible ? contentMargin : contentMargin / 2
+                bottomMargin: contentMargin
                 // margins: contentMargin
             }
             sourceComponent: !searching ? appsGridViewComponent : runnerResultsViewComponent

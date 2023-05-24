@@ -93,12 +93,6 @@ FocusScope {
     //     }
     // }
 
-    Rectangle {
-        color: "green"
-        opacity: 0.05
-        anchors.fill: parent
-    }
-
     // I believe StackView requires that the component be defined this way
     Component {
         id: directoryView
