@@ -126,9 +126,26 @@ Kicker.DashboardWindow {
             }
         }
 
-        Rectangle {
+        Component {
+            id: backgroundRectComponent
+            Rectangle {
+                color: colorWithAlpha(plasmoid.configuration.backgroundType == 0 ? theme.backgroundColor : plasmoid.configuration.customBackgroundColor, 
+                                        plasmoid.configuration.backgroundOpacity / 100)
+            }
+        }
+
+        Component {
+            id: backgroundImageComponent
+            Image {
+                source: plasmoid.configuration.customBackgroundImage ?? ""
+                opacity: plasmoid.configuration.backgroundOpacity / 100
+            }
+        }
+
+        Loader {
+            id: backgroundLoader
             anchors.fill: parent
-            color: colorWithAlpha(theme.backgroundColor, plasmoid.configuration.backgroundOpacity / 100)
+            sourceComponent: plasmoid.configuration.backgroundType == 2 ? backgroundImageComponent : backgroundRectComponent
         }
 
         PlasmaExtras.Heading {

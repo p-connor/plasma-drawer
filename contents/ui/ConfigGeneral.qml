@@ -20,9 +20,11 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.14
+import QtQuick.Dialogs 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.5 as Kirigami
+import org.kde.kquickcontrols 2.0 as KQuickControls
 import org.kde.kquickcontrolsaddons 2.0 as KQuickAddons
 import org.kde.draganddrop 2.0 as DragDrop
 
@@ -33,6 +35,9 @@ Kirigami.FormLayout {
     property bool cfg_useCustomButtonImage:     plasmoid.configuration.useCustomButtonImage
     property string cfg_customButtonImage:      plasmoid.configuration.customButtonImage
     
+    property alias cfg_backgroundType:          backgroundType.currentIndex
+    property var cfg_customBackgroundColor:     plasmoid.configuration.customBackgroundColor
+    property var cfg_customBackgroundImage:     plasmoid.configuration.customBackgroundImage
     property alias cfg_backgroundOpacity:       backgroundOpacity.value
     property alias cfg_disableAnimations:       disableAnimations.checked
 
@@ -48,7 +53,7 @@ Kirigami.FormLayout {
     property int cfg_systemActionIconSize:      plasmoid.configuration.systemActionIconSize
     property var cfg_favoriteSystemActions:     plasmoid.configuration.favoriteSystemActions
 
-    
+
     // ----------------- Icon -----------------
     Button {
         id: iconButton
@@ -148,15 +153,70 @@ Kirigami.FormLayout {
         }
     }
 
-    // ----------------- General -----------------
+    // ----------------- Background -----------------
     Item {
         Kirigami.FormData.isSection: true
     }
 
+    ComboBox {
+        id: backgroundType
+        Kirigami.FormData.label: i18n("Background:")
+        
+        model: [ 
+            i18n("Use theme color"), 
+            i18n("Use custom color"), 
+            i18n("Use image")
+        ]
+    }
+
     RowLayout {
         Layout.fillWidth: true
-        Kirigami.FormData.label: i18n("General:")
+        visible: backgroundType.currentIndex == 1   // backgroundType in custom color mode
+        
+        Label {
+            text: i18n("Custom Color:")
+        }
+        KQuickControls.ColorButton {
+            id: backgroundColorPicker
+            dialogTitle: i18n("Background Color")
+            showAlphaChannel: false
+            onAccepted: {
+                cfg_customBackgroundColor = color
+            }
+            Component.onCompleted: {
+                color = plasmoid.configuration.customBackgroundColor
+            }
+        }
+    }
 
+    RowLayout {
+        Layout.fillWidth: true
+        visible: backgroundType.currentIndex == 2   // backgroundType in image mode
+        
+        Button {
+            text: "Select Image File"
+            icon.name: "fileopen"
+            onClicked: {
+                backgroundImageFileDialog.open()
+            }
+        }
+        Label {
+            text: i18n("Path: ") + (cfg_customBackgroundImage ?? i18n("None"))
+        }
+    }
+    FileDialog {
+        id: backgroundImageFileDialog
+        title: "Please choose an image file"
+        folder: shortcuts.home
+        nameFilters: [ "Image files (*.jpg *.jpeg *.png *.bmp)", "All files (*)" ]
+        onAccepted: {
+            cfg_customBackgroundImage = fileUrl
+        }
+    }
+    
+    RowLayout {
+        Layout.fillWidth: true
+        
         Label {
             text: i18n("Background opacity:")
         }
@@ -170,11 +230,6 @@ Kirigami.FormLayout {
         Label {
             text: i18n(backgroundOpacity.value + "%");
         }
-    }
-
-    CheckBox {        
-        id: disableAnimations
-        text:  i18n("Disable animations")
     }
 
     // ----------------- Application Grid -----------------
@@ -225,6 +280,11 @@ Kirigami.FormLayout {
     CheckBox {        
         id: useDirectoryIcons
         text:  i18n("Use directory icons")
+    }
+
+    CheckBox {        
+        id: disableAnimations
+        text:  i18n("Disable animations")
     }
 
     // ----------------- Search -----------------

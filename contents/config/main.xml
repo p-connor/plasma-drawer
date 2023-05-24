@@ -31,14 +31,37 @@
       <label>Determines whether directories should be displayed by their icon rather than a collection of their contents</label>
       <default>false</default>
     </entry>
-
-    <entry name="backgroundOpacity" type="Int">
-      <label>The opacity of the background in the fullscreen menu representaion</label>
-      <default>70</default>
-    </entry>
     <entry name="disableAnimations" type="Bool">
       <label>Disables animations for app grid navigation and search results</label>
       <default>false</default>
+    </entry>
+
+    <entry name="backgroundType" type="Enum">
+      <label>The type of background to use</label>
+      <choices>
+        <choice name="theme">
+          <label>The default background color set by the current Plasma theme</label>
+        </choice>
+        <choice name="custom">
+          <label>A custom color set by the customBackgroundColor property</label>
+        </choice>
+        <choice name="image">
+          <label>A custom image set by the customBackgroundImage property</label>
+        </choice>
+      </choices>
+      <default>0</default> <!-- theme -->
+    </entry>
+    <entry name="customBackgroundColor" type="Color">
+      <label>The custom color to use for the background when backgroundType is in custom mode</label>
+      <default>#000000</default>
+    </entry>
+    <entry name="customBackgroundImagePath" type="Path">
+      <label>The custom image path to use for the background when backgroundType is in image mode</label>
+      <default>/home</default>
+    </entry>
+    <entry name="backgroundOpacity" type="Int">
+      <label>The opacity of the background in the fullscreen menu representaion</label>
+      <default>70</default>
     </entry>
 
     <entry name="showSystemActions" type="Bool">
