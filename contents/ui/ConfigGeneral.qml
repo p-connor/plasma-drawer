@@ -44,6 +44,7 @@ Kirigami.FormLayout {
     property int cfg_searchIconSize:            plasmoid.configuration.searchIconSize  
     
     property alias cfg_showSystemActions:       showSystemActions.checked
+    property alias cfg_showSystemActionLabels:  showSystemActionLabels.checked
     property int cfg_systemActionIconSize:      plasmoid.configuration.systemActionIconSize
     property var cfg_favoriteSystemActions:     plasmoid.configuration.favoriteSystemActions
 
@@ -290,7 +291,7 @@ Kirigami.FormLayout {
         Layout.fillWidth: true
         enabled: showSystemActions.checked
         Label {
-            text: i18n("Size of system actions icons:")
+            text: i18n("Size of system action icons:")
         }
         ComboBox {
             id: systemActionIconSize
@@ -298,7 +299,7 @@ Kirigami.FormLayout {
                 i18n(units.iconSizes.medium), 
                 i18n(units.iconSizes.large), 
                 i18n(units.iconSizes.huge), 
-                i18n(units.iconSizes.enormous)
+                i18n(units.iconSizes.huge + ((units.iconSizes.enormous - units.iconSizes.huge) / 2))
             ]
             onActivated: {
                 cfg_systemActionIconSize = parseInt(currentText);
@@ -307,6 +308,11 @@ Kirigami.FormLayout {
                 currentIndex = model.findIndex((size) => size == cfg_systemActionIconSize);
             }
         }
+    }
+    CheckBox {
+        id: showSystemActionLabels
+        enabled: showSystemActions.checked
+        text:  i18n("Show system action labels")
     }
 
     // RowLayout {

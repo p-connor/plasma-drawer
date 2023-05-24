@@ -45,6 +45,10 @@
       <label>Determines whether or not the system actions are displayed</label>
       <default>true</default>
     </entry>
+    <entry name="showSystemActionLabels" type="Bool">
+      <label>Determines whether or not the system actions will be displayed with labels</label>
+      <default>false</default>
+    </entry>
     <entry name="systemActionIconSize" type="Int">
       <label>The size of the system action icons (if displayed)</label>
       <default>48</default>

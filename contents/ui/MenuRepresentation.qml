@@ -321,7 +321,7 @@ Kicker.DashboardWindow {
             }
 
             iconSize: plasmoid.configuration.systemActionIconSize
-            cellWidth: iconSize + units.largeSpacing
+            cellWidth: iconSize + (units.largeSpacing * (showLabels ? 3 : 1))
             cellHeight: cellWidth
             // height: cellHeight
             // width: cellWidth * count
@@ -331,7 +331,7 @@ Kicker.DashboardWindow {
             opacity: 0.9
 
             dragEnabled: true
-            showLabels: false
+            showLabels: plasmoid.configuration.showSystemActionLabels
             usesPlasmaTheme: true
 
             onKeyNavUp: {
