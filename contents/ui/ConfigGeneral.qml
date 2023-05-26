@@ -45,6 +45,7 @@ Kirigami.FormLayout {
     property alias cfg_useDirectoryIcons:       useDirectoryIcons.checked
     property alias cfg_maxNumberColumns:        maxNumberColumns.value
 
+    property alias cfg_showSearch:              showSearch.checked
     property alias cfg_adaptiveSearchIconSize:  adaptSearchIcons.checked
     property int cfg_searchIconSize:            plasmoid.configuration.searchIconSize  
     
@@ -292,10 +293,15 @@ Kirigami.FormLayout {
         Kirigami.FormData.isSection: true
     }
 
-    Button {
+    CheckBox {
         Kirigami.FormData.label: i18n("Search:")
-        
-        enabled: KQuickAddons.KCMShell.authorize("kcm_plasmasearch.desktop").length > 0
+
+        id: showSearch
+        text:  i18n("Show search bar")
+    }
+
+    Button {    
+        enabled: showSearch.checked && KQuickAddons.KCMShell.authorize("kcm_plasmasearch.desktop").length > 0
         icon.name: "settings-configure"
         text: i18nc("@action:button", "Configure Enabled Search Plugins…")
         onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_plasmasearch")
@@ -303,14 +309,16 @@ Kirigami.FormLayout {
     
     CheckBox {        
         id: adaptSearchIcons
+        enabled: showSearch.checked
         text:  i18n("Adaptive search result size")
     }
     
     RowLayout {
         Layout.fillWidth: true
+        enabled: showSearch.checked
         
         Label {
-            text: i18n((adaptSearchIcons.checked ? "Max s" : "S") + "ize of search result icons:")
+            text: i18n((adaptSearchIcons.checked ? "Max size" : "Size") + " of search result icons:")
         }
         ComboBox {
             id: searchIconSize

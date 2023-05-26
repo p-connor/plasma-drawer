@@ -91,6 +91,10 @@
       <default></default>
     </entry>
 
+    <entry name="showSearch" type="Bool">
+      <label>Determines whether or not the search bar is displayed</label>
+      <default>true</default>
+    </entry>
     <entry name="searchIconSize" type="Int">
       <label>The size of the icons in the search results list. If adaptiveSearchIconSize is true, this value specifies the max value.</label>
       <default>48</default>

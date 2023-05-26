@@ -163,6 +163,9 @@ Kicker.DashboardWindow {
         TextField {
             id: searchField
 
+            visible: plasmoid.configuration.showSearch
+            enabled: visible
+
             anchors.top: parent.top
             anchors.topMargin: (contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
@@ -295,14 +298,20 @@ Kicker.DashboardWindow {
             focus: true
 
             function keyNavUp() {
-                item.removeSelection();
-                searchField.focus = true;
+                if (searchField.visible) {
+                    item.removeSelection();
+                    searchField.focus = true;
+                } else if (systemActionsGrid.visible) {
+                    keyNavDown();
+                }
             }
             function keyNavDown() {
                 if (systemActionsGrid.visible) {
                     item.removeSelection();
                     systemActionsGrid.focus = true;
                     systemActionsGrid.trySelect(0, 0);
+                } else if (searchField.visible) {
+                    keyNavUp();
                 }
             }
 
@@ -312,7 +321,7 @@ Kicker.DashboardWindow {
             }
 
             Keys.onPressed: {
-                if (event.key == Qt.Key_Backtab || (event.key == Qt.Key_Tab && !systemActionsGrid.visible)) {
+                if (event.key == Qt.Key_Backtab) {
                     event.accepted = true;
                     keyNavUp();
                 } else if (event.key == Qt.Key_Tab) {
@@ -358,19 +367,21 @@ Kicker.DashboardWindow {
             }
 
             Keys.onPressed: {
-                if (event.key == Qt.Key_Tab) {
+                if (event.key == Qt.Key_Backtab || (event.key == Qt.Key_Tab && !searchField.visible)) {
+                    event.accepted = true;
+                    currentIndex = -1;
+                    content.focus = true;
+                    content.item.selectFirst();
+                } else if (event.key == Qt.Key_Tab) {
                     event.accepted = true;
                     currentIndex = -1;
                     searchField.focus = true;
-                } else if (event.key == Qt.Key_Backtab) {
-                    event.accepted = true;
-                    keyNavUp();
                 }
             }
         }
  
         Keys.onPressed: {
-            if (searchField.focus) {
+            if (searchField.focus || !searchField.visible) {
                 return;
             }
 
