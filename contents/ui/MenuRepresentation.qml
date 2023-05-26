@@ -207,14 +207,14 @@ Kicker.DashboardWindow {
                     verticalCenter: parent.verticalCenter
                 }
             }
-
+            
             Keys.onPressed: {
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
                     if (!content.item.currentMatch) {
                         content.item.selectFirst();
                     }
-                    content.item.triggerSelected();
+                    //content.item.triggerSelected();
                     return;
                 }
 
@@ -226,6 +226,14 @@ Kicker.DashboardWindow {
                     event.accepted = true;
                     systemActionsGrid.focus = true;
                     systemActionsGrid.trySelect(0, 0);
+                }
+            }
+
+            Keys.onReleased: {
+                if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
+                    event.accepted = true;
+                    content.item.triggerSelected();
+                    return;
                 }
             }
 
