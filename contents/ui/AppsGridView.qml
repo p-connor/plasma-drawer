@@ -142,7 +142,7 @@ FocusScope {
 
         focus: true
 
-        property var transitionDuration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration
+        property var transitionDuration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration / plasmoid.configuration.animationSpeedMultiplier
 
         pushEnter: !plasmoid.configuration.disableAnimations ? pushEnterTransition : instantEnterTransition
         pushExit:  !plasmoid.configuration.disableAnimations ? pushExitTransition  : instantExitTransition

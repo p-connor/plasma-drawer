@@ -31,10 +31,6 @@
       <label>Determines whether directories should be displayed by their icon rather than a collection of their contents</label>
       <default>false</default>
     </entry>
-    <entry name="disableAnimations" type="Bool">
-      <label>Disables animations for app grid navigation and search results</label>
-      <default>false</default>
-    </entry>
 
     <entry name="backgroundType" type="Enum">
       <label>The type of background to use</label>
@@ -102,6 +98,15 @@
     <entry name="adaptiveSearchIconSize" type="Bool">
       <label>Determines whether the icons in the search results list should be shrunk to match their native resolution.</label>
       <default>false</default>
+    </entry>
+
+    <entry name="disableAnimations" type="Bool">
+      <label>Disables animations for app grid navigation and search results</label>
+      <default>false</default>
+    </entry>
+    <entry name="animationSpeedMultiplier" type="Double">
+      <label>A multiplier which can be used to adjust the speeds of all animations</label>
+      <default>1.0</default>
     </entry>
 
     <entry name="favoritesPortedToKAstats" type="Bool">

@@ -31,28 +31,30 @@ import org.kde.draganddrop 2.0 as DragDrop
 Kirigami.FormLayout {
     id: configGeneral
 
-    property string cfg_icon:                   plasmoid.configuration.icon
-    property bool cfg_useCustomButtonImage:     plasmoid.configuration.useCustomButtonImage
-    property string cfg_customButtonImage:      plasmoid.configuration.customButtonImage
-    
-    property alias cfg_backgroundType:          backgroundType.currentIndex
-    property var cfg_customBackgroundColor:     plasmoid.configuration.customBackgroundColor
-    property var cfg_customBackgroundImage:     plasmoid.configuration.customBackgroundImage
-    property alias cfg_backgroundOpacity:       backgroundOpacity.value
-    property alias cfg_disableAnimations:       disableAnimations.checked
+    property string cfg_icon:                       plasmoid.configuration.icon
+    property bool cfg_useCustomButtonImage:         plasmoid.configuration.useCustomButtonImage
+    property string cfg_customButtonImage:          plasmoid.configuration.customButtonImage
 
-    property int cfg_appIconSize:               plasmoid.configuration.appIconSize
-    property alias cfg_useDirectoryIcons:       useDirectoryIcons.checked
-    property alias cfg_maxNumberColumns:        maxNumberColumns.value
+    property alias cfg_backgroundType:              backgroundType.currentIndex
+    property var cfg_customBackgroundColor:         plasmoid.configuration.customBackgroundColor
+    property var cfg_customBackgroundImage:         plasmoid.configuration.customBackgroundImage
+    property alias cfg_backgroundOpacity:           backgroundOpacity.value
 
-    property alias cfg_showSearch:              showSearch.checked
-    property alias cfg_adaptiveSearchIconSize:  adaptSearchIcons.checked
-    property int cfg_searchIconSize:            plasmoid.configuration.searchIconSize  
-    
-    property alias cfg_showSystemActions:       showSystemActions.checked
-    property alias cfg_showSystemActionLabels:  showSystemActionLabels.checked
-    property int cfg_systemActionIconSize:      plasmoid.configuration.systemActionIconSize
-    property var cfg_favoriteSystemActions:     plasmoid.configuration.favoriteSystemActions
+    property int cfg_appIconSize:                   plasmoid.configuration.appIconSize
+    property alias cfg_useDirectoryIcons:           useDirectoryIcons.checked
+    property alias cfg_maxNumberColumns:            maxNumberColumns.value
+
+    property alias cfg_showSearch:                  showSearch.checked
+    property alias cfg_adaptiveSearchIconSize:      adaptSearchIcons.checked
+    property int cfg_searchIconSize:                plasmoid.configuration.searchIconSize  
+
+    property alias cfg_showSystemActions:           showSystemActions.checked
+    property alias cfg_showSystemActionLabels:      showSystemActionLabels.checked
+    property int cfg_systemActionIconSize:          plasmoid.configuration.systemActionIconSize
+    property var cfg_favoriteSystemActions:         plasmoid.configuration.favoriteSystemActions
+
+    property alias cfg_disableAnimations:           disableAnimations.checked
+    property alias cfg_animationSpeedMultiplier:    animationSpeedMultiplier.value
 
 
     // ----------------- Icon -----------------
@@ -283,11 +285,6 @@ Kirigami.FormLayout {
         text:  i18n("Use directory icons")
     }
 
-    CheckBox {        
-        id: disableAnimations
-        text:  i18n("Disable animations")
-    }
-
     // ----------------- Search -----------------
     Item {
         Kirigami.FormData.isSection: true
@@ -401,9 +398,34 @@ Kirigami.FormLayout {
         Kirigami.FormData.isSection: true
     }
 
+    CheckBox {       
+        Kirigami.FormData.label: i18n("Other:")
+
+        id: disableAnimations
+        text:  i18n("Disable animations")
+    }
+
     RowLayout {
         Layout.fillWidth: true
-        Kirigami.FormData.label: i18n("Other:")
+        enabled: !disableAnimations.checked
+        
+        Label {
+            text: i18n("Animation speed multiplier:")
+        }
+        Slider{
+            id: animationSpeedMultiplier
+            from: 0.1
+            to: 3.0
+            stepSize: 0.1
+            implicitWidth: 200
+        }
+        Label {
+            text: (animationSpeedMultiplier.value).toFixed(1);
+        }
+    }
+    
+    RowLayout {
+        Layout.fillWidth: true
 
         Button {
             text: i18n("Unhide all hidden applications")
