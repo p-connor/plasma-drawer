@@ -36,12 +36,12 @@ Kicker.DashboardWindow {
     
     id: root
 
-    property int topBottomContentMargin: Math.max(units.iconSizes.huge, height * .15)
-
     // keyEventProxy: searchField
     backgroundColor: "transparent"
 
     readonly property bool searching: searchField.text != ""
+
+    readonly property int contentMargin: Math.max(units.iconSizes.huge, height * .12)
 
     // TODO: remove this and all focus debug rectangles
     property bool debugFocus: false
@@ -126,9 +126,26 @@ Kicker.DashboardWindow {
             }
         }
 
-        Rectangle {
+        Component {
+            id: backgroundRectComponent
+            Rectangle {
+                color: colorWithAlpha(plasmoid.configuration.backgroundType == 0 ? theme.backgroundColor : plasmoid.configuration.customBackgroundColor, 
+                                        plasmoid.configuration.backgroundOpacity / 100)
+            }
+        }
+
+        Component {
+            id: backgroundImageComponent
+            Image {
+                source: plasmoid.configuration.customBackgroundImage ?? ""
+                opacity: plasmoid.configuration.backgroundOpacity / 100
+            }
+        }
+
+        Loader {
+            id: backgroundLoader
             anchors.fill: parent
-            color: colorWithAlpha(theme.backgroundColor, plasmoid.configuration.backgroundOpacity / 100)
+            sourceComponent: plasmoid.configuration.backgroundType == 2 ? backgroundImageComponent : backgroundRectComponent
         }
 
         PlasmaExtras.Heading {
@@ -146,8 +163,11 @@ Kicker.DashboardWindow {
         TextField {
             id: searchField
 
+            visible: plasmoid.configuration.showSearch
+            enabled: visible
+
             anchors.top: parent.top
-            anchors.topMargin: Math.min((topBottomContentMargin / 2) - (height / 2), units.iconSizes.large)
+            anchors.topMargin: (contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
             width: Math.min(units.gridUnit * 20, (root.width * 0.25) + (leftInset * 2))
             leftInset: -(searchIcon.width + units.smallSpacing * 4)
@@ -187,14 +207,14 @@ Kicker.DashboardWindow {
                     verticalCenter: parent.verticalCenter
                 }
             }
-
+            
             Keys.onPressed: {
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
                     if (!content.item.currentMatch) {
                         content.item.selectFirst();
                     }
-                    content.item.triggerSelected();
+                    //content.item.triggerSelected();
                     return;
                 }
 
@@ -206,6 +226,14 @@ Kicker.DashboardWindow {
                     event.accepted = true;
                     systemActionsGrid.focus = true;
                     systemActionsGrid.trySelect(0, 0);
+                }
+            }
+
+            Keys.onReleased: {
+                if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
+                    event.accepted = true;
+                    content.item.triggerSelected();
+                    return;
                 }
             }
 
@@ -269,26 +297,29 @@ Kicker.DashboardWindow {
                 horizontalCenter: parent.horizontalCenter
                 top: parent.top
                 bottom: parent.bottom
-                margins: topBottomContentMargin
+                topMargin: contentMargin
+                bottomMargin: contentMargin
+                // margins: contentMargin
             }
             sourceComponent: !searching ? appsGridViewComponent : runnerResultsViewComponent
             active: root.visible
             focus: true
 
-            // Rectangle {
-            //     color: "red"
-            //     opacity: 0.2
-            //     anchors.fill: parent
-            // }
             function keyNavUp() {
-                item.removeSelection();
-                searchField.focus = true;
+                if (searchField.visible) {
+                    item.removeSelection();
+                    searchField.focus = true;
+                } else if (systemActionsGrid.visible) {
+                    keyNavDown();
+                }
             }
             function keyNavDown() {
                 if (systemActionsGrid.visible) {
                     item.removeSelection();
                     systemActionsGrid.focus = true;
                     systemActionsGrid.trySelect(0, 0);
+                } else if (searchField.visible) {
+                    keyNavUp();
                 }
             }
 
@@ -298,7 +329,7 @@ Kicker.DashboardWindow {
             }
 
             Keys.onPressed: {
-                if (event.key == Qt.Key_Backtab || (event.key == Qt.Key_Tab && !systemActionsGrid.visible)) {
+                if (event.key == Qt.Key_Backtab) {
                     event.accepted = true;
                     keyNavUp();
                 } else if (event.key == Qt.Key_Tab) {
@@ -320,11 +351,11 @@ Kicker.DashboardWindow {
                 horizontalCenter: parent.horizontalCenter
                 bottom: parent.bottom
                 margins: units.largeSpacing
-                bottomMargin: Math.min((topBottomContentMargin / 2) - (height / 2), units.iconSizes.large)
+                bottomMargin: (contentMargin / 2) - (height / 2)
             }
 
             iconSize: plasmoid.configuration.systemActionIconSize
-            cellWidth: iconSize + units.largeSpacing
+            cellWidth: iconSize + (units.largeSpacing * (showLabels ? 3 : 1))
             cellHeight: cellWidth
             // height: cellHeight
             // width: cellWidth * count
@@ -334,7 +365,7 @@ Kicker.DashboardWindow {
             opacity: 0.9
 
             dragEnabled: true
-            showLabels: false
+            showLabels: plasmoid.configuration.showSystemActionLabels
             usesPlasmaTheme: true
 
             onKeyNavUp: {
@@ -344,19 +375,21 @@ Kicker.DashboardWindow {
             }
 
             Keys.onPressed: {
-                if (event.key == Qt.Key_Tab) {
+                if (event.key == Qt.Key_Backtab || (event.key == Qt.Key_Tab && !searchField.visible)) {
+                    event.accepted = true;
+                    currentIndex = -1;
+                    content.focus = true;
+                    content.item.selectFirst();
+                } else if (event.key == Qt.Key_Tab) {
                     event.accepted = true;
                     currentIndex = -1;
                     searchField.focus = true;
-                } else if (event.key == Qt.Key_Backtab) {
-                    event.accepted = true;
-                    keyNavUp();
                 }
             }
         }
  
         Keys.onPressed: {
-            if (searchField.focus) {
+            if (searchField.focus || !searchField.visible) {
                 return;
             }
 

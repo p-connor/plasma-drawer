@@ -24,7 +24,9 @@ FocusScope {
                                 + (2 * units.smallSpacing)
                                 + (2 * Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
                                                 highlightItemSvg.margins.left + highlightItemSvg.margins.right))
-    readonly property int cellSizeHeight: cellSizeWidth - (iconSize * .25)
+    readonly property int minCellSizeHeight: (cellSizeWidth - (iconSize * .33))
+    // cellSizeHeight grows to match the appsGrid height if there is some space left at the bottom
+    readonly property int cellSizeHeight: minCellSizeHeight + ((height % minCellSizeHeight) / Math.floor(height / minCellSizeHeight))
 
     property int numberColumns:  5
     property int numberRows:  Math.floor(height / cellSizeHeight)
@@ -140,7 +142,7 @@ FocusScope {
 
         focus: true
 
-        property var transitionDuration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration
+        property var transitionDuration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration / plasmoid.configuration.animationSpeedMultiplier
 
         pushEnter: !plasmoid.configuration.disableAnimations ? pushEnterTransition : instantEnterTransition
         pushExit:  !plasmoid.configuration.disableAnimations ? pushExitTransition  : instantExitTransition

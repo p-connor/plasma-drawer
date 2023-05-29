@@ -32,18 +32,41 @@
       <default>false</default>
     </entry>
 
+    <entry name="backgroundType" type="Enum">
+      <label>The type of background to use</label>
+      <choices>
+        <choice name="theme">
+          <label>The default background color set by the current Plasma theme</label>
+        </choice>
+        <choice name="custom">
+          <label>A custom color set by the customBackgroundColor property</label>
+        </choice>
+        <choice name="image">
+          <label>A custom image set by the customBackgroundImage property</label>
+        </choice>
+      </choices>
+      <default>0</default> <!-- theme -->
+    </entry>
+    <entry name="customBackgroundColor" type="Color">
+      <label>The custom color to use for the background when backgroundType is in custom mode</label>
+      <default>#000000</default>
+    </entry>
+    <entry name="customBackgroundImagePath" type="Path">
+      <label>The custom image path to use for the background when backgroundType is in image mode</label>
+      <default>/home</default>
+    </entry>
     <entry name="backgroundOpacity" type="Int">
       <label>The opacity of the background in the fullscreen menu representaion</label>
       <default>70</default>
-    </entry>
-    <entry name="disableAnimations" type="Bool">
-      <label>Disables animations for app grid navigation and search results</label>
-      <default>false</default>
     </entry>
 
     <entry name="showSystemActions" type="Bool">
       <label>Determines whether or not the system actions are displayed</label>
       <default>true</default>
+    </entry>
+    <entry name="showSystemActionLabels" type="Bool">
+      <label>Determines whether or not the system actions will be displayed with labels</label>
+      <default>false</default>
     </entry>
     <entry name="systemActionIconSize" type="Int">
       <label>The size of the system action icons (if displayed)</label>
@@ -64,6 +87,10 @@
       <default></default>
     </entry>
 
+    <entry name="showSearch" type="Bool">
+      <label>Determines whether or not the search bar is displayed</label>
+      <default>true</default>
+    </entry>
     <entry name="searchIconSize" type="Int">
       <label>The size of the icons in the search results list. If adaptiveSearchIconSize is true, this value specifies the max value.</label>
       <default>48</default>
@@ -71,6 +98,15 @@
     <entry name="adaptiveSearchIconSize" type="Bool">
       <label>Determines whether the icons in the search results list should be shrunk to match their native resolution.</label>
       <default>false</default>
+    </entry>
+
+    <entry name="disableAnimations" type="Bool">
+      <label>Disables animations for app grid navigation and search results</label>
+      <default>false</default>
+    </entry>
+    <entry name="animationSpeedMultiplier" type="Double">
+      <label>A multiplier which can be used to adjust the speeds of all animations</label>
+      <default>1.0</default>
     </entry>
 
     <entry name="favoritesPortedToKAstats" type="Bool">

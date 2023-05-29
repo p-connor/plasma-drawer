@@ -20,34 +20,43 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.14
+import QtQuick.Dialogs 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.5 as Kirigami
+import org.kde.kquickcontrols 2.0 as KQuickControls
 import org.kde.kquickcontrolsaddons 2.0 as KQuickAddons
 import org.kde.draganddrop 2.0 as DragDrop
 
 Kirigami.FormLayout {
     id: configGeneral
 
-    property string cfg_icon:                   plasmoid.configuration.icon
-    property bool cfg_useCustomButtonImage:     plasmoid.configuration.useCustomButtonImage
-    property string cfg_customButtonImage:      plasmoid.configuration.customButtonImage
-    
-    property alias cfg_backgroundOpacity:       backgroundOpacity.value
-    property alias cfg_disableAnimations:       disableAnimations.checked
+    property string cfg_icon:                       plasmoid.configuration.icon
+    property bool cfg_useCustomButtonImage:         plasmoid.configuration.useCustomButtonImage
+    property string cfg_customButtonImage:          plasmoid.configuration.customButtonImage
 
-    property int cfg_appIconSize:               plasmoid.configuration.appIconSize
-    property alias cfg_useDirectoryIcons:       useDirectoryIcons.checked
-    property alias cfg_maxNumberColumns:        maxNumberColumns.value
+    property alias cfg_backgroundType:              backgroundType.currentIndex
+    property var cfg_customBackgroundColor:         plasmoid.configuration.customBackgroundColor
+    property var cfg_customBackgroundImage:         plasmoid.configuration.customBackgroundImage
+    property alias cfg_backgroundOpacity:           backgroundOpacity.value
 
-    property alias cfg_adaptiveSearchIconSize:  adaptSearchIcons.checked
-    property int cfg_searchIconSize:            plasmoid.configuration.searchIconSize  
-    
-    property alias cfg_showSystemActions:       showSystemActions.checked
-    property int cfg_systemActionIconSize:      plasmoid.configuration.systemActionIconSize
-    property var cfg_favoriteSystemActions:     plasmoid.configuration.favoriteSystemActions
+    property int cfg_appIconSize:                   plasmoid.configuration.appIconSize
+    property alias cfg_useDirectoryIcons:           useDirectoryIcons.checked
+    property alias cfg_maxNumberColumns:            maxNumberColumns.value
 
-    
+    property alias cfg_showSearch:                  showSearch.checked
+    property alias cfg_adaptiveSearchIconSize:      adaptSearchIcons.checked
+    property int cfg_searchIconSize:                plasmoid.configuration.searchIconSize  
+
+    property alias cfg_showSystemActions:           showSystemActions.checked
+    property alias cfg_showSystemActionLabels:      showSystemActionLabels.checked
+    property int cfg_systemActionIconSize:          plasmoid.configuration.systemActionIconSize
+    property var cfg_favoriteSystemActions:         plasmoid.configuration.favoriteSystemActions
+
+    property alias cfg_disableAnimations:           disableAnimations.checked
+    property alias cfg_animationSpeedMultiplier:    animationSpeedMultiplier.value
+
+
     // ----------------- Icon -----------------
     Button {
         id: iconButton
@@ -147,15 +156,70 @@ Kirigami.FormLayout {
         }
     }
 
-    // ----------------- General -----------------
+    // ----------------- Background -----------------
     Item {
         Kirigami.FormData.isSection: true
     }
 
+    ComboBox {
+        id: backgroundType
+        Kirigami.FormData.label: i18n("Background:")
+        
+        model: [ 
+            i18n("Use theme color"), 
+            i18n("Use custom color"), 
+            i18n("Use image")
+        ]
+    }
+
     RowLayout {
         Layout.fillWidth: true
-        Kirigami.FormData.label: i18n("General:")
+        visible: backgroundType.currentIndex == 1   // backgroundType in custom color mode
+        
+        Label {
+            text: i18n("Custom Color:")
+        }
+        KQuickControls.ColorButton {
+            id: backgroundColorPicker
+            dialogTitle: i18n("Background Color")
+            showAlphaChannel: false
+            onAccepted: {
+                cfg_customBackgroundColor = color
+            }
+            Component.onCompleted: {
+                color = plasmoid.configuration.customBackgroundColor
+            }
+        }
+    }
 
+    RowLayout {
+        Layout.fillWidth: true
+        visible: backgroundType.currentIndex == 2   // backgroundType in image mode
+        
+        Button {
+            text: "Select Image File"
+            icon.name: "fileopen"
+            onClicked: {
+                backgroundImageFileDialog.open()
+            }
+        }
+        Label {
+            text: i18n("Path: ") + (cfg_customBackgroundImage ?? i18n("None"))
+        }
+    }
+    FileDialog {
+        id: backgroundImageFileDialog
+        title: "Please choose an image file"
+        folder: shortcuts.home
+        nameFilters: [ "Image files (*.jpg *.jpeg *.png *.bmp)", "All files (*)" ]
+        onAccepted: {
+            cfg_customBackgroundImage = fileUrl
+        }
+    }
+    
+    RowLayout {
+        Layout.fillWidth: true
+        
         Label {
             text: i18n("Background opacity:")
         }
@@ -169,11 +233,6 @@ Kirigami.FormLayout {
         Label {
             text: i18n(backgroundOpacity.value + "%");
         }
-    }
-
-    CheckBox {        
-        id: disableAnimations
-        text:  i18n("Disable animations")
     }
 
     // ----------------- Application Grid -----------------
@@ -231,10 +290,15 @@ Kirigami.FormLayout {
         Kirigami.FormData.isSection: true
     }
 
-    Button {
+    CheckBox {
         Kirigami.FormData.label: i18n("Search:")
-        
-        enabled: KQuickAddons.KCMShell.authorize("kcm_plasmasearch.desktop").length > 0
+
+        id: showSearch
+        text:  i18n("Show search bar")
+    }
+
+    Button {    
+        enabled: showSearch.checked && KQuickAddons.KCMShell.authorize("kcm_plasmasearch.desktop").length > 0
         icon.name: "settings-configure"
         text: i18nc("@action:button", "Configure Enabled Search Plugins…")
         onClicked: KQuickAddons.KCMShell.openSystemSettings("kcm_plasmasearch")
@@ -242,14 +306,16 @@ Kirigami.FormLayout {
     
     CheckBox {        
         id: adaptSearchIcons
+        enabled: showSearch.checked
         text:  i18n("Adaptive search result size")
     }
     
     RowLayout {
         Layout.fillWidth: true
+        enabled: showSearch.checked
         
         Label {
-            text: i18n((adaptSearchIcons.checked ? "Max s" : "S") + "ize of search result icons:")
+            text: i18n((adaptSearchIcons.checked ? "Max size" : "Size") + " of search result icons:")
         }
         ComboBox {
             id: searchIconSize
@@ -290,7 +356,7 @@ Kirigami.FormLayout {
         Layout.fillWidth: true
         enabled: showSystemActions.checked
         Label {
-            text: i18n("Size of system actions icons:")
+            text: i18n("Size of system action icons:")
         }
         ComboBox {
             id: systemActionIconSize
@@ -298,7 +364,7 @@ Kirigami.FormLayout {
                 i18n(units.iconSizes.medium), 
                 i18n(units.iconSizes.large), 
                 i18n(units.iconSizes.huge), 
-                i18n(units.iconSizes.enormous)
+                i18n(units.iconSizes.huge + ((units.iconSizes.enormous - units.iconSizes.huge) / 2))
             ]
             onActivated: {
                 cfg_systemActionIconSize = parseInt(currentText);
@@ -307,6 +373,11 @@ Kirigami.FormLayout {
                 currentIndex = model.findIndex((size) => size == cfg_systemActionIconSize);
             }
         }
+    }
+    CheckBox {
+        id: showSystemActionLabels
+        enabled: showSystemActions.checked
+        text:  i18n("Show system action labels")
     }
 
     // RowLayout {
@@ -327,9 +398,34 @@ Kirigami.FormLayout {
         Kirigami.FormData.isSection: true
     }
 
+    CheckBox {       
+        Kirigami.FormData.label: i18n("Other:")
+
+        id: disableAnimations
+        text:  i18n("Disable animations")
+    }
+
     RowLayout {
         Layout.fillWidth: true
-        Kirigami.FormData.label: i18n("Other:")
+        enabled: !disableAnimations.checked
+        
+        Label {
+            text: i18n("Animation speed multiplier:")
+        }
+        Slider{
+            id: animationSpeedMultiplier
+            from: 0.1
+            to: 3.0
+            stepSize: 0.1
+            implicitWidth: 200
+        }
+        Label {
+            text: (animationSpeedMultiplier.value).toFixed(1);
+        }
+    }
+    
+    RowLayout {
+        Layout.fillWidth: true
 
         Button {
             text: i18n("Unhide all hidden applications")

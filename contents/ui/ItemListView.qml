@@ -159,7 +159,7 @@ FocusScope {
                 NumberAnimation { 
                     target: listView
                     property: "height"
-                    duration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration
+                    duration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration / plasmoid.configuration.animationSpeedMultiplier
                     easing.type: Easing.OutCubic 
                 }
             }
