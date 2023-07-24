@@ -178,7 +178,7 @@ Kicker.DashboardWindow {
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
             
-            placeholderText: "Search"
+            placeholderText: i18n("Search")
             placeholderTextColor: theme.disabledTextColor
 
             onTextChanged: {
