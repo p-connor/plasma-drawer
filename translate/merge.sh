@@ -226,14 +226,14 @@ rm "$DIR/template.desktop"
 rm "$DIR/LINGUAS"
 
 #---
-# Populate ReadMe.md
-echo "[merge] Updating translate/ReadMe.md"
-sed -i -E 's`share\/plasma\/plasmoids\/(.+)\/translate`share/plasma/plasmoids/'"${plasmoidName}"'/translate`' ./ReadMe.md
+# Populate README.md
+echo "[merge] Updating translate/README.md"
+sed -i -E 's`share\/plasma\/plasmoids\/(.+)\/translate`share/plasma/plasmoids/'"${plasmoidName}"'/translate`' ./README.md
 if [[ "$website" == *"github.com"* ]]; then
-	sed -i -E 's`\[new issue\]\(https:\/\/github\.com\/(.+)\/(.+)\/issues\/new\)`[new issue]('"${website}"'/issues/new)`' ./ReadMe.md
+	sed -i -E 's`\[new issue\]\(https:\/\/github\.com\/(.+)\/(.+)\/issues\/new\)`[new issue]('"${website}"'/issues/new)`' ./README.md
 fi
-sed -i '/^|/ d' ./ReadMe.md # Remove status table from ReadMe
-cat ./Status.md >> ./ReadMe.md
+sed -i '/^|/ d' ./README.md # Remove status table from README
+cat ./Status.md >> ./README.md
 rm ./Status.md
 
 echo "[merge] Done"
