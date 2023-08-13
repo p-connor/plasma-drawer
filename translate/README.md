@@ -37,7 +37,7 @@ To add a new translation:
 
 ## Scripts
 
-The following scripts were retreived from [Zren's Widget Library Repository](https://github.com/Zren/plasma-applet-lib/tree/master/package/translate)
+The following scripts were retrieved from [Zren's Widget Library Repository](https://github.com/Zren/plasma-applet-lib/tree/master/package/translate)
 
 * `sh ./merge.sh` will parse the `i18n()` calls in the `*.qml` files and write it to the `template.pot` file. Then it will merge any changes into the `*.po` language files.
 * `sh ./build.sh` will convert the `*.po` files to it's binary `*.mo` version and move it to `contents/locale/...` which will bundle the translations in the `*.plasmoid` without needing the user to manually install them.
