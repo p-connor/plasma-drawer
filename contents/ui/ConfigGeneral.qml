@@ -231,7 +231,7 @@ Kirigami.FormLayout {
             implicitWidth: 200
         }
         Label {
-            text: i18n(backgroundOpacity.value + "%");
+            text: i18n("%1%", backgroundOpacity.value);
         }
     }
 
@@ -315,7 +315,7 @@ Kirigami.FormLayout {
         enabled: showSearch.checked
         
         Label {
-            text: i18n((adaptSearchIcons.checked ? "Max size" : "Size") + " of search result icons:")
+            text: adaptSearchIcons.checked ? i18n("Max size of search result icons:") : i18n("Size of search result icons:")
         }
         ComboBox {
             id: searchIconSize
