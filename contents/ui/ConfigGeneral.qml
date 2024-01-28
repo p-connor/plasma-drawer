@@ -37,7 +37,7 @@ Kirigami.FormLayout {
 
     property alias cfg_backgroundType:              backgroundType.currentIndex
     property var cfg_customBackgroundColor:         plasmoid.configuration.customBackgroundColor
-    property var cfg_customBackgroundImage:         plasmoid.configuration.customBackgroundImage
+    property var cfg_customBackgroundImagePath:     plasmoid.configuration.customBackgroundImagePath
     property alias cfg_backgroundOpacity:           backgroundOpacity.value
 
     property int cfg_appIconSize:                   plasmoid.configuration.appIconSize
@@ -204,7 +204,7 @@ Kirigami.FormLayout {
             }
         }
         Label {
-            text: i18n("Path: ") + (cfg_customBackgroundImage ?? i18n("None"))
+            text: i18n("Path: ") + (cfg_customBackgroundImagePath ?? i18n("None"))
         }
     }
     FileDialog {
@@ -213,7 +213,7 @@ Kirigami.FormLayout {
         folder: shortcuts.home
         nameFilters: [ "Image files (*.jpg *.jpeg *.png *.bmp)", "All files (*)" ]
         onAccepted: {
-            cfg_customBackgroundImage = fileUrl
+            cfg_customBackgroundImagePath = String(fileUrl).replace("file://", "");
         }
     }
     

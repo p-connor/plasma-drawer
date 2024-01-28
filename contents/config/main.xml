@@ -42,7 +42,7 @@
           <label>A custom color set by the customBackgroundColor property</label>
         </choice>
         <choice name="image">
-          <label>A custom image set by the customBackgroundImage property</label>
+          <label>A custom image set by the customBackgroundImagePath property</label>
         </choice>
       </choices>
       <default>0</default> <!-- theme -->
@@ -56,7 +56,7 @@
       <default>/home</default>
     </entry>
     <entry name="backgroundOpacity" type="Int">
-      <label>The opacity of the background in the fullscreen menu representaion</label>
+      <label>The opacity of the background in the fullscreen menu representation</label>
       <default>70</default>
     </entry>
 

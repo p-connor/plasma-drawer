@@ -137,7 +137,7 @@ Kicker.DashboardWindow {
         Component {
             id: backgroundImageComponent
             Image {
-                source: plasmoid.configuration.customBackgroundImage ?? ""
+                source: plasmoid.configuration.customBackgroundImagePath ?? ""
                 opacity: plasmoid.configuration.backgroundOpacity / 100
             }
         }
