@@ -61,5 +61,6 @@ Item {
         wrapMode: Text.Wrap
 
         text: model.display
+        color: drawerTheme.textColor
     }
 }

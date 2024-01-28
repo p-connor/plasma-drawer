@@ -102,6 +102,8 @@ Item {
         }
     }
 
+    readonly property DrawerTheme drawerTheme: DrawerTheme {}
+
     readonly property Kicker.AppsModel appsModel: Kicker.AppsModel {
         autoPopulate: true
 

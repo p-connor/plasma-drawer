@@ -30,6 +30,7 @@ import org.kde.plasma.private.kicker 0.1 as Kicker
 import "../code/tools.js" as Tools
 import QtQuick.Window 2.0
 import QtQuick.Controls.Styles 1.4
+import QtGraphicalEffects 1.15
 
 
 Kicker.DashboardWindow {
@@ -129,8 +130,7 @@ Kicker.DashboardWindow {
         Component {
             id: backgroundRectComponent
             Rectangle {
-                color: colorWithAlpha(plasmoid.configuration.backgroundType == 0 ? theme.backgroundColor : plasmoid.configuration.customBackgroundColor, 
-                                        plasmoid.configuration.backgroundOpacity / 100)
+                color: colorWithAlpha(drawerTheme.backgroundColor, plasmoid.configuration.backgroundOpacity / 100)
             }
         }
 
@@ -173,13 +173,13 @@ Kicker.DashboardWindow {
             leftInset: -(searchIcon.width + units.smallSpacing * 4)
             rightInset: -(searchIcon.width + units.smallSpacing * 4)
 
-            color: theme.textColor
+            color: drawerTheme.textColor
             font.pointSize: theme.defaultFont.pointSize + 1
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
             
             placeholderText: i18n("Search")
-            placeholderTextColor: theme.disabledTextColor
+            placeholderTextColor: drawerTheme.softTextColor
 
             onTextChanged: {
                 runnerModel.query = text;
@@ -190,8 +190,7 @@ Kicker.DashboardWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 height: parent.height * 0.85
                 radius: height * 0.25
-                color: theme.textColor
-                opacity: 0.2
+                color: colorWithAlpha(drawerTheme.textColor, .15)
             }
 
             PlasmaCore.IconItem {
@@ -201,11 +200,20 @@ Kicker.DashboardWindow {
                 width:  searchFieldBackground.height
                 height: width
                 roundToIconSize: true
+                usesPlasmaTheme: true
                 anchors {
                     left: searchFieldBackground.left
                     leftMargin: units.smallSpacing * 2
                     verticalCenter: parent.verticalCenter
                 }
+            }
+
+            // Modify search icon color to text color
+            ColorOverlay {
+                anchors.fill: searchIcon
+                source: searchIcon
+                color: drawerTheme.iconColor
+                cached: true
             }
             
             Keys.onPressed: {
@@ -366,6 +374,7 @@ Kicker.DashboardWindow {
 
             dragEnabled: true
             showLabels: plasmoid.configuration.showSystemActionLabels
+            setIconColorBasedOnTheme: true
             usesPlasmaTheme: true
 
             onKeyNavUp: {

@@ -23,6 +23,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
+import QtGraphicalEffects 1.15
 
 import "../code/tools.js" as Tools
 
@@ -33,6 +34,7 @@ Item {
     height: GridView.view.cellHeight
 
     property bool showLabel: true
+    property var iconColorOverride: undefined
 
     readonly property bool isDirectory: model.hasChildren ?? false
     readonly property var directoryModel: isDirectory ? GridView.view.model.modelForRow(itemIndex) : undefined
@@ -68,16 +70,27 @@ Item {
     Component {
         id: iconComponent
 
-        PlasmaCore.IconItem {
-            id: icon
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            // width: parent.width
-            // height: parent.height
-            animated: false
-            usesPlasmaTheme: loaderUsesPlasmaTheme
-            source: model.decoration
-            roundToIconSize: width > units.iconSizes.huge ? false : true
+        Item {
+            anchors.centerIn: parent
+            PlasmaCore.IconItem {
+                id: icon
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+                animated: false
+                usesPlasmaTheme: loaderUsesPlasmaTheme
+                source: model.decoration
+                roundToIconSize: width > units.iconSizes.huge ? false : true
+            }
+
+            // Modify icon color to text color if using custom theme
+            ColorOverlay {
+                visible: typeof iconColorOverride != undefined
+                anchors.fill: icon
+                source: icon
+                color: iconColorOverride ?? "#00000000"
+                cached: true
+            }
         }
     }
 
@@ -179,6 +192,7 @@ Item {
         wrapMode: Text.NoWrap
 
         text: model.display
+        color: drawerTheme.textColor
     }
 
     // PlasmaComponents.Label {

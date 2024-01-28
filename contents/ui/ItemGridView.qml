@@ -39,6 +39,7 @@ FocusScope {
     property bool dragEnabled: true
     property bool showLabels: true
     property alias usesPlasmaTheme: gridView.usesPlasmaTheme
+    property bool setIconColorBasedOnTheme: false
 
     property int iconSize: units.iconSizes.large
 
@@ -204,6 +205,7 @@ FocusScope {
 
                 delegate: ItemGridDelegate {
                     showLabel: showLabels
+                    iconColorOverride: setIconColorBasedOnTheme && drawerTheme.usingCustomTheme ? drawerTheme.iconColor : undefined
                 }
 
                 onModelChanged: {
