@@ -1,0 +1,197 @@
+# Translation of PlasmaDrawer in Russian
+# Copyright (C) 2023
+# This file is distributed under the same license as the PlasmaDrawer package.
+# Mykhailo Stetsiuk <yaBobJonez@gmail.com>, 2023.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PlasmaDrawer\n"
+"Report-Msgid-Bugs-To: https://github.com/P-Connor/plasma-drawer\n"
+"POT-Creation-Date: 2024-01-28 03:42-0800\n"
+"PO-Revision-Date: 2023-07-24 10:55+0300\n"
+"Last-Translator: Mykhailo Stetsiuk <yaBobJonez@gmail.com>\n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../metadata.desktop
+msgid "Plasma Drawer"
+msgstr "Plasma Drawer"
+
+#: ../metadata.desktop
+msgid "A fullscreen customizable launcher with application directories and krunner-like search"
+msgstr "Полноэкранный настраиваемый лаунчер с директориями програм и поиском в стиле KRunner"
+
+#: ../contents/code/tools.js
+msgid "Remove action"
+msgstr "Удалить действие"
+
+#: ../contents/code/tools.js
+msgid "Show all"
+msgstr "Показать все"
+
+#: ../contents/code/tools.js
+msgid "Add to system actions bar"
+msgstr "Добавить к системным действиям"
+
+#: ../contents/code/tools.js
+msgid "Edit Applications"
+msgstr "Изменить список программ"
+
+#: ../contents/config/config.qml
+msgid "General"
+msgstr "Общее"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Icon:"
+msgstr "Иконка:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Выбрать…"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Очистить иконку"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background:"
+msgstr "Фон:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use theme color"
+msgstr "Использовать цвет из темы"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use custom color"
+msgstr "Использовать пользовательский цвет"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use image"
+msgstr "Использовать изображение"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Custom Color:"
+msgstr "Пользовательский цвет:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background Color"
+msgstr "Цвет фона"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Path: "
+msgstr "Путь: "
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "None"
+msgstr "Отсутствует"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background opacity:"
+msgstr "Непрозрачность фона"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "%1%"
+msgstr "%1%"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Applications:"
+msgstr "Программы:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max columns in grid:"
+msgstr "Максимум столбцов в сетке:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of application icons:"
+msgstr "Размер иконок программ:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use directory icons"
+msgstr "Использовать иконки для директорий"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Search:"
+msgstr "Поиск:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show search bar"
+msgstr "Отображать поле поиска"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@action:button"
+msgid "Configure Enabled Search Plugins…"
+msgstr "Настроить активированные плагины для поиска…"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Adaptive search result size"
+msgstr "Адаптивный размер результатов поиска"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max size of search result icons:"
+msgstr "Максимальный размер иконок результатов поиска"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of search result icons:"
+msgstr "Размер иконок результатов поиска"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "System Actions:"
+msgstr "Системные действия:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system actions"
+msgstr "Отображать системные действия"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of system action icons:"
+msgstr "Размер иконок системных действий"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system action labels"
+msgstr "Отображать метки системных действий"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use plasma icons"
+msgstr "Используйте значки Plasma"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Other:"
+msgstr "Другое:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Disable animations"
+msgstr "Отключить анимации"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Animation speed multiplier:"
+msgstr "Множитель скорости анимаций:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhide all hidden applications"
+msgstr "Показать все скрытые программы"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhidden!"
+msgstr "Показано!"
+
+#: ../contents/ui/main.qml
+msgid "Edit Applications..."
+msgstr "Изменить список программ..."
+
+#: ../contents/ui/MenuRepresentation.qml
+msgid "Search"
+msgstr "Поиск"
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show Less"
+msgstr "Показать меньше"
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show More"
+msgstr "Показать больше"

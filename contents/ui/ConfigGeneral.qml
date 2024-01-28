@@ -37,7 +37,7 @@ Kirigami.FormLayout {
 
     property alias cfg_backgroundType:              backgroundType.currentIndex
     property var cfg_customBackgroundColor:         plasmoid.configuration.customBackgroundColor
-    property var cfg_customBackgroundImage:         plasmoid.configuration.customBackgroundImage
+    property var cfg_customBackgroundImagePath:     plasmoid.configuration.customBackgroundImagePath
     property alias cfg_backgroundOpacity:           backgroundOpacity.value
 
     property int cfg_appIconSize:                   plasmoid.configuration.appIconSize
@@ -50,6 +50,7 @@ Kirigami.FormLayout {
 
     property alias cfg_showSystemActions:           showSystemActions.checked
     property alias cfg_showSystemActionLabels:      showSystemActionLabels.checked
+    property alias cfg_systemActionsUsePlasmaIcons: systemActionsUsePlasmaIcons.checked
     property int cfg_systemActionIconSize:          plasmoid.configuration.systemActionIconSize
     property var cfg_favoriteSystemActions:         plasmoid.configuration.favoriteSystemActions
 
@@ -204,7 +205,7 @@ Kirigami.FormLayout {
             }
         }
         Label {
-            text: i18n("Path: ") + (cfg_customBackgroundImage ?? i18n("None"))
+            text: i18n("Path: ") + (cfg_customBackgroundImagePath ?? i18n("None"))
         }
     }
     FileDialog {
@@ -213,7 +214,7 @@ Kirigami.FormLayout {
         folder: shortcuts.home
         nameFilters: [ "Image files (*.jpg *.jpeg *.png *.bmp)", "All files (*)" ]
         onAccepted: {
-            cfg_customBackgroundImage = fileUrl
+            cfg_customBackgroundImagePath = String(fileUrl).replace("file://", "");
         }
     }
     
@@ -231,7 +232,7 @@ Kirigami.FormLayout {
             implicitWidth: 200
         }
         Label {
-            text: i18n(backgroundOpacity.value + "%");
+            text: i18n("%1%", backgroundOpacity.value);
         }
     }
 
@@ -315,7 +316,7 @@ Kirigami.FormLayout {
         enabled: showSearch.checked
         
         Label {
-            text: i18n((adaptSearchIcons.checked ? "Max size" : "Size") + " of search result icons:")
+            text: adaptSearchIcons.checked ? i18n("Max size of search result icons:") : i18n("Size of search result icons:")
         }
         ComboBox {
             id: searchIconSize
@@ -378,6 +379,11 @@ Kirigami.FormLayout {
         id: showSystemActionLabels
         enabled: showSystemActions.checked
         text:  i18n("Show system action labels")
+    }
+    CheckBox {
+        id: systemActionsUsePlasmaIcons
+        enabled: showSystemActions.checked
+        text:  i18n("Use plasma icons")
     }
 
     // RowLayout {

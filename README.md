@@ -36,3 +36,7 @@ Right click the icon widget, then select "Configure Plasma Drawer." Then click "
 
 System actions can be individually hidden by right clicking and selecting "Remove action," or disabled entirely in the widget configuration.
 The actions can also be rearranged by long pressing and dragging the icon to the desired position.
+
+### Internationalization
+
+If you would like to contribute by adding translations for your language, follow the instructions in the [Translations Readme](translate/README.md)

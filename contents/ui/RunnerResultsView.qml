@@ -166,6 +166,7 @@ FocusScope {
                         
                         text: model.display ?? ""
                         level: 2
+                        color: drawerTheme.textColor
                     }
 
                     Button {
@@ -179,13 +180,13 @@ FocusScope {
                             id: showMoreLabel
                             verticalAlignment: Text.AlignBottom
                             text: matchesList.expanded ? i18n("Show Less") : i18n("Show More")
-                            color: Qt.darker(theme.disabledTextColor, showMoreButton.hovered ? 1.5: 1);
+                            color: showMoreButton.hovered ? drawerTheme.textColor : drawerTheme.softTextColor
                         }
                         background: Rectangle {         
                             id: showMoreButtonHighlight
                             height: 1 * units.devicePixelRatio
                             anchors.bottom: showMoreLabel.bottom
-                            color: theme.disabledTextColor
+                            color: drawerTheme.softTextColor
 
                             visible: showMoreButton.activeFocus
                         }

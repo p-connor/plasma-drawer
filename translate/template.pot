@@ -1,0 +1,197 @@
+# Translation of PlasmaDrawer in LANGUAGE
+# Copyright (C) 2024
+# This file is distributed under the same license as the PlasmaDrawer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PlasmaDrawer\n"
+"Report-Msgid-Bugs-To: https://github.com/P-Connor/plasma-drawer\n"
+"POT-Creation-Date: 2024-01-28 03:42-0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../metadata.desktop
+msgid "Plasma Drawer"
+msgstr ""
+
+#: ../metadata.desktop
+msgid "A fullscreen customizable launcher with application directories and krunner-like search"
+msgstr ""
+
+#: ../contents/code/tools.js
+msgid "Remove action"
+msgstr ""
+
+#: ../contents/code/tools.js
+msgid "Show all"
+msgstr ""
+
+#: ../contents/code/tools.js
+msgid "Add to system actions bar"
+msgstr ""
+
+#: ../contents/code/tools.js
+msgid "Edit Applications"
+msgstr ""
+
+#: ../contents/config/config.qml
+msgid "General"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Icon:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use theme color"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use custom color"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use image"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Custom Color:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background Color"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Path: "
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "None"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background opacity:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "%1%"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Applications:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max columns in grid:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of application icons:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use directory icons"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Search:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show search bar"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@action:button"
+msgid "Configure Enabled Search Plugins…"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Adaptive search result size"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max size of search result icons:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of search result icons:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "System Actions:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system actions"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of system action icons:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system action labels"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use plasma icons"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Other:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Disable animations"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Animation speed multiplier:"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhide all hidden applications"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhidden!"
+msgstr ""
+
+#: ../contents/ui/main.qml
+msgid "Edit Applications..."
+msgstr ""
+
+#: ../contents/ui/MenuRepresentation.qml
+msgid "Search"
+msgstr ""
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show Less"
+msgstr ""
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show More"
+msgstr ""

@@ -94,7 +94,7 @@ FocusScope {
         id: background
         width: rowWidth
         height: listView.height + (units.smallSpacing * 2)
-        color: "#08FFFFFF"
+        color: colorWithAlpha(drawerTheme.textColor, 0.05)
         radius: units.smallSpacing * 3
 
         ListView {
