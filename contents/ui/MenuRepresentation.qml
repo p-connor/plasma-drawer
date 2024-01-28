@@ -375,7 +375,7 @@ Kicker.DashboardWindow {
             dragEnabled: true
             showLabels: plasmoid.configuration.showSystemActionLabels
             setIconColorBasedOnTheme: true
-            usesPlasmaTheme: true
+            usesPlasmaTheme: plasmoid.configuration.systemActionsUsePlasmaIcons
 
             onKeyNavUp: {
                 currentIndex = -1;

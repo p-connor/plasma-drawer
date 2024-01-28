@@ -50,6 +50,6 @@ The following scripts were retrieved from [Zren's Widget Library Repository](htt
 ## Translation Statuses
 |  Locale  |  Lines  | % Done|
 |----------|---------|-------|
-| Template |      43 |       |
-| ru       |   43/43 |  100% |
-| uk       |   43/43 |  100% |
+| Template |      44 |       |
+| ru       |   44/44 |  100% |
+| uk       |   44/44 |  100% |

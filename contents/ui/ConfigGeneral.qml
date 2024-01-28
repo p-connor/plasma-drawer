@@ -50,6 +50,7 @@ Kirigami.FormLayout {
 
     property alias cfg_showSystemActions:           showSystemActions.checked
     property alias cfg_showSystemActionLabels:      showSystemActionLabels.checked
+    property alias cfg_systemActionsUsePlasmaIcons: systemActionsUsePlasmaIcons.checked
     property int cfg_systemActionIconSize:          plasmoid.configuration.systemActionIconSize
     property var cfg_favoriteSystemActions:         plasmoid.configuration.favoriteSystemActions
 
@@ -378,6 +379,11 @@ Kirigami.FormLayout {
         id: showSystemActionLabels
         enabled: showSystemActions.checked
         text:  i18n("Show system action labels")
+    }
+    CheckBox {
+        id: systemActionsUsePlasmaIcons
+        enabled: showSystemActions.checked
+        text:  i18n("Use plasma icons")
     }
 
     // RowLayout {

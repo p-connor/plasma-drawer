@@ -1,5 +1,5 @@
 # Translation of PlasmaDrawer in LANGUAGE
-# Copyright (C) 2023
+# Copyright (C) 2024
 # This file is distributed under the same license as the PlasmaDrawer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PlasmaDrawer\n"
 "Report-Msgid-Bugs-To: https://github.com/P-Connor/plasma-drawer\n"
-"POT-Creation-Date: 2023-07-24 11:23+0300\n"
+"POT-Creation-Date: 2024-01-28 03:42-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -154,6 +154,10 @@ msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Show system action labels"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use plasma icons"
 msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
