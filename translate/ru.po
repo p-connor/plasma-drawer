@@ -1,7 +1,7 @@
 # Translation of PlasmaDrawer in Russian
 # Copyright (C) 2023
 # This file is distributed under the same license as the PlasmaDrawer package.
-# Mykhailo Stetsiuk <yaBobJonez@gmail.com>, 2023.
+# Mykhailo Stetsiuk <yaBobJonez@gmail.com>, 2023–2024.
 #
 #, fuzzy
 msgid ""
@@ -158,7 +158,7 @@ msgstr "Отображать метки системных действий"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use plasma icons"
-msgstr "Используйте значки Plasma"
+msgstr "Использовать иконки Plasma"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Other:"
