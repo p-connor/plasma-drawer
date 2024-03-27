@@ -20,10 +20,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.14
-import QtQuick.Dialogs 1.0
+import QtCore 6.3
+import QtQuick.Dialogs 6.3
 
 import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami as Kirigami
+import org.kde.iconthemes as KIconThemes
 import org.kde.kcmutils as KCM
 import org.kde.ksvg as KSvg
 import org.kde.kquickcontrols as KQuickControls
@@ -108,11 +110,11 @@ KCM.SimpleKCM {
                 }
             }
 
-            KQuickAddons.IconDialog {
+            KIconThemes.IconDialog {
                 id: iconDialog
 
                 function setCustomButtonImage(image) {
-                    cfg_customButtonImage = image || cfg_icon || "start-here-kde"
+                    cfg_customButtonImage = image || cfg_icon || "start-here-kde-symbolic"
                     cfg_useCustomButtonImage = true;
                 }
 
@@ -213,7 +215,7 @@ KCM.SimpleKCM {
         FileDialog {
             id: backgroundImageFileDialog
             title: "Please choose an image file"
-            folder: shortcuts.home
+            currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
             nameFilters: [ "Image files (*.jpg *.jpeg *.png *.bmp)", "All files (*)" ]
             onAccepted: {
                 cfg_customBackgroundImagePath = String(fileUrl).replace("file://", "");
