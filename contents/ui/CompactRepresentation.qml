@@ -49,7 +49,6 @@ Item {
 
     function updateSizeHints() {
         if (useCustomButtonImage) {
-            if (useCustomButtonImage) {
             if (vertical) {
                 const scaledHeight = Math.floor(parent.width * (buttonIcon.implicitHeight / buttonIcon.implicitWidth));
                 root.Layout.minimumHeight = scaledHeight;
@@ -64,12 +63,6 @@ Item {
         } else {
             root.Layout.minimumWidth = -1;
             root.Layout.minimumHeight = -1;
-        }
-        } else {
-            root.Layout.minimumWidth = Kirigami.Units.iconSizes.small;
-            root.Layout.maximumWidth = inPanel ? Kirigami.Units.iconSizeHints.panel : -1;
-            root.Layout.minimumHeight = Kirigami.Units.iconSizes.small
-            root.Layout.maximumHeight = inPanel ? Kirigami.Units.iconSizeHints.panel : -1;
         }
     }
 
