@@ -21,16 +21,16 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.plasma.private.kicker 0.1 as Kicker
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.plasmoid
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.private.kicker as Kicker
 
 import "../code/tools.js" as Tools
 import QtQuick.Window 2.0
-import QtQuick.Controls.Styles 1.4
-import QtGraphicalEffects 1.15
+import Qt5Compat.GraphicalEffects
 
 
 Kicker.DashboardWindow {
@@ -42,7 +42,7 @@ Kicker.DashboardWindow {
 
     readonly property bool searching: searchField.text != ""
 
-    readonly property int contentMargin: Math.max(units.iconSizes.huge, height * .12)
+    readonly property int contentMargin: Math.max(Kirigami.Units.iconSizes.huge, height * .12)
 
     // TODO: remove this and all focus debug rectangles
     property bool debugFocus: false
@@ -169,12 +169,12 @@ Kicker.DashboardWindow {
             anchors.top: parent.top
             anchors.topMargin: (contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
-            width: Math.min(units.gridUnit * 20, (root.width * 0.25) + (leftInset * 2))
-            leftInset: -(searchIcon.width + units.smallSpacing * 4)
-            rightInset: -(searchIcon.width + units.smallSpacing * 4)
+            width: Math.min(Kirigami.Units.gridUnit * 20, (root.width * 0.25) + (leftInset * 2))
+            leftInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
+            rightInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
 
             color: drawerTheme.textColor
-            font.pointSize: theme.defaultFont.pointSize + 1
+            font.pointSize: Kirigami.Theme.defaultFont.pointSize + 1
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
             
@@ -193,17 +193,17 @@ Kicker.DashboardWindow {
                 color: colorWithAlpha(drawerTheme.textColor, .15)
             }
 
-            PlasmaCore.IconItem {
+            Kirigami.Icon {
                 id: searchIcon
                 source: "search-icon"
                 visible: true
                 width:  searchFieldBackground.height
                 height: width
                 roundToIconSize: true
-                usesPlasmaTheme: true
+                // usesPlasmaTheme: true
                 anchors {
                     left: searchFieldBackground.left
-                    leftMargin: units.smallSpacing * 2
+                    leftMargin: Kirigami.Units.smallSpacing * 2
                     verticalCenter: parent.verticalCenter
                 }
             }
@@ -259,7 +259,7 @@ Kicker.DashboardWindow {
             RunnerResultsView {
                 id: runnerResultsView
 
-                width: Math.min(units.gridUnit * 32, root.width * 0.33)
+                width: Math.min(Kirigami.Units.gridUnit * 32, root.width * 0.33)
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 visible: searching
@@ -292,7 +292,7 @@ Kicker.DashboardWindow {
                 focus: true
 
                 iconSize: plasmoid.configuration.appIconSize
-                numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((root.width - units.largeSpacing * 2) / cellSizeWidth))
+                numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((root.width - Kirigami.Units.largeSpacing * 2) / cellSizeWidth))
 
                 model: appsModel
             }
@@ -358,12 +358,12 @@ Kicker.DashboardWindow {
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 bottom: parent.bottom
-                margins: units.largeSpacing
+                margins: Kirigami.Units.largeSpacing
                 bottomMargin: (contentMargin / 2) - (height / 2)
             }
 
             iconSize: plasmoid.configuration.systemActionIconSize
-            cellWidth: iconSize + (units.largeSpacing * (showLabels ? 3 : 1))
+            cellWidth: iconSize + (Kirigami.Units.largeSpacing * (showLabels ? 3 : 1))
             cellHeight: cellWidth
             // height: cellHeight
             // width: cellWidth * count

@@ -19,11 +19,12 @@
 
 import QtQuick 2.0
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.kquickcontrolsaddons 2.0
-import QtGraphicalEffects 1.15
+import org.kde.plasma.plasmoid
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.kirigami as Kirigami
+import org.kde.kquickcontrolsaddons
+import Qt5Compat.GraphicalEffects
 
 import "../code/tools.js" as Tools
 
@@ -72,15 +73,15 @@ Item {
 
         Item {
             anchors.centerIn: parent
-            PlasmaCore.IconItem {
+            Kirigami.Icon {
                 id: icon
                 anchors.centerIn: parent
                 width: parent.width
                 height: parent.height
                 animated: false
-                usesPlasmaTheme: loaderUsesPlasmaTheme
+                // usesPlasmaTheme: loaderUsesPlasmaTheme
                 source: model.decoration
-                roundToIconSize: width > units.iconSizes.huge ? false : true
+                roundToIconSize: width > Kirigami.Units.iconSizes.huge ? false : true
             }
 
             // Modify icon color to text color if using custom theme
@@ -102,7 +103,7 @@ Item {
 
             // anchors.fill: parent
             radius: width / 4
-            //border.color: theme.textColor
+            //border.color: Kirigami.Theme.textColor
             //border.width: 2
             color: "#33000005"
 
@@ -111,7 +112,7 @@ Item {
                 
                 anchors.fill: parent
                 anchors.margins: parent.width / 10
-                cellWidth: (width / 2) * 0.9 > units.iconSizes.small ? width / 2 : width
+                cellWidth: (width / 2) * 0.9 > Kirigami.Units.iconSizes.small ? width / 2 : width
                 cellHeight: cellWidth
                 
                 // TODO - don't use clip here for performance reasons
@@ -124,7 +125,7 @@ Item {
                     width: directoryGridView.cellWidth
                     height: directoryGridView.cellHeight
 
-                    PlasmaCore.IconItem {
+                    Kirigami.Icon {
                         id: directoryIconItem
 
                         width: parent.width * 0.9
@@ -132,9 +133,9 @@ Item {
                         anchors.centerIn: parent
 
                         animated: false
-                        usesPlasmaTheme: loaderUsesPlasmaTheme
+                        // usesPlasmaTheme: loaderUsesPlasmaTheme
                         source: model.decoration
-                        roundToIconSize: width > units.iconSizes.medium ? false : true
+                        roundToIconSize: width > Kirigami.Units.iconSizes.medium ? false : true
                     }
                 }
             }
@@ -179,7 +180,7 @@ Item {
 
         anchors {
             top: displayBox.bottom
-            topMargin: units.smallSpacing
+            topMargin: Kirigami.Units.smallSpacing
             left: parent.left
             leftMargin: highlightItemSvg.margins.left
             right: parent.right
@@ -202,7 +203,7 @@ Item {
 
     //     anchors {
     //         top: label.bottom
-    //         topMargin: units.smallSpacing
+    //         topMargin: Kirigami.Units.smallSpacing
     //         left: parent.left
     //         leftMargin: highlightItemSvg.margins.left
     //         right: parent.right

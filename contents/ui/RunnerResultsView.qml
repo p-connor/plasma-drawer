@@ -1,13 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.kquickcontrolsaddons 2.0
-import org.kde.kirigami 2.16 as Kirigami
+import org.kde.plasma.plasmoid
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.components as PC3
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.kquickcontrolsaddons
+import org.kde.kirigami as Kirigami
 
 import "../code/tools.js" as Tools
 
@@ -19,8 +19,8 @@ FocusScope {
     signal keyNavUp
     signal keyNavDown
 
-    width: PlasmaCore.Units.gridUnit * 20
-    height: PlasmaCore.Units.gridUnit * 60
+    width: Kirigami.Units.gridUnit * 20
+    height: Kirigami.Units.gridUnit * 60
 
     property bool usesPlasmaTheme: true
 
@@ -30,7 +30,7 @@ FocusScope {
     readonly property var currentMatch: currentSection ? currentSection.currentItem : null
     property alias sectionsCount: runnerSectionsList.count
 
-    property int iconSize: units.iconSizes.huge
+    property int iconSize: Kirigami.Units.iconSizes.huge
     property bool shrinkIconsToNative: false
 
     function selectFirst() {
@@ -130,7 +130,7 @@ FocusScope {
                 }
 
                 let headerHeight = section.matchesList.mapToItem(section, 0, 0).y;
-                let matchY = section.y + match.y + headerHeight + units.smallSpacing; // Match's y relative to runnerSectionsList's start
+                let matchY = section.y + match.y + headerHeight + Kirigami.Units.smallSpacing; // Match's y relative to runnerSectionsList's start
                 let mappedY = matchY - contentY; // Match's y adjusted to scrolled position
 
                 if (mappedY < 0) {
@@ -141,8 +141,8 @@ FocusScope {
             }
 
             delegate: FocusScope {
-                width: scrollView.width - scrollView.ScrollBar.vertical.width - units.smallSpacing
-                height: matchesList.height + sectionHeader.height + units.smallSpacing * 5
+                width: scrollView.width - scrollView.ScrollBar.vertical.width - Kirigami.Units.smallSpacing
+                height: matchesList.height + sectionHeader.height + Kirigami.Units.smallSpacing * 5
 
                 visible: matchesList.model && matchesList.model.count > 0
 
@@ -184,7 +184,7 @@ FocusScope {
                         }
                         background: Rectangle {         
                             id: showMoreButtonHighlight
-                            height: 1 * units.devicePixelRatio
+                            height: 1 * Kirigami.Units.devicePixelRatio
                             anchors.bottom: showMoreLabel.bottom
                             color: drawerTheme.softTextColor
 
@@ -228,10 +228,10 @@ FocusScope {
                 //     anchors.left: runnerName.right
                 //     anchors.right: parent.right
                 //     anchors.verticalCenter: runnerName.verticalCenter
-                //     anchors.leftMargin: units.smallSpacing * 2
+                //     anchors.leftMargin: Kirigami.Units.smallSpacing * 2
                 //     // width: root.width
-                //     height: 2 * units.devicePixelRatio
-                //     color: theme.textColor
+                //     height: 2 * Kirigami.Units.devicePixelRatio
+                //     color: Kirigami.Theme.textColor
                 //     opacity: .05
                 // }
 
@@ -239,7 +239,7 @@ FocusScope {
                     id: matchesList
                     width: parent.width
                     anchors.top: sectionHeader.bottom
-                    anchors.topMargin: units.smallSpacing * 2
+                    anchors.topMargin: Kirigami.Units.smallSpacing * 2
 
                     focus: true
 

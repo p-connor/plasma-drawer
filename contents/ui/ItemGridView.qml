@@ -20,11 +20,11 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.15
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.kquickcontrolsaddons 2.0
-import org.kde.draganddrop 2.0
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.components as PC3
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.kquickcontrolsaddons
+import org.kde.draganddrop
 
 import "../code/tools.js" as Tools
 
@@ -41,7 +41,7 @@ FocusScope {
     property alias usesPlasmaTheme: gridView.usesPlasmaTheme
     property bool setIconColorBasedOnTheme: false
 
-    property int iconSize: units.iconSizes.large
+    property int iconSize: Kirigami.Units.iconSizes.large
 
     property int numberColumns: Math.floor(width / cellWidth)
     property int maxVisibleRows: -1
@@ -198,7 +198,7 @@ FocusScope {
                 flickDeceleration: 4000
 
                 highlightFollowsCurrentItem: true
-                highlight: PlasmaComponents.Highlight {
+                highlight: PlasmaExtras.Highlight {
                     visible: gridView.highlightFollowsCurrentItem
                 }
                 highlightMoveDuration: 0

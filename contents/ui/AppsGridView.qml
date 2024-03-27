@@ -1,11 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.kquickcontrolsaddons 2.0
+import org.kde.plasma.plasmoid
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.kquickcontrolsaddons
+import org.kde.kirigami as Kirigami
 
 import "../code/tools.js" as Tools
 
@@ -17,11 +18,11 @@ FocusScope {
     signal keyNavUp
     signal keyNavDown
 
-    property int iconSize: units.iconSizes.huge
+    property int iconSize: Kirigami.Units.iconSizes.huge
     
     // TODO - polish cell sizes for different resolutions
-    readonly property int cellSizeWidth: (iconSize * 1.5) + theme.mSize(theme.defaultFont).height
-                                + (2 * units.smallSpacing)
+    readonly property int cellSizeWidth: (iconSize * 1.5) + Kirigami.Units.gridUnit
+                                + (2 * Kirigami.Units.smallSpacing)
                                 + (2 * Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom,
                                                 highlightItemSvg.margins.left + highlightItemSvg.margins.right))
     readonly property int minCellSizeHeight: (cellSizeWidth - (iconSize * .33))
@@ -142,7 +143,7 @@ FocusScope {
 
         focus: true
 
-        property var transitionDuration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration / plasmoid.configuration.animationSpeedMultiplier
+        property var transitionDuration: plasmoid.configuration.disableAnimations ? 0 : Kirigami.Units.veryLongDuration / plasmoid.configuration.animationSpeedMultiplier
 
         pushEnter: !plasmoid.configuration.disableAnimations ? pushEnterTransition : instantEnterTransition
         pushExit:  !plasmoid.configuration.disableAnimations ? pushExitTransition  : instantExitTransition

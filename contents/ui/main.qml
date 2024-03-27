@@ -19,14 +19,15 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
-import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.plasmoid
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.ksvg as KSvg
 
-import org.kde.plasma.private.kicker 0.1 as Kicker
+import org.kde.plasma.private.kicker as Kicker
 
-Item {
+PlasmoidItem {
     id: kicker
 
     // onActiveFocusItemChanged: {
@@ -37,10 +38,10 @@ Item {
 
     signal reset
 
-    Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
+    preferredRepresentation: fullRepresentation
 
-    Plasmoid.compactRepresentation: null
-    Plasmoid.fullRepresentation: compactRepresentation
+    compactRepresentation: null
+    fullRepresentation: compactRepresentation
 
     property Item dragSource: null
 
@@ -70,10 +71,6 @@ Item {
                 continue;
             }
         }
-    }
-
-    function action_menuedit() {
-        processRunner.runMenuEditor();
     }
 
     Component {
@@ -139,10 +136,13 @@ Item {
 
         appletInterface: plasmoid
         
-        // runners: plasmoid.configuration.useExtraRunners ? new Array("services").concat(plasmoid.configuration.extraRunners) : "services"
-
+        runners: [  "krunner_services",
+                    "krunner_systemsettings",
+                    "krunner_sessions",
+                    "krunner_powerdevil",
+                    "calculator",
+                    "unitconverter" ]   // TODO: Make this configurable, or set to KRunner's configured runners
         // mergeResults: true
-        deleteWhenEmpty: true
     }
 
     Kicker.DragHelper {
@@ -153,7 +153,7 @@ Item {
         id: processRunner;
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id : highlightItemSvg
 
         visible: false
@@ -162,7 +162,7 @@ Item {
         prefix: "hover"
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id : panelSvg
 
         visible: false
@@ -185,9 +185,11 @@ Item {
         dragSource = null;
     }
 
-    Component.onCompleted: {
-        plasmoid.setAction("menuedit", i18n("Edit Applications..."), "kmenuedit");
-        // rootModel.refreshed.connect(reset);
-        dragHelper.dropped.connect(resetDragSource);
-    }
+    Plasmoid.contextualActions: [
+        PlasmaCore.Action {
+            text: i18n("Edit Applications...")
+            icon.name: "kmenuedit"
+            onTriggered: processRunner.runMenuEditor()
+        }
+    ]
 }
