@@ -110,7 +110,7 @@ PlasmoidItem {
         showSeparators: false
         paginate: false
 
-        appletInterface: plasmoid
+        appletInterface: kicker
         appNameFormat: plasmoid.configuration.appNameFormat
 
         Component.onCompleted: {
@@ -134,7 +134,7 @@ PlasmoidItem {
     Kicker.RunnerModel {
         id: runnerModel
 
-        appletInterface: plasmoid
+        appletInterface: kicker
         
         runners: [  "krunner_services",
                     "krunner_systemsettings",
