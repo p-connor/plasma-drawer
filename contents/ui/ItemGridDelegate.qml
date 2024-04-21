@@ -21,7 +21,7 @@ import QtQuick 2.0
 
 import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.components 3.0 as PC3
 import org.kde.kirigami as Kirigami
 import org.kde.kquickcontrolsaddons
 import Qt5Compat.GraphicalEffects
@@ -173,7 +173,7 @@ Item {
     //     // color: "transparent"
     // }
 
-    PlasmaComponents.Label {
+    PC3.Label {
         id: label
 
         visible: showLabel
@@ -196,7 +196,7 @@ Item {
         color: drawerTheme.textColor
     }
 
-    // PlasmaComponents.Label {
+    // PC3.Label {
     //     id: folderArrow
 
     //     visible: isDirectory

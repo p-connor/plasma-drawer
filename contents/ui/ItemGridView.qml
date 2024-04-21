@@ -20,8 +20,7 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.15
 
-import org.kde.plasma.components as PlasmaComponents
-import org.kde.plasma.components as PC3
+import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kquickcontrolsaddons
 import org.kde.draganddrop

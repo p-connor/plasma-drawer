@@ -3,8 +3,7 @@ import QtQuick.Controls 2.15
 
 import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.components as PlasmaComponents
-import org.kde.plasma.components as PC3
+import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kquickcontrolsaddons
 import org.kde.kirigami as Kirigami
@@ -176,7 +175,7 @@ FocusScope {
 
                         visible: matchesList.expandable
 
-                        contentItem: PlasmaComponents.Label {
+                        contentItem: PC3.Label {
                             id: showMoreLabel
                             verticalAlignment: Text.AlignBottom
                             text: matchesList.expanded ? i18n("Show Less") : i18n("Show More")

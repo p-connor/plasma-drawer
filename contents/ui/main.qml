@@ -22,7 +22,6 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid
 
 import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.components as PlasmaComponents
 import org.kde.ksvg as KSvg
 
 import org.kde.plasma.private.kicker as Kicker
@@ -168,17 +167,6 @@ PlasmoidItem {
         visible: false
 
         imagePath: "widgets/panel-background"
-    }
-
-    PlasmaComponents.Label {
-        id: toolTipDelegate
-
-        width: contentWidth
-        height: contentHeight
-
-        property Item toolTip
-
-        text: (toolTip != null) ? toolTip.text : ""
     }
 
     function resetDragSource() {
