@@ -20,7 +20,6 @@
 import QtQuick 2.0
 
 import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.kirigami as Kirigami
 import org.kde.kquickcontrolsaddons

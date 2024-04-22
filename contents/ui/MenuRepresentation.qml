@@ -21,16 +21,14 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasmoid
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.private.kicker as Kicker
-
-import "../code/tools.js" as Tools
 import QtQuick.Window 2.0
 import Qt5Compat.GraphicalEffects
 
+import "../code/tools.js" as Tools
 
 Kicker.DashboardWindow {
     
