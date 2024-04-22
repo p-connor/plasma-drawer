@@ -1,4 +1,4 @@
-import QtQuick 2.15
+import QtQuick
 
 import org.kde.plasma.plasmoid
 import org.kde.plasma.components 3.0 as PC3

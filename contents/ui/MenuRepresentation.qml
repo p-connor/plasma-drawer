@@ -18,14 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import org.kde.plasma.plasmoid
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.private.kicker as Kicker
-import QtQuick.Window 2.0
+import QtQuick.Window
 import Qt5Compat.GraphicalEffects
 
 import "../code/tools.js" as Tools

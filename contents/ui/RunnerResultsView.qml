@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import org.kde.plasma.plasmoid
 import org.kde.plasma.components 3.0 as PC3
