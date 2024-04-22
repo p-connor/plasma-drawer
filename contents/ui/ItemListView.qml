@@ -68,7 +68,7 @@ FocusScope {
 
         visualParent: listView
         
-        onActionClicked: {
+        onActionClicked: function (actionId, actionArgument) {
             var closeRequested = Tools.triggerAction(plasmoid, model, targetIndex, actionId, actionArgument);
 
             if (closeRequested) {
@@ -197,21 +197,21 @@ FocusScope {
                     // itemList.focus = true;
                 }
 
-                onPressed: {
+                onPressed: function (mouse) {
                     if (mouse.button == Qt.RightButton && currentItem && currentItem.hasActionList) {
                         mouse.accepted = true;
                         itemList.openActionMenu(mouse.x, mouse.y, currentItem.getActionList());
                     }
                 }
 
-                onReleased: {
+                onReleased: function (mouse) {
                     if (mouse.button != Qt.RightButton && currentIndex != -1) {
                         mouse.accepted = true;
                         itemList.trigger(currentIndex);
                     }
                 }
 
-                onPositionChanged: {
+                onPositionChanged: function (mouse) {
                     updatePositionProperties(mouse.x, mouse.y);
                 }
 
@@ -224,7 +224,7 @@ FocusScope {
         }
     }
 
-    Keys.onPressed: {
+    Keys.onPressed: function (event) {
         if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
             event.accepted = true;
             itemList.trigger(currentIndex);

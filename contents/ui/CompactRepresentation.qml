@@ -96,7 +96,7 @@ Item {
         activeFocusOnTab: true
         hoverEnabled: !root.dashWindow || !root.dashWindow.visible
 
-        Keys.onPressed: {
+        Keys.onPressed: function (event) {
             switch (event.key) {
                 case Qt.Key_Space:
                 case Qt.Key_Enter:

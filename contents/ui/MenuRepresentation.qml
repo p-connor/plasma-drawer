@@ -105,7 +105,7 @@ Kicker.DashboardWindow {
         ActionMenu {
             id: actionMenu
             // visualParent: rootMouseArea
-            onActionClicked: {
+            onActionClicked: function (actionId, actionArgument) {
                 var closeRequested = Tools.triggerAction(plasmoid, null, -1, actionId, actionArgument);
                 if (closeRequested) {
                     root.toggle();
@@ -113,7 +113,7 @@ Kicker.DashboardWindow {
             }
         }
 
-        onReleased: {
+        onReleased: function (mouse) {
             mouse.accepted = true;
             if (mouse.button == Qt.RightButton) {
                 if (!searching) {
@@ -213,7 +213,7 @@ Kicker.DashboardWindow {
                 cached: true
             }
             
-            Keys.onPressed: {
+            Keys.onPressed: function (event) {
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
                     if (!content.item.currentMatch) {
@@ -234,7 +234,7 @@ Kicker.DashboardWindow {
                 }
             }
 
-            Keys.onReleased: {
+            Keys.onReleased: function (event) {
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
                     content.item.triggerSelected();
@@ -333,7 +333,7 @@ Kicker.DashboardWindow {
                 item.keyNavDown.connect(keyNavDown);
             }
 
-            Keys.onPressed: {
+            Keys.onPressed: function (event) {
                 if (event.key == Qt.Key_Backtab) {
                     event.accepted = true;
                     keyNavUp();
@@ -380,7 +380,7 @@ Kicker.DashboardWindow {
                 content.item.selectLast();
             }
 
-            Keys.onPressed: {
+            Keys.onPressed: function (event) {
                 if (event.key == Qt.Key_Backtab || (event.key == Qt.Key_Tab && !searchField.visible)) {
                     event.accepted = true;
                     currentIndex = -1;
@@ -394,7 +394,7 @@ Kicker.DashboardWindow {
             }
         }
  
-        Keys.onPressed: {
+        Keys.onPressed: function (event) {
             if (searchField.focus || !searchField.visible) {
                 return;
             }

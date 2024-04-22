@@ -192,7 +192,7 @@ FocusScope {
                             matchesList.expanded = !matchesList.expanded;
                         }
 
-                        Keys.onPressed: {
+                        Keys.onPressed: function (event) {
                             if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                                 // matchesList.focus = true;
                                 matchesList.expanded = !matchesList.expanded;
@@ -287,7 +287,7 @@ FocusScope {
         }
     }
 
-    Keys.onPressed: {
+    Keys.onPressed: function (event) {
         if (event.key == Qt.Key_Up || event.key == Qt.Key_Down || event.key == Qt.Key_Left || event.key == Qt.Key_Right) {
             if (currentSectionIndex == -1) {
                 event.accepted = true;

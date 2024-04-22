@@ -128,7 +128,7 @@ FocusScope {
 
         visualParent: gridView
         
-        onActionClicked: {
+        onActionClicked: function (actionId, actionArgument) {
             var closeRequested = Tools.triggerAction(plasmoid, model, targetIndex, actionId, actionArgument);
             if (closeRequested) {
                 root.toggle();
@@ -155,7 +155,7 @@ FocusScope {
         height: (maxVisibleRows == -1 ? numberRows : maxVisibleRows) * cellHeight
         anchors.centerIn: parent
 
-        onDragMove: {
+        onDragMove: function (event) {
             var cPos = mapToItem(gridView.contentItem, event.x, event.y);
             var item = gridView.itemAt(cPos.x, cPos.y);
 
@@ -211,7 +211,7 @@ FocusScope {
                     currentIndex = -1;
                 }
 
-                Keys.onLeftPressed: {
+                Keys.onLeftPressed: function (event) {
                     if (currentIndex == -1) {
                         currentIndex = 0;
                         return;
@@ -225,7 +225,7 @@ FocusScope {
                     }
                 }
 
-                Keys.onRightPressed: {
+                Keys.onRightPressed: function (event) {
                     if (currentIndex == -1) {
                         currentIndex = 0;
                         return;
@@ -241,7 +241,7 @@ FocusScope {
                     }
                 }
 
-                Keys.onUpPressed: {
+                Keys.onUpPressed: function (event) {
                     if (currentIndex == -1) {
                         currentIndex = 0;
                         return;
@@ -256,7 +256,7 @@ FocusScope {
                     }
                 }
 
-                Keys.onDownPressed: {
+                Keys.onDownPressed: function (event) {
                     if (currentIndex == -1) {
                         currentIndex = 0;
                         return;
@@ -275,7 +275,7 @@ FocusScope {
                     }
                 }
 
-                Keys.onPressed: {
+                Keys.onPressed: function (event) {
                     if (event.key == Qt.Key_Menu && currentItem && currentItem.hasActionList) {
                         event.accepted = true;
                         openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
@@ -344,7 +344,7 @@ FocusScope {
                         return index;
                     }
 
-                    onPressed: {
+                    onPressed: function (mouse) {
                         mouse.accepted = true;
                         updatePositionProperties(mouse.x, mouse.y);
                         pressX = mouse.x;
@@ -357,7 +357,7 @@ FocusScope {
                         }
                     }
 
-                    onReleased: {
+                    onReleased: function (mouse) {
                         mouse.accepted = true;
                         if (gridView.currentItem) {
                             itemGrid.trigger(gridView.currentIndex);
@@ -375,7 +375,7 @@ FocusScope {
                         pressY = -1;
                     }
 
-                    onPressAndHold: {
+                    onPressAndHold: function (mouse) {
                         if (!dragEnabled) {
                             pressX = -1;
                             pressY = -1;
@@ -398,7 +398,7 @@ FocusScope {
                         pressY = -1;
                     }
 
-                    onPositionChanged: {
+                    onPositionChanged: function (mouse) {
                         updatePositionProperties(mouse.x, mouse.y);
 
                         if (gridView.currentIndex != -1 && currentItem && currentItem.m != null) {

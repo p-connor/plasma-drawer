@@ -85,7 +85,7 @@ KCM.SimpleKCM {
 
                 anchors.fill: parent
 
-                onDragEnter: {
+                onDragEnter: function (event) {
                     // Cannot use string operations (e.g. indexOf()) on "url" basic type.
                     var urlString = event.mimeData.url.toString();
 
@@ -101,7 +101,7 @@ KCM.SimpleKCM {
                 }
                 onDragLeave: containsAcceptableDrag = false
 
-                onDrop: {
+                onDrop: function (event) {
                     if (containsAcceptableDrag) {
                         // Strip file:// prefix, we already verified in onDragEnter that we have only local URLs.
                         iconDialog.setCustomButtonImage(event.mimeData.url.toString().substr("file://".length));
