@@ -1,12 +1,12 @@
-# Translation of PlasmaDrawer in Russian
+# Translation of plasma-drawer in Russian
 # Copyright (C) 2023
-# This file is distributed under the same license as the PlasmaDrawer package.
+# This file is distributed under the same license as the plasma-drawer package.
 # Mykhailo Stetsiuk <yaBobJonez@gmail.com>, 2023–2024.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PlasmaDrawer\n"
+"Project-Id-Version: plasma-drawer\n"
 "Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
 "POT-Creation-Date: 2024-01-28 03:42-0800\n"
 "PO-Revision-Date: 2023-07-24 10:55+0300\n"

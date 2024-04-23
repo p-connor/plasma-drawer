@@ -21,7 +21,7 @@ upgrade: $(PACKAGE_NAME)
 	kpackagetool6 -t Plasma/Applet -u $(PACKAGE_NAME)
 
 uninstall:
-	kpackagetool6 -t Plasma/Applet -r p-connor.PlasmaDrawer
+	kpackagetool6 -t Plasma/Applet -r p-connor.plasma-drawer
 
 test:
 	QT_LOGGING_RULES="qml.debug=true" plasmoidviewer -a ./

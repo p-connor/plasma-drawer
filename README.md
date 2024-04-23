@@ -17,7 +17,7 @@ Download the [latest release](https://github.com/p-connor/plasma-drawer/releases
 
 To uninstall, use the following command:
 
-`kpackagetool5 -t Plasma/Applet -r p-connor.PlasmaDrawer`
+`kpackagetool5 -t Plasma/Applet -r p-connor.plasma-drawer`
 
 ### Usage
 

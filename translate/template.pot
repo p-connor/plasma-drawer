@@ -1,12 +1,12 @@
-# Translation of PlasmaDrawer in LANGUAGE
+# Translation of plasma-drawer in LANGUAGE
 # Copyright (C) 2024
-# This file is distributed under the same license as the PlasmaDrawer package.
+# This file is distributed under the same license as the plasma-drawer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PlasmaDrawer\n"
+"Project-Id-Version: plasma-drawer\n"
 "Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
 "POT-Creation-Date: 2024-01-28 03:42-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
