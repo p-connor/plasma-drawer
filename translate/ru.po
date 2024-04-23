@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PlasmaDrawer\n"
-"Report-Msgid-Bugs-To: https://github.com/P-Connor/plasma-drawer\n"
+"Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
 "POT-Creation-Date: 2024-01-28 03:42-0800\n"
 "PO-Revision-Date: 2023-07-24 10:55+0300\n"
 "Last-Translator: Mykhailo Stetsiuk <yaBobJonez@gmail.com>\n"

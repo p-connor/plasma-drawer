@@ -10,9 +10,9 @@ X-Plasma-Provides=org.kde.plasma.launchermenu
 
 X-KDE-PluginInfo-Author=Connor Popp
 X-KDE-PluginInfo-Email=cmpopp2@gmail.com
-X-KDE-PluginInfo-Name=P-Connor.PlasmaDrawer
+X-KDE-PluginInfo-Name=p-connor.PlasmaDrawer
 X-KDE-PluginInfo-Version=1.4
-X-KDE-PluginInfo-Website=https://github.com/P-Connor/plasma-drawer
+X-KDE-PluginInfo-Website=https://github.com/p-connor/plasma-drawer
 X-KDE-PluginInfo-Category=Application Launchers
 
 KPackageStructure=Plasma/Applet

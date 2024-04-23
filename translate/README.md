@@ -1,6 +1,6 @@
 ## Welcome
 
-Welcome to the translations readme! If you wish to contribute and add translations for your language, follow the steps below. If the following steps are confusing or if have any questions throughout the process, feel free to reach out to me for support by [adding an issue](https://github.com/P-Connor/plasma-drawer/issues/new/choose) on the github repository. I really appreciate your efforts in making Plasma Drawer more accessible to all!
+Welcome to the translations readme! If you wish to contribute and add translations for your language, follow the steps below. If the following steps are confusing or if have any questions throughout the process, feel free to reach out to me for support by [adding an issue](https://github.com/p-connor/plasma-drawer/issues/new/choose) on the github repository. I really appreciate your efforts in making Plasma Drawer more accessible to all!
 
 ## New Translations
 
@@ -31,9 +31,9 @@ To add a new translation:
         msgid "Applications:"
         msgstr "Aplicaciones:"
     
-5. Once all phrases are translated, save the file and attach it to a [new github issue](https://github.com/P-Connor/plasma-drawer/issues/new/choose). I will review it and add the translation in the next widget update.
+5. Once all phrases are translated, save the file and attach it to a [new github issue](https://github.com/p-connor/plasma-drawer/issues/new/choose). I will review it and add the translation in the next widget update.
 
-    Alternatively, if you're a bit more tech-savvy, you can run merge.sh, build.sh, and plasmoidlocaletest.sh in that order to build the translation and test it. Then [submit a pull request](https://github.com/P-Connor/plasma-drawer/compare) in the development branch.
+    Alternatively, if you're a bit more tech-savvy, you can run merge.sh, build.sh, and plasmoidlocaletest.sh in that order to build the translation and test it. Then [submit a pull request](https://github.com/p-connor/plasma-drawer/compare) in the development branch.
 
 ## Scripts
 

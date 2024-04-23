@@ -3,21 +3,21 @@ A fullscreen customizable launcher with application directories and krunner-like
 
 ### Screenshots
 
-![Custom setup](https://github.com/P-Connor/plasma-drawer/blob/main/screenshots/custom.png?raw=true)
+![Custom setup](https://github.com/p-connor/plasma-drawer/blob/main/screenshots/custom.png?raw=true)
 
-![Manjaro default setup](https://github.com/P-Connor/plasma-drawer/blob/main/screenshots/manjaro-default.png?raw=true)
+![Manjaro default setup](https://github.com/p-connor/plasma-drawer/blob/main/screenshots/manjaro-default.png?raw=true)
 
-![Krunner-like search](https://github.com/P-Connor/plasma-drawer/blob/main/screenshots/manjaro-search.png?raw=true)
+![Krunner-like search](https://github.com/p-connor/plasma-drawer/blob/main/screenshots/manjaro-search.png?raw=true)
 
 ### Installation
 
-Download the [latest release](https://github.com/P-Connor/plasma-drawer/releases/latest) and run the following command:
+Download the [latest release](https://github.com/p-connor/plasma-drawer/releases/latest) and run the following command:
 
 `kpackagetool5 -i plasma-drawer-VERSION.plasmoid`
 
 To uninstall, use the following command:
 
-`kpackagetool5 -t Plasma/Applet -r P-Connor.PlasmaDrawer`
+`kpackagetool5 -t Plasma/Applet -r p-connor.PlasmaDrawer`
 
 ### Usage
 
