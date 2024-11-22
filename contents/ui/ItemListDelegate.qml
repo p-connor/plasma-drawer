@@ -28,7 +28,7 @@ Item {
         anchors {
             left: parent.left
             verticalCenter: parent.verticalCenter
-            margins: Kirigami.Units.largeSpacing
+            leftMargin: Kirigami.Units.largeSpacing * 1.5
         }
 
         width: item.iconSize
@@ -48,8 +48,8 @@ Item {
             left: matchIcon.right
             right: parent.right
             verticalCenter: parent.verticalCenter
-            leftMargin: Kirigami.Units.largeSpacing
-            rightMargin: Kirigami.Units.largeSpacing
+            leftMargin: Kirigami.Units.largeSpacing * 1.5
+            rightMargin: Kirigami.Units.largeSpacing * 1.5
         }
 
         height: parent.height

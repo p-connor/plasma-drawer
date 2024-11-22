@@ -138,7 +138,7 @@ FocusScope {
 
             delegate: FocusScope {
                 width: scrollView.width - scrollView.ScrollBar.vertical.width - Kirigami.Units.smallSpacing
-                height: matchesList.height + sectionHeader.height + Kirigami.Units.smallSpacing * 5
+                height: matchesList.height + sectionHeader.height + Kirigami.Units.largeSpacing * 4
 
                 visible: matchesList.model && matchesList.model.count > 0
 

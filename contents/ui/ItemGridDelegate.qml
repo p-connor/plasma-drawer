@@ -179,7 +179,7 @@ Item {
 
         anchors {
             top: displayBox.bottom
-            topMargin: Kirigami.Units.smallSpacing
+            topMargin: Kirigami.Units.largeSpacing * 1.5
             left: parent.left
             leftMargin: highlightItemSvg.margins.left
             right: parent.right
