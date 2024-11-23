@@ -25,6 +25,7 @@ import org.kde.plasma.core as PlasmaCore
 import org.kde.ksvg as KSvg
 
 import org.kde.plasma.private.kicker as Kicker
+import org.kde.kitemmodels as KItemModels
 
 PlasmoidItem {
     id: kicker
@@ -130,18 +131,32 @@ PlasmoidItem {
         }
     }
 
-    Kicker.RunnerModel {
+    // Kicker.RunnerModel no longer has the deleteWhenEmpty property, which means we must filter
+    // out the empty results sections ourselves using a wrapper FilterProxyModel
+    KItemModels.KSortFilterProxyModel {
         id: runnerModel
 
-        appletInterface: kicker
-        
-        runners: [  "krunner_services",
-                    "krunner_systemsettings",
-                    "krunner_sessions",
-                    "krunner_powerdevil",
-                    "calculator",
-                    "unitconverter" ]   // TODO: Make this configurable, or set to KRunner's configured runners
-        // mergeResults: true
+        property alias query: kickerRunnerModel.query
+
+        sourceModel: Kicker.RunnerModel {
+            id: kickerRunnerModel
+            appletInterface: kicker
+            runners: plasmoid.configuration.searchRunners
+            onCountChanged: {
+                for (let i = 0; i < count; i++) {
+                    kickerRunnerModel.modelForRow(i).countChanged.connect(runnerModel.invalidateFilter);
+                }
+            }
+        }
+
+        filterRowCallback: (sourceRow, sourceParent) => {
+            return sourceModel.modelForRow(sourceRow).count > 0;
+        }
+
+        function modelForRow(proxyRow) {
+            let sourceRow = runnerModel.mapToSource(runnerModel.index(proxyRow, 0)).row;
+            return sourceModel.modelForRow(sourceRow);
+        }
     }
 
     Kicker.DragHelper {

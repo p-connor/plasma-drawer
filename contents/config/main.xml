@@ -103,6 +103,10 @@
       <label>Determines whether the icons in the search results list should be shrunk to match their native resolution.</label>
       <default>false</default>
     </entry>
+    <entry name="searchRunners" type="StringList">
+      <label>List of KRunner plugin IDs to use in search</label>
+      <default>krunner_services,krunner_systemsettings,krunner_sessions,krunner_powerdevil,calculator,unitconverter,krunner_shell,krunner_bookmarksrunner,baloosearch,locations</default>
+    </entry>
 
     <entry name="disableAnimations" type="Bool">
       <label>Disables animations for app grid navigation and search results</label>
