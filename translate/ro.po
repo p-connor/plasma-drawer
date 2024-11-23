@@ -1,0 +1,197 @@
+# Translation of PlasmaDrawer in Romanian
+# Copyright (C) 2024
+# This file is distributed under the same license as the PlasmaDrawer package.
+# maxhatei2 <mateibota10@outlook.com>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PlasmaDrawer\n"
+"Report-Msgid-Bugs-To: https://github.com/P-Connor/plasma-drawer\n"
+"POT-Creation-Date: 2024-01-28 03:42-0800\n"
+"PO-Revision-Date: 2024-11-21 20:50+2\n"
+"Last-Translator: maxhatei2 <mateibota10@outlook.com\n"
+"Language-Team: Romanian\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../metadata.desktop
+msgid "Plasma Drawer"
+msgstr "Plasma Drawer"
+
+#: ../metadata.desktop
+msgid "A fullscreen customizable launcher with application directories and krunner-like search"
+msgstr "Un launcher pe tot ecranul customizabil cu aplcații, directoare și căutare care arată ca krunner"
+
+#: ../contents/code/tools.js
+msgid "Remove action"
+msgstr "Șterge acțiunea"
+
+#: ../contents/code/tools.js
+msgid "Show all"
+msgstr "Afișează toate"
+
+#: ../contents/code/tools.js
+msgid "Add to system actions bar"
+msgstr "Adaugă la bara de acțiuni a sistemului"
+
+#: ../contents/code/tools.js
+msgid "Edit Applications"
+msgstr "Editează aplicațiile"
+
+#: ../contents/config/config.qml
+msgid "General"
+msgstr "General"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Icon:"
+msgstr "Iconiță:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Alege..."
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Șterge Iconița"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background:"
+msgstr "Imagine de fundal:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use theme color"
+msgstr "Folosește culoare temei"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use custom color"
+msgstr "Folosește culoare personalizată"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use image"
+msgstr "Folosește imagine"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Custom Color:"
+msgstr "Culoare Personalizată:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background Color"
+msgstr "Culoare de Fundal"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Path: "
+msgstr "Drum:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "None"
+msgstr "Niciuna"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background opacity:"
+msgstr "Opacitatea imaginii de fundal:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "%1%"
+msgstr "%1%"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Applications:"
+msgstr "Aplcații"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max columns in grid:"
+msgstr "Coloane maxime în grilă:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of application icons:"
+msgstr "Dimensiunea iconițelor aplicațiilor:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use directory icons"
+msgstr "Folosește iconițele directoarelor"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Search:"
+msgstr "Caută:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show search bar"
+msgstr "Afișează bara de căutare"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@action:button"
+msgid "Configure Enabled Search Plugins…"
+msgstr "Configurează plugin-urile pornite de căutare..."
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Adaptive search result size"
+msgstr "Dimensiune adaptivă a rezultatelor căutarilor"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max size of search result icons:"
+msgstr "Dimensiunea maximă a iconițelor de la rezultatele căutarilor"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of search result icons:"
+msgstr "Dimensiunea iconițelor de la rezultatele căutărilor:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "System Actions:"
+msgstr "Acțiunile Sistemului:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system actions"
+msgstr "Afișează acțiunile sistemului"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of system action icons:"
+msgstr "Dimensiunea iconițelor ale sistemului:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system action labels"
+msgstr "Afișează etichetele acțiunii a sistemului"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use plasma icons"
+msgstr "Folosește iconițele din Plasma"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Other:"
+msgstr "Alt:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Disable animations"
+msgstr "Dezactivează animațiile"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Animation speed multiplier:"
+msgstr "Multiplicatorul vitezei animației:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhide all hidden applications"
+msgstr "Afișează toate aplicațiile ascunse"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhidden!"
+msgstr "Ascunse!"
+
+#: ../contents/ui/main.qml
+msgid "Edit Applications..."
+msgstr "Editează Aplicațiile..."
+
+#: ../contents/ui/MenuRepresentation.qml
+msgid "Search"
+msgstr "Caută"
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show Less"
+msgstr "Afișează mai puțin"
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show More"
+msgstr "Afișează mai mult"
