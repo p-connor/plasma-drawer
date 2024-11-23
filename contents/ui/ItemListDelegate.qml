@@ -12,8 +12,6 @@ Item {
     implicitHeight: iconSize * 1.5
 
     property int iconSize: Kirigami.Units.iconSizes.large
-    property bool usesPlasmaTheme: true
-
     readonly property int sourceIconSize: matchIcon.implicitWidth
 
     readonly property bool hasActionList: ("hasActionList" in model) && (model.hasActionList == true)
@@ -35,7 +33,6 @@ Item {
         height: width
 
         animated: false
-        // usesPlasmaTheme: usesPlasmaTheme
         source: model.decoration
 
         roundToIconSize: width > Kirigami.Units.iconSizes.huge ? false : true

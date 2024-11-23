@@ -35,31 +35,31 @@ import org.kde.draganddrop as DragDrop
 KCM.SimpleKCM {
     id: configGeneral
 
-    property string cfg_icon:                       plasmoid.configuration.icon
-    property bool cfg_useCustomButtonImage:         plasmoid.configuration.useCustomButtonImage
-    property string cfg_customButtonImage:          plasmoid.configuration.customButtonImage
+    property string cfg_icon:                           plasmoid.configuration.icon
+    property bool cfg_useCustomButtonImage:             plasmoid.configuration.useCustomButtonImage
+    property string cfg_customButtonImage:              plasmoid.configuration.customButtonImage
 
-    property alias cfg_backgroundType:              backgroundType.currentIndex
-    property var cfg_customBackgroundColor:         plasmoid.configuration.customBackgroundColor
-    property var cfg_customBackgroundImagePath:     plasmoid.configuration.customBackgroundImagePath
-    property alias cfg_backgroundOpacity:           backgroundOpacity.value
+    property alias cfg_backgroundType:                  backgroundType.currentIndex
+    property var cfg_customBackgroundColor:             plasmoid.configuration.customBackgroundColor
+    property var cfg_customBackgroundImagePath:         plasmoid.configuration.customBackgroundImagePath
+    property alias cfg_backgroundOpacity:               backgroundOpacity.value
 
-    property int cfg_appIconSize:                   plasmoid.configuration.appIconSize
-    property alias cfg_useDirectoryIcons:           useDirectoryIcons.checked
-    property alias cfg_maxNumberColumns:            maxNumberColumns.value
+    property int cfg_appIconSize:                       plasmoid.configuration.appIconSize
+    property alias cfg_useDirectoryIcons:               useDirectoryIcons.checked
+    property alias cfg_maxNumberColumns:                maxNumberColumns.value
 
-    property alias cfg_showSearch:                  showSearch.checked
-    property alias cfg_adaptiveSearchIconSize:      adaptSearchIcons.checked
-    property int cfg_searchIconSize:                plasmoid.configuration.searchIconSize  
+    property alias cfg_showSearch:                      showSearch.checked
+    property alias cfg_adaptiveSearchIconSize:          adaptSearchIcons.checked
+    property int cfg_searchIconSize:                    plasmoid.configuration.searchIconSize  
 
-    property alias cfg_showSystemActions:           showSystemActions.checked
-    property alias cfg_showSystemActionLabels:      showSystemActionLabels.checked
-    property alias cfg_systemActionsUsePlasmaIcons: systemActionsUsePlasmaIcons.checked
-    property int cfg_systemActionIconSize:          plasmoid.configuration.systemActionIconSize
-    property var cfg_favoriteSystemActions:         plasmoid.configuration.favoriteSystemActions
+    property alias cfg_showSystemActions:               showSystemActions.checked
+    property alias cfg_showSystemActionLabels:          showSystemActionLabels.checked
+    property alias cfg_useSymbolicSystemActionIcons:    useSymbolicSystemActionIcons.checked
+    property int cfg_systemActionIconSize:              plasmoid.configuration.systemActionIconSize
+    property var cfg_favoriteSystemActions:             plasmoid.configuration.favoriteSystemActions
 
-    property alias cfg_disableAnimations:           disableAnimations.checked
-    property alias cfg_animationSpeedMultiplier:    animationSpeedMultiplier.value
+    property alias cfg_disableAnimations:               disableAnimations.checked
+    property alias cfg_animationSpeedMultiplier:        animationSpeedMultiplier.value
     
     Kirigami.FormLayout {
         // ----------------- Icon -----------------
@@ -385,9 +385,9 @@ KCM.SimpleKCM {
             text:  i18n("Show system action labels")
         }
         CheckBox {
-            id: systemActionsUsePlasmaIcons
+            id: useSymbolicSystemActionIcons
             enabled: showSystemActions.checked
-            text:  i18n("Use plasma icons")
+            text:  i18n("Use symbolic system action icons")
         }
 
         // RowLayout {

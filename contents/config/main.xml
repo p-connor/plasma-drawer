@@ -68,9 +68,9 @@
       <label>Determines whether or not the system actions will be displayed with labels</label>
       <default>false</default>
     </entry>
-    <entry name="systemActionsUsePlasmaIcons" type="Bool">
-      <label>Determines whether or not the system actions use the default plasma icons instead of those from the user's theme</label>
-      <default>true</default>
+    <entry name="useSymbolicSystemActionIcons" type="Bool">
+      <label>Determines whether or not the system action icons attempt to use their symbolic representations</label>
+      <default>false</default>
     </entry>
     <entry name="systemActionIconSize" type="Int">
       <label>The size of the system action icons (if displayed)</label>

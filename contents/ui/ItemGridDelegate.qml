@@ -35,6 +35,7 @@ Item {
 
     property bool showLabel: true
     property var iconColorOverride: undefined
+    property bool forceSymbolicIcons: false
 
     readonly property bool isDirectory: model.hasChildren ?? false
     readonly property var directoryModel: isDirectory ? GridView.view.model.modelForRow(itemIndex) : undefined
@@ -78,8 +79,7 @@ Item {
                 width: parent.width
                 height: parent.height
                 animated: false
-                // usesPlasmaTheme: loaderUsesPlasmaTheme
-                source: model.decoration
+                source: model.decoration + (forceSymbolicIcons ? "-symbolic" : "")
                 roundToIconSize: width > Kirigami.Units.iconSizes.huge ? false : true
                 isMask: iconColorOverride !== undefined
                 color: iconColorOverride ?? "transparent"
@@ -125,8 +125,7 @@ Item {
                         anchors.centerIn: parent
 
                         animated: false
-                        // usesPlasmaTheme: loaderUsesPlasmaTheme
-                        source: model.decoration
+                        source: model.decoration + (forceSymbolicIcons ? "-symbolic" : "")
                         roundToIconSize: width > Kirigami.Units.iconSizes.medium ? false : true
                     }
                 }
@@ -147,9 +146,6 @@ Item {
         Loader {
             id: displayLoader
             anchors.fill: parent
-
-            property bool loaderUsesPlasmaTheme: item.GridView.view.usesPlasmaTheme
-
             sourceComponent: isDirectory && !plasmoid.configuration.useDirectoryIcons ? directoryViewComponent : iconComponent
         }        
     }

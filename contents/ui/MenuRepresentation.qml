@@ -197,7 +197,6 @@ Kicker.DashboardWindow {
                 width:  searchFieldBackground.height
                 height: width
                 roundToIconSize: true
-                // usesPlasmaTheme: true
                 anchors {
                     left: searchFieldBackground.left
                     leftMargin: Kirigami.Units.smallSpacing * 2
@@ -366,7 +365,7 @@ Kicker.DashboardWindow {
             dragEnabled: true
             showLabels: plasmoid.configuration.showSystemActionLabels
             setIconColorBasedOnTheme: true
-            usesPlasmaTheme: plasmoid.configuration.systemActionsUsePlasmaIcons
+            forceSymbolicIcons: plasmoid.configuration.useSymbolicSystemActionIcons
 
             onKeyNavUp: {
                 currentIndex = -1;

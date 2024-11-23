@@ -37,8 +37,8 @@ FocusScope {
 
     property bool dragEnabled: true
     property bool showLabels: true
-    property alias usesPlasmaTheme: gridView.usesPlasmaTheme
     property bool setIconColorBasedOnTheme: false
+    property bool forceSymbolicIcons: false
 
     property int iconSize: Kirigami.Units.iconSizes.large
 
@@ -183,8 +183,6 @@ FocusScope {
                 // anchors.left: parent.left
                 // anchors.verticalCenter: parent.verticalCenter
 
-                property bool usesPlasmaTheme: false
-                
                 focus: true
                 visible: model ? model.count > 0 : false
                 currentIndex: -1
@@ -205,6 +203,7 @@ FocusScope {
                 delegate: ItemGridDelegate {
                     showLabel: showLabels
                     iconColorOverride: setIconColorBasedOnTheme && drawerTheme.usingCustomTheme ? drawerTheme.iconColor : undefined
+                    forceSymbolicIcons: itemGrid.forceSymbolicIcons
                 }
 
                 onModelChanged: {

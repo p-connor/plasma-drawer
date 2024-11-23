@@ -105,7 +105,6 @@ FocusScope {
 
             
             iconSize: appsGrid.iconSize
-            usesPlasmaTheme: false
 
             model: appsGrid.model
             

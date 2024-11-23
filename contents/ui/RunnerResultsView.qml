@@ -18,8 +18,6 @@ FocusScope {
     width: Kirigami.Units.gridUnit * 20
     height: Kirigami.Units.gridUnit * 60
 
-    property bool usesPlasmaTheme: true
-
     property alias model: runnerSectionsList.model
     property alias currentSectionIndex: runnerSectionsList.currentIndex
     property alias currentSection: runnerSectionsList.currentItem
