@@ -81,15 +81,8 @@ Item {
                 // usesPlasmaTheme: loaderUsesPlasmaTheme
                 source: model.decoration
                 roundToIconSize: width > Kirigami.Units.iconSizes.huge ? false : true
-            }
-
-            // Modify icon color to text color if using custom theme
-            ColorOverlay {
-                visible: typeof iconColorOverride != undefined
-                anchors.fill: icon
-                source: icon
-                color: iconColorOverride ?? "#00000000"
-                cached: true
+                isMask: iconColorOverride !== undefined
+                color: iconColorOverride ?? "transparent"
             }
         }
     }

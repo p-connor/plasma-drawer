@@ -203,16 +203,10 @@ Kicker.DashboardWindow {
                     leftMargin: Kirigami.Units.smallSpacing * 2
                     verticalCenter: parent.verticalCenter
                 }
+                isMask: true
+                color: drawerTheme.iconColor
             }
 
-            // Modify search icon color to text color
-            ColorOverlay {
-                anchors.fill: searchIcon
-                source: searchIcon
-                color: drawerTheme.iconColor
-                cached: true
-            }
-            
             Keys.onPressed: function (event) {
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
