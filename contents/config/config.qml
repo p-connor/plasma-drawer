@@ -27,4 +27,9 @@ ConfigModel {
          icon: "kde"
          source: "ConfigGeneral.qml"
     }
+    ConfigCategory {
+         name: i18n("Search Plugins")
+         icon: "search"
+         source: "ConfigSearch.qml"
+    }
 }

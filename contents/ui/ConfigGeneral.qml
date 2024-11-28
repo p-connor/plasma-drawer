@@ -27,7 +27,6 @@ import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami as Kirigami
 import org.kde.iconthemes as KIconThemes
 import org.kde.kcmutils as KCM
-import org.kde.config as KConfig
 import org.kde.ksvg as KSvg
 import org.kde.kquickcontrols as KQuickControls
 import org.kde.draganddrop as DragDrop
@@ -302,13 +301,6 @@ KCM.SimpleKCM {
             text:  i18n("Show search bar")
         }
 
-        Button {    
-            enabled: showSearch.checked && KConfig.KAuthorized.authorizeControlModule("kcm_plasmasearch")
-            icon.name: "settings-configure"
-            text: i18nc("@action:button", "Configure Enabled Search Plugins…")
-            onClicked: KCM.KCMLauncher.openSystemSettings("kcm_plasmasearch")
-        }
-        
         CheckBox {        
             id: adaptSearchIcons
             enabled: showSearch.checked
