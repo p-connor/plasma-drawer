@@ -52,7 +52,7 @@ msgstr "Icon:"
 #: ../contents/ui/ConfigGeneral.qml
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
-msgstr "Auswählen..."
+msgstr "Auswählen…"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgctxt "@item:inmenu Reset icon to default"
@@ -126,7 +126,7 @@ msgstr "Suchleiste anzeigen"
 #: ../contents/ui/ConfigGeneral.qml
 msgctxt "@action:button"
 msgid "Configure Enabled Search Plugins…"
-msgstr "Verfügbare Such Plugins konfigurieren..."
+msgstr "Verfügbare Such Plugins konfigurieren…"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Adaptive search result size"
