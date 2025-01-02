@@ -1,7 +1,7 @@
 # Translation of plasma-drawer in LANGUAGE
 # Copyright (C) 2024
 # This file is distributed under the same license as the plasma-drawer package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Robert Hofmann <robert.ulrich.hofmann@gmail.com>, 2025.
 #
 #, fuzzy
 msgid ""
@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: plasma-drawer\n"
 "Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
 "POT-Creation-Date: 2024-01-28 03:42-0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2025-01-03 00:06+0100\n"
+"Last-Translator: Robert Hofmann <robert.ulrich.hofmann@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
