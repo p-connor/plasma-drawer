@@ -77,7 +77,7 @@ msgstr "Bild verwenden"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Custom Color:"
-msgstr ""
+msgstr "Benutzerdefinierte Farbe:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background Color"
@@ -93,7 +93,7 @@ msgstr "Kein"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background opacity:"
-msgstr "Hintergrundstransparenz"
+msgstr "Hintergrund Transparenz:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "%1%"
@@ -105,11 +105,11 @@ msgstr "Anwendungen:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Max columns in grid:"
-msgstr "Maximale Anzahl Spalten im Gitter"
+msgstr "Maximale Anzahl Spalten im Gitter:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Size of application icons:"
-msgstr "Größe der Icons der Anwendungen"
+msgstr "Größe der Icons der Anwendungen:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use directory icons"
@@ -138,7 +138,7 @@ msgstr "Maximale Größe der Icons der Suchergebnisse:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Size of search result icons:"
-msgstr "Größe der Icons der Suchergebnisse"
+msgstr "Größe der Icons der Suchergebnisse:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "System Actions:"
@@ -150,7 +150,7 @@ msgstr "Systemaktionen anzeigen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Size of system action icons:"
-msgstr "Größe der Icons der Systemaktionen"
+msgstr "Größe der Icons der Systemaktionen:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Show system action labels"
