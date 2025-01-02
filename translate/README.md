@@ -51,5 +51,6 @@ The following scripts were retrieved from [Zren's Widget Library Repository](htt
 |  Locale  |  Lines  | % Done|
 |----------|---------|-------|
 | Template |      44 |       |
+| de       |   44/44 |  100% |
 | ru       |   44/44 |  100% |
 | uk       |   44/44 |  100% |
