@@ -19,61 +19,61 @@ msgstr ""
 
 #: ../metadata.desktop
 msgid "Plasma Drawer"
-msgstr ""
+msgstr "Plasma Drawer"
 
 #: ../metadata.desktop
 msgid "A fullscreen customizable launcher with application directories and krunner-like search"
-msgstr ""
+msgstr "Ein konfigurierbarer Fullscreen Launcher mit Anwendungsordnern und einer Krunner-artigen Suche"
 
 #: ../contents/code/tools.js
 msgid "Remove action"
-msgstr ""
+msgstr "Aktion entfernen"
 
 #: ../contents/code/tools.js
 msgid "Show all"
-msgstr ""
+msgstr "Alle anzeigen"
 
 #: ../contents/code/tools.js
 msgid "Add to system actions bar"
-msgstr ""
+msgstr "Zur Systemaktionsleiste hinzufügen"
 
 #: ../contents/code/tools.js
 msgid "Edit Applications"
-msgstr ""
+msgstr "Anwendungen bearbeiten"
 
 #: ../contents/config/config.qml
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Icon:"
-msgstr ""
+msgstr "Icon:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
-msgstr ""
+msgstr "Auswählen..."
 
 #: ../contents/ui/ConfigGeneral.qml
 msgctxt "@item:inmenu Reset icon to default"
 msgid "Clear Icon"
-msgstr ""
+msgstr "Icon entfernen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background:"
-msgstr ""
+msgstr "Hintergrund:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use theme color"
-msgstr ""
+msgstr "Design Farbe verwenden"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use custom color"
-msgstr ""
+msgstr "Benutzerdefinierte Farbe verwenden"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use image"
-msgstr ""
+msgstr "Bild verwenden"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Custom Color:"
@@ -81,117 +81,117 @@ msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background Color"
-msgstr ""
+msgstr "Hintergrundfarbe"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Path: "
-msgstr ""
+msgstr "Pfad: "
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "None"
-msgstr ""
+msgstr "Kein"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background opacity:"
-msgstr ""
+msgstr "Hintergrundstransparenz"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "%1%"
-msgstr ""
+msgstr "%1%"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Applications:"
-msgstr ""
+msgstr "Anwendungen:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Max columns in grid:"
-msgstr ""
+msgstr "Maximale Anzahl Spalten im Gitter"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Size of application icons:"
-msgstr ""
+msgstr "Größe der Icons der Anwendungen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use directory icons"
-msgstr ""
+msgstr "Ordnericons verwenden"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Search:"
-msgstr ""
+msgstr "Suche:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Show search bar"
-msgstr ""
+msgstr "Suchleiste anzeigen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgctxt "@action:button"
 msgid "Configure Enabled Search Plugins…"
-msgstr ""
+msgstr "Verfügbare Such Plugins konfigurieren..."
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Adaptive search result size"
-msgstr ""
+msgstr "Einstellbare Anzahl der Suchergebnisse"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Max size of search result icons:"
-msgstr ""
+msgstr "Maximale Größe der Icons der Suchergebnisse:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Size of search result icons:"
-msgstr ""
+msgstr "Größe der Icons der Suchergebnisse"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "System Actions:"
-msgstr ""
+msgstr "Systemaktionen:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Show system actions"
-msgstr ""
+msgstr "Systemaktionen anzeigen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Size of system action icons:"
-msgstr ""
+msgstr "Größe der Icons der Systemaktionen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Show system action labels"
-msgstr ""
+msgstr "Beschreibungen der Systemaktionen anzeigen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use plasma icons"
-msgstr ""
+msgstr "Plasma Icons verwenden"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Other:"
-msgstr ""
+msgstr "Andere:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Disable animations"
-msgstr ""
+msgstr "Animationen ausschalten"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Animation speed multiplier:"
-msgstr ""
+msgstr "Animationsgeschwindigkeit (Multiplikator):"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Unhide all hidden applications"
-msgstr ""
+msgstr "Alle versteckten Anwendungen anzeigen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Unhidden!"
-msgstr ""
+msgstr "Wieder sichtbar!"
 
 #: ../contents/ui/main.qml
 msgid "Edit Applications..."
-msgstr ""
+msgstr "Anwendungen anpassen..."
 
 #: ../contents/ui/MenuRepresentation.qml
 msgid "Search"
-msgstr ""
+msgstr "Suche"
 
 #: ../contents/ui/RunnerResultsView.qml
 msgid "Show Less"
-msgstr ""
+msgstr "Weniger anzeigen"
 
 #: ../contents/ui/RunnerResultsView.qml
 msgid "Show More"
-msgstr ""
+msgstr "Mehr anzeigen"
