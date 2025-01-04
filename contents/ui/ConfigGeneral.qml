@@ -201,7 +201,7 @@ KCM.SimpleKCM {
             visible: backgroundType.currentIndex == 2   // backgroundType in image mode
             
             Button {
-                text: "Select Image File"
+                text: i18n("Select Image File")
                 icon.name: "fileopen"
                 onClicked: {
                     backgroundImageFileDialog.open()
@@ -213,11 +213,11 @@ KCM.SimpleKCM {
         }
         FileDialog {
             id: backgroundImageFileDialog
-            title: "Please choose an image file"
+            title: i18n("Please choose an image file")
             currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
-            nameFilters: [ "Image files (*.jpg *.jpeg *.png *.bmp)", "All files (*)" ]
+            nameFilters: [ i18n("Image files") + " (*.jpg *.jpeg *.png *.bmp)", i18n("All files") + " (*)" ]
             onAccepted: {
-                cfg_customBackgroundImagePath = String(fileUrl).replace("file://", "");
+                cfg_customBackgroundImagePath = String(selectedFile).replace("file://", "");
             }
         }
         
