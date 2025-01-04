@@ -175,14 +175,11 @@ FocusScope {
                             verticalAlignment: Text.AlignBottom
                             text: matchesList.expanded ? i18n("Show Less") : i18n("Show More")
                             color: showMoreButton.hovered ? drawerTheme.textColor : drawerTheme.softTextColor
+                            font.underline: showMoreButton.activeFocus
                         }
-                        background: Rectangle {         
-                            id: showMoreButtonHighlight
-                            height: 1 * Kirigami.Units.devicePixelRatio
-                            anchors.bottom: showMoreLabel.bottom
-                            color: drawerTheme.softTextColor
-
-                            visible: showMoreButton.activeFocus
+                        background: Item {         
+                            anchors.fill: showMoreLabel
+                            visible: false
                         }
 
                         onPressed: {
