@@ -1,0 +1,197 @@
+# Translation of plasma-drawer in LANGUAGE
+# Copyright (C) 2024
+# This file is distributed under the same license as the plasma-drawer package.
+# Robert Hofmann <robert.ulrich.hofmann@gmail.com>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-drawer\n"
+"Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
+"POT-Creation-Date: 2024-01-28 03:42-0800\n"
+"PO-Revision-Date: 2025-01-03 00:06+0100\n"
+"Last-Translator: Robert Hofmann <robert.ulrich.hofmann@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../metadata.desktop
+msgid "Plasma Drawer"
+msgstr "Plasma Drawer"
+
+#: ../metadata.desktop
+msgid "A fullscreen customizable launcher with application directories and krunner-like search"
+msgstr "Ein konfigurierbarer Fullscreen Launcher mit Anwendungsordnern und einer Krunner-artigen Suche"
+
+#: ../contents/code/tools.js
+msgid "Remove action"
+msgstr "Aktion entfernen"
+
+#: ../contents/code/tools.js
+msgid "Show all"
+msgstr "Alle anzeigen"
+
+#: ../contents/code/tools.js
+msgid "Add to system actions bar"
+msgstr "Zur Systemaktionsleiste hinzufügen"
+
+#: ../contents/code/tools.js
+msgid "Edit Applications"
+msgstr "Anwendungen bearbeiten"
+
+#: ../contents/config/config.qml
+msgid "General"
+msgstr "Allgemein"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Icon:"
+msgstr "Icon:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Auswählen…"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Icon entfernen"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background:"
+msgstr "Hintergrund:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use theme color"
+msgstr "Design Farbe verwenden"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use custom color"
+msgstr "Benutzerdefinierte Farbe verwenden"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use image"
+msgstr "Bild verwenden"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Custom Color:"
+msgstr "Benutzerdefinierte Farbe:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background Color"
+msgstr "Hintergrundfarbe"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Path: "
+msgstr "Pfad: "
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "None"
+msgstr "Kein"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background opacity:"
+msgstr "Hintergrund Transparenz:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "%1%"
+msgstr "%1%"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Applications:"
+msgstr "Anwendungen:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max columns in grid:"
+msgstr "Maximale Anzahl Spalten im Gitter:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of application icons:"
+msgstr "Größe der Icons der Anwendungen:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use directory icons"
+msgstr "Ordnericons verwenden"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Search:"
+msgstr "Suche:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show search bar"
+msgstr "Suchleiste anzeigen"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@action:button"
+msgid "Configure Enabled Search Plugins…"
+msgstr "Verfügbare Such Plugins konfigurieren…"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Adaptive search result size"
+msgstr "Einstellbare Anzahl der Suchergebnisse"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max size of search result icons:"
+msgstr "Maximale Größe der Icons der Suchergebnisse:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of search result icons:"
+msgstr "Größe der Icons der Suchergebnisse:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "System Actions:"
+msgstr "Systemaktionen:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system actions"
+msgstr "Systemaktionen anzeigen"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of system action icons:"
+msgstr "Größe der Icons der Systemaktionen:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system action labels"
+msgstr "Beschreibungen der Systemaktionen anzeigen"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use plasma icons"
+msgstr "Plasma Icons verwenden"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Other:"
+msgstr "Andere:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Disable animations"
+msgstr "Animationen ausschalten"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Animation speed multiplier:"
+msgstr "Animationsgeschwindigkeit (Multiplikator):"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhide all hidden applications"
+msgstr "Alle versteckten Anwendungen anzeigen"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhidden!"
+msgstr "Wieder sichtbar!"
+
+#: ../contents/ui/main.qml
+msgid "Edit Applications..."
+msgstr "Anwendungen anpassen..."
+
+#: ../contents/ui/MenuRepresentation.qml
+msgid "Search"
+msgstr "Suche"
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show Less"
+msgstr "Weniger anzeigen"
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show More"
+msgstr "Mehr anzeigen"
