@@ -52,5 +52,6 @@ The following scripts were retrieved from [Zren's Widget Library Repository](htt
 |----------|---------|-------|
 | Template |      44 |       |
 | ro       |   44/44 |  100% |
+| de       |   44/44 |  100% |
 | ru       |   44/44 |  100% |
 | uk       |   44/44 |  100% |
