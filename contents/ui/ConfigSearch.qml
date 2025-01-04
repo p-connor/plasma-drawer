@@ -61,9 +61,55 @@ KCM.SimpleKCM {
         }
     }
 
-    Kirigami.FormLayout {
+    function moveRunner(fromIndex, toIndex) {
+        if (fromIndex >= 0 && fromIndex < cfg_searchRunners.length && toIndex >= 0) {
+            let arr = [...cfg_searchRunners];
+            let element = arr[fromIndex];
+            arr.splice(fromIndex, 1);
+            arr.splice(toIndex, 0, element);
+            cfg_searchRunners = arr;
+        }
+    }
+    
+    Component {
+        id: delegateComponent
+        ItemDelegate {
+            id: listItem
+            readonly property bool isActive: cfg_searchRunners.includes(modelData)
+
+            contentItem: RowLayout {
+                Kirigami.ListItemDragHandle {
+                    enabled: isActive
+                    listItem: listItem
+                    listView: runnerListView
+                    property int index: cfg_searchRunners.indexOf(modelData)
+                    property int dropNewIndex
+                    onMoveRequested: (oldIndex, newIndex) => {
+                        dropNewIndex = newIndex;
+                    }
+                    onDropped: () => {
+                        moveRunner(cfg_searchRunners.indexOf(modelData), dropNewIndex);
+                    }
+                }
+                Label {
+                    Layout.fillWidth: true
+                    text: defaultRunners.find((m) => m.id === modelData)?.name ?? modelData
+                }
+                CheckBox {
+                    checked: isActive
+                    onToggled: {
+                        checked ? addRunner(modelData) : removeRunner(modelData);
+                    }
+                }
+            }
+        }
+    }
+
+    Column {
+        width: parent.width
+
         Kirigami.Heading {
-            text: i18n("Search Plugin Allowlist")
+            text: i18n("Plugin Allowlist")
         }
         Label {
             text: i18n("Note: Selected plugins must also be enabled in System Settings")
@@ -75,40 +121,40 @@ KCM.SimpleKCM {
             text: i18nc("@action:button", "Configure Enabled Search Plugins…")
             onClicked: KCM.KCMLauncher.openSystemSettings("kcm_plasmasearch")
         }
-        ColumnLayout {
-            Repeater {
-                model: defaultRunners
 
-                CheckBox {
-                    required property var modelData
-                    checked: cfg_searchRunners.includes(modelData.id)
-                    text: modelData.name
+        Kirigami.Separator {
+            width: parent.width
+        }
 
-                    onToggled: {
-                        if (checked) {
-                            addRunner(modelData.id);
-                        } else {
-                            removeRunner(modelData.id);
-                        }
-                    }
-                }
+        ListView {
+            id: runnerListView
+            model: cfg_searchRunners.concat(defaultRunners.map((m) => m.id).filter((m) => !cfg_searchRunners.includes(m)))
+            width: parent.width
+            height: contentItem.height
+            interactive: false
+
+            delegate: Loader {
+                required property var modelData
+                width: runnerListView.width
+                sourceComponent: delegateComponent
             }
+        }
+
+        Kirigami.Separator {
+            width: parent.width
         }
 
         Item {
             Kirigami.FormData.isSection: true
         }
-
         Kirigami.Heading {
             level: 2
             text: i18n("Custom Search Plugins")
         }
         Label {
-            text: i18n("Add any custom plugins to allowlist here")
+            text: i18n("Add any custom plugins you've installed")
         }
         RowLayout {
-            Layout.fillWidth: true
-
             Label { text: i18n("Plugin ID:") }
             TextField {
                 id: insertTextField
@@ -125,17 +171,6 @@ KCM.SimpleKCM {
                 onClicked: {
                     addRunner(insertTextField.text);
                     insertTextField.text = "";
-                }
-            }
-        }
-        ColumnLayout {
-            Repeater {
-                model: cfg_searchRunners.filter((runner) => !defaultRunners.some((m) => m.id === runner))
-
-                Kirigami.Chip {
-                    id: chip
-                    text: modelData
-                    onRemoved: removeRunner(modelData)
                 }
             }
         }
