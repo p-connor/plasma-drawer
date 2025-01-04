@@ -1,5 +1,5 @@
 # Translation of plasma-drawer in LANGUAGE
-# Copyright (C) 2024
+# Copyright (C) 2025
 # This file is distributed under the same license as the plasma-drawer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-drawer\n"
 "Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
-"POT-Creation-Date: 2024-01-28 03:42-0800\n"
+"POT-Creation-Date: 2025-01-04 15:55-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,6 +43,10 @@ msgstr ""
 
 #: ../contents/config/config.qml
 msgid "General"
+msgstr ""
+
+#: ../contents/config/config.qml
+msgid "Search Plugins"
 msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
@@ -84,11 +88,27 @@ msgid "Background Color"
 msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
+msgid "Select Image File"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
 msgid "Path: "
 msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "None"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Please choose an image file"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Image files"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "All files"
 msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
@@ -124,11 +144,6 @@ msgid "Show search bar"
 msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
-msgctxt "@action:button"
-msgid "Configure Enabled Search Plugins…"
-msgstr ""
-
-#: ../contents/ui/ConfigGeneral.qml
 msgid "Adaptive search result size"
 msgstr ""
 
@@ -157,7 +172,7 @@ msgid "Show system action labels"
 msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
-msgid "Use plasma icons"
+msgid "Use symbolic system action icons"
 msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
@@ -178,6 +193,171 @@ msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Unhidden!"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "File Search"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Browser History"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Browser Tabs"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Calculator"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Help Runner"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Software Center"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Bookmarks"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Special Characters"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Dictionary"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Kate Sessions"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Terminate Applications"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Konsole Profiles"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "KWin"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Places"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Plasma Desktop Shell"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Power"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Recent Files"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Applications"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Desktop Sessions"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Command Line"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Spell Checker"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "System Settings"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Web Search Keywords"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Locations"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Activities"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Date and Time"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Unit Converter"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Windows"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Plugin Allowlist"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Note: Selected plugins must also be enabled in System Settings"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "@action:button"
+msgid "Configure Enabled Search Plugins…"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Custom Search Plugins"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Add any custom plugins you've installed"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Plugin ID:"
 msgstr ""
 
 #: ../contents/ui/main.qml

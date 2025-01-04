@@ -50,8 +50,8 @@ The following scripts were retrieved from [Zren's Widget Library Repository](htt
 ## Translation Statuses
 |  Locale  |  Lines  | % Done|
 |----------|---------|-------|
-| Template |      44 |       |
-| ro       |   44/44 |  100% |
-| de       |   44/44 |  100% |
-| ru       |   44/44 |  100% |
-| uk       |   44/44 |  100% |
+| Template |      82 |       |
+| de       |   43/82 |   52% |
+| ro       |   43/82 |   52% |
+| ru       |   43/82 |   52% |
+| uk       |   43/82 |   52% |
