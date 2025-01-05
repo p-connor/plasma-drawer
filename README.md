@@ -32,9 +32,11 @@ Add the widget to your panel or desktop, then click its icon to open it.
 Right click the widget icon, then select "Edit Applications." Then rearrange or adjust as desired. 
 The applications in the grid will be arranged left to right, top to bottom.
 
-#### Customizing Search Runners
+**To add an app to the "root" page, drag or copy it out of any folder in the "Edit Applications" menu.**
 
-Right click the icon widget, then select "Configure Plasma Drawer." Then click "Configure Enabled Search Plugins."
+#### Customizing Search Plugins
+
+Right click the icon widget, then select "Configure Plasma Drawer." Then click the "Search Plugins" tab on the left. Enable and re-arrange the plugins according to personal preference. Matches for plugins higher in the list will be prioritized.
 
 #### Customizing System Actions
 
@@ -43,4 +45,4 @@ The actions can also be rearranged by long pressing and dragging the icon to the
 
 ### Internationalization
 
-If you would like to contribute by adding translations for your language, follow the instructions in the [Translations Readme](translate/README.md)
+If you would like to contribute by adding translations for your language, follow the instructions in the [Translations Readme](translate/README.md).
