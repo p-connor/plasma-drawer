@@ -51,7 +51,7 @@ The following scripts were retrieved from [Zren's Widget Library Repository](htt
 |  Locale  |  Lines  | % Done|
 |----------|---------|-------|
 | Template |      82 |       |
-| de       |   43/82 |   52% |
-| ro       |   43/82 |   52% |
-| ru       |   43/82 |   52% |
-| uk       |   43/82 |   52% |
+| de       |   71/82 |   86% |
+| ro       |   70/82 |   85% |
+| ru       |   71/82 |   86% |
+| uk       |   71/82 |   86% |

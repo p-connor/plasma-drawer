@@ -198,142 +198,142 @@ msgstr "Показано!"
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "File Search"
-msgstr ""
+msgstr "Пошук файлів"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Browser History"
-msgstr ""
+msgstr "Журнал навігатора"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Browser Tabs"
-msgstr ""
+msgstr "Вкладки навігатора"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Calculator"
-msgstr ""
+msgstr "Калькулятор"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Help Runner"
-msgstr ""
+msgstr "Засіб надання довідки"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Software Center"
-msgstr ""
+msgstr "Центр програм"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Bookmarks"
-msgstr ""
+msgstr "Закладки"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Special Characters"
-msgstr ""
+msgstr "Спеціальні символи"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Dictionary"
-msgstr ""
+msgstr "Словник"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Kate Sessions"
-msgstr ""
+msgstr "Сеанси Kate"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Terminate Applications"
-msgstr ""
+msgstr "Переривання програм"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Konsole Profiles"
-msgstr ""
+msgstr "Профілі Konsole"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "KWin"
-msgstr ""
+msgstr "KWin"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Places"
-msgstr ""
+msgstr "Місця"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Plasma Desktop Shell"
-msgstr ""
+msgstr "Оболонка стільниці Плазми"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Power"
-msgstr ""
+msgstr "Живлення"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Recent Files"
-msgstr ""
+msgstr "Нещодавні файли"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Applications"
-msgstr ""
+msgstr "Програми"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Desktop Sessions"
-msgstr ""
+msgstr "Стільничні сеанси"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Command Line"
-msgstr ""
+msgstr "Командний рядок"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Spell Checker"
-msgstr ""
+msgstr "Перевірка правопису"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "System Settings"
-msgstr ""
+msgstr "Системні параметри"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Web Search Keywords"
-msgstr ""
+msgstr "Ключові слова пошуку в інтернеті"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Locations"
-msgstr ""
+msgstr "Адреси"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Activities"
-msgstr ""
+msgstr "Простори дій"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Date and Time"
-msgstr ""
+msgstr "Дата і час"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Unit Converter"
-msgstr ""
+msgstr "Перетворювач одиниць"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Windows"
-msgstr ""
+msgstr "Вікна"
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Plugin Allowlist"

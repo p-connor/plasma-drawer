@@ -198,77 +198,77 @@ msgstr "Ascunse!"
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "File Search"
-msgstr ""
+msgstr "Căutare fișiere"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Browser History"
-msgstr ""
+msgstr "Istoric navigator"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Browser Tabs"
-msgstr ""
+msgstr "File de navigator"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Calculator"
-msgstr ""
+msgstr "Calculator"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Help Runner"
-msgstr ""
+msgstr "Lansator de ajutor"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Software Center"
-msgstr ""
+msgstr "Centru de aplicații"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Bookmarks"
-msgstr ""
+msgstr "Semne de carte"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Special Characters"
-msgstr ""
+msgstr "Caractere speciale"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Dictionary"
-msgstr ""
+msgstr "Dicționar"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Kate Sessions"
-msgstr ""
+msgstr "Sesiuni Kate"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Terminate Applications"
-msgstr ""
+msgstr "Termină aplicații"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Konsole Profiles"
-msgstr ""
+msgstr "Profiluri Konsolă"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "KWin"
-msgstr ""
+msgstr "KWin"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Places"
-msgstr ""
+msgstr "Locuri"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Plasma Desktop Shell"
-msgstr ""
+msgstr "Învelișul de birou Plasma"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
@@ -278,62 +278,62 @@ msgstr ""
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Recent Files"
-msgstr ""
+msgstr "Fișiere recente"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Applications"
-msgstr ""
+msgstr "Aplicații"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Desktop Sessions"
-msgstr ""
+msgstr "Sesiuni de birou"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Command Line"
-msgstr ""
+msgstr "Linie de comandă"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Spell Checker"
-msgstr ""
+msgstr "Verificator ortografic"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "System Settings"
-msgstr ""
+msgstr "Configurări de sistem"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Web Search Keywords"
-msgstr ""
+msgstr "Cuvinte-cheie de căutare web"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Locations"
-msgstr ""
+msgstr "Amplasări"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Activities"
-msgstr ""
+msgstr "Activități"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Date and Time"
-msgstr ""
+msgstr "Data și ora"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Unit Converter"
-msgstr ""
+msgstr "Convertor de unități"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Windows"
-msgstr ""
+msgstr "Ferestre"
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Plugin Allowlist"
