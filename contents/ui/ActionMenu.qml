@@ -18,9 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.0
+import QtQuick
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.extras as PlasmaExtras
 
 Item {
     id: root
@@ -28,7 +28,7 @@ Item {
     property QtObject menu
     property Item visualParent
     property variant actionList
-    property bool opened: menu ? (menu.status != PlasmaComponents.DialogStatus.Closed) : false
+    property bool opened: menu ? (menu.status !== PlasmaExtras.Menu.Closed) : false
 
     signal actionClicked(string actionId, variant actionArgument)
     signal closed
@@ -91,7 +91,7 @@ Item {
     Component {
         id: contextMenuComponent
 
-        PlasmaComponents.ContextMenu {
+        PlasmaExtras.Menu {
             visualParent: root.visualParent
         }
     }
@@ -99,7 +99,7 @@ Item {
     Component {
         id: contextSubmenuItemComponent
 
-        PlasmaComponents.MenuItem {
+        PlasmaExtras.MenuItem {
             id: submenuItem
 
             property variant actionItem
@@ -107,10 +107,7 @@ Item {
             text: actionItem.text ? actionItem.text : ""
             icon: actionItem.icon ? actionItem.icon : null
 
-            property variant submenu : submenu_
-
-            PlasmaComponents.ContextMenu {
-                id: submenu_
+            property PlasmaExtras.Menu submenu: PlasmaExtras.Menu {
                 visualParent: submenuItem.action
             }
         }
@@ -119,19 +116,19 @@ Item {
     Component {
         id: contextMenuItemComponent
 
-        PlasmaComponents.MenuItem {
+        PlasmaExtras.MenuItem {
             property variant actionItem
 
             text      : actionItem.text ? actionItem.text : ""
-            enabled   : actionItem.type != "title" && ("enabled" in actionItem ? actionItem.enabled : true)
-            separator : actionItem.type == "separator"
-            section   : actionItem.type == "title"
+            enabled   : actionItem.type !== "title" && ("enabled" in actionItem ? actionItem.enabled : true)
+            separator : actionItem.type === "separator"
+            section   : actionItem.type === "title"
             icon      : actionItem.icon ? actionItem.icon : null
             checkable : actionItem.checkable ? actionItem.checkable : false
             checked   : actionItem.checked ? actionItem.checked : false
 
             onClicked: {
-                actionClicked(actionItem.actionId, actionItem.actionArgument);
+                root.actionClicked(actionItem.actionId, actionItem.actionArgument);
             }
         }
     }

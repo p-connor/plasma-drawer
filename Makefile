@@ -1,4 +1,4 @@
-# Prerequsites: Install kreadconfig5, kpackagetool5, zip, desktoptojson
+# Prerequsites: Install kreadconfig5, kpackagetool6, zip, desktoptojson
 # Example usages: 'make install', 'make VERSION=1.0 package'
 
 DIR = $(shell pwd)
@@ -15,13 +15,13 @@ metadata.json: metadata.desktop
 package: $(PACKAGE_NAME)
 
 install: $(PACKAGE_NAME)
-	kpackagetool5 -i $(PACKAGE_NAME)
+	kpackagetool6 -t Plasma/Applet -i $(PACKAGE_NAME)
 
 upgrade: $(PACKAGE_NAME)
-	kpackagetool5 -u $(PACKAGE_NAME)
+	kpackagetool6 -t Plasma/Applet -u $(PACKAGE_NAME)
 
 uninstall:
-	kpackagetool5 -t Plasma/Applet -r P-Connor.PlasmaDrawer
+	kpackagetool6 -t Plasma/Applet -r p-connor.plasma-drawer
 
 test:
 	QT_LOGGING_RULES="qml.debug=true" plasmoidviewer -a ./

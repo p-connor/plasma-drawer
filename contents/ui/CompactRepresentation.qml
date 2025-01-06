@@ -17,13 +17,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.Layouts 1.1
+import QtQuick
+import QtQuick.Layouts
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.plasmoid
+import org.kde.plasma.core as PlasmaCore
+import org.kde.kirigami as Kirigami
 
-import org.kde.plasma.private.kicker 0.1 as Kicker
+import org.kde.plasma.private.kicker as Kicker
 
 Item {
     id: root
@@ -49,35 +50,23 @@ Item {
     function updateSizeHints() {
         if (useCustomButtonImage) {
             if (vertical) {
-                var scaledHeight = Math.floor(parent.width * (buttonIcon.implicitHeight / buttonIcon.implicitWidth));
+                const scaledHeight = Math.floor(parent.width * (buttonIcon.implicitHeight / buttonIcon.implicitWidth));
                 root.Layout.minimumHeight = scaledHeight;
                 root.Layout.maximumHeight = scaledHeight;
-                root.Layout.minimumWidth = units.iconSizes.small;
-                root.Layout.maximumWidth = inPanel ? units.iconSizeHints.panel : -1;
+                root.Layout.minimumWidth = -1;
             } else {
-                var scaledWidth = Math.floor(parent.height * (buttonIcon.implicitWidth / buttonIcon.implicitHeight));
+                const scaledWidth = Math.floor(parent.height * (buttonIcon.implicitWidth / buttonIcon.implicitHeight));
                 root.Layout.minimumWidth = scaledWidth;
                 root.Layout.maximumWidth = scaledWidth;
-                root.Layout.minimumHeight = units.iconSizes.small;
-                root.Layout.maximumHeight = inPanel ? units.iconSizeHints.panel : -1;
+                root.Layout.minimumHeight = -1;
             }
         } else {
-            root.Layout.minimumWidth = units.iconSizes.small;
-            root.Layout.maximumWidth = inPanel ? units.iconSizeHints.panel : -1;
-            root.Layout.minimumHeight = units.iconSizes.small
-            root.Layout.maximumHeight = inPanel ? units.iconSizeHints.panel : -1;
+            root.Layout.minimumWidth = -1;
+            root.Layout.minimumHeight = -1;
         }
     }
 
-    Connections {
-        target: units.iconSizeHints
-
-        function onPanelChanged() { 
-            updateSizeHints() 
-        }
-    }
-
-    PlasmaCore.IconItem {
+    Kirigami.Icon {
         id: buttonIcon
 
         anchors.fill: parent
@@ -104,10 +93,24 @@ Item {
 
         anchors.fill: parent
 
-        hoverEnabled: true
+        activeFocusOnTab: true
+        hoverEnabled: !root.dashWindow || !root.dashWindow.visible
+
+        Keys.onPressed: function (event) {
+            switch (event.key) {
+                case Qt.Key_Space:
+                case Qt.Key_Enter:
+                case Qt.Key_Return:
+                case Qt.Key_Select:
+                    Plasmoid.activated();
+                    break;
+            }
+        }
+        Accessible.name: Plasmoid.title
+        Accessible.description: toolTipSubText
+        Accessible.role: Accessible.Button
 
         onClicked: {
-            //<>dashWindow.visible = !dashWindow.visible;
             dashWindow.toggle()
         }
     }

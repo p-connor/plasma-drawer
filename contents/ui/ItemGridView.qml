@@ -17,14 +17,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.4
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.kquickcontrolsaddons 2.0
-import org.kde.draganddrop 2.0
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.kquickcontrolsaddons
+import org.kde.draganddrop
 
 import "../code/tools.js" as Tools
 
@@ -38,10 +37,10 @@ FocusScope {
 
     property bool dragEnabled: true
     property bool showLabels: true
-    property alias usesPlasmaTheme: gridView.usesPlasmaTheme
     property bool setIconColorBasedOnTheme: false
+    property bool forceSymbolicIcons: false
 
-    property int iconSize: units.iconSizes.large
+    property int iconSize: Kirigami.Units.iconSizes.large
 
     property int numberColumns: Math.floor(width / cellWidth)
     property int maxVisibleRows: -1
@@ -129,7 +128,7 @@ FocusScope {
 
         visualParent: gridView
         
-        onActionClicked: {
+        onActionClicked: function (actionId, actionArgument) {
             var closeRequested = Tools.triggerAction(plasmoid, model, targetIndex, actionId, actionArgument);
             if (closeRequested) {
                 root.toggle();
@@ -156,7 +155,7 @@ FocusScope {
         height: (maxVisibleRows == -1 ? numberRows : maxVisibleRows) * cellHeight
         anchors.centerIn: parent
 
-        onDragMove: {
+        onDragMove: function (event) {
             var cPos = mapToItem(gridView.contentItem, event.x, event.y);
             var item = gridView.itemAt(cPos.x, cPos.y);
 
@@ -184,8 +183,6 @@ FocusScope {
                 // anchors.left: parent.left
                 // anchors.verticalCenter: parent.verticalCenter
 
-                property bool usesPlasmaTheme: false
-                
                 focus: true
                 visible: model ? model.count > 0 : false
                 currentIndex: -1
@@ -198,7 +195,7 @@ FocusScope {
                 flickDeceleration: 4000
 
                 highlightFollowsCurrentItem: true
-                highlight: PlasmaComponents.Highlight {
+                highlight: PlasmaExtras.Highlight {
                     visible: gridView.highlightFollowsCurrentItem
                 }
                 highlightMoveDuration: 0
@@ -206,13 +203,14 @@ FocusScope {
                 delegate: ItemGridDelegate {
                     showLabel: showLabels
                     iconColorOverride: setIconColorBasedOnTheme && drawerTheme.usingCustomTheme ? drawerTheme.iconColor : undefined
+                    forceSymbolicIcons: itemGrid.forceSymbolicIcons
                 }
 
                 onModelChanged: {
                     currentIndex = -1;
                 }
 
-                Keys.onLeftPressed: {
+                Keys.onLeftPressed: function (event) {
                     if (currentIndex == -1) {
                         currentIndex = 0;
                         return;
@@ -226,7 +224,7 @@ FocusScope {
                     }
                 }
 
-                Keys.onRightPressed: {
+                Keys.onRightPressed: function (event) {
                     if (currentIndex == -1) {
                         currentIndex = 0;
                         return;
@@ -242,7 +240,7 @@ FocusScope {
                     }
                 }
 
-                Keys.onUpPressed: {
+                Keys.onUpPressed: function (event) {
                     if (currentIndex == -1) {
                         currentIndex = 0;
                         return;
@@ -257,7 +255,7 @@ FocusScope {
                     }
                 }
 
-                Keys.onDownPressed: {
+                Keys.onDownPressed: function (event) {
                     if (currentIndex == -1) {
                         currentIndex = 0;
                         return;
@@ -276,7 +274,7 @@ FocusScope {
                     }
                 }
 
-                Keys.onPressed: {
+                Keys.onPressed: function (event) {
                     if (event.key == Qt.Key_Menu && currentItem && currentItem.hasActionList) {
                         event.accepted = true;
                         openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
@@ -345,7 +343,7 @@ FocusScope {
                         return index;
                     }
 
-                    onPressed: {
+                    onPressed: function (mouse) {
                         mouse.accepted = true;
                         updatePositionProperties(mouse.x, mouse.y);
                         pressX = mouse.x;
@@ -358,7 +356,7 @@ FocusScope {
                         }
                     }
 
-                    onReleased: {
+                    onReleased: function (mouse) {
                         mouse.accepted = true;
                         if (gridView.currentItem) {
                             itemGrid.trigger(gridView.currentIndex);
@@ -376,7 +374,7 @@ FocusScope {
                         pressY = -1;
                     }
 
-                    onPressAndHold: {
+                    onPressAndHold: function (mouse) {
                         if (!dragEnabled) {
                             pressX = -1;
                             pressY = -1;
@@ -399,7 +397,7 @@ FocusScope {
                         pressY = -1;
                     }
 
-                    onPositionChanged: {
+                    onPositionChanged: function (mouse) {
                         updatePositionProperties(mouse.x, mouse.y);
 
                         if (gridView.currentIndex != -1 && currentItem && currentItem.m != null) {

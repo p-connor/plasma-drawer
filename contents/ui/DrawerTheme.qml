@@ -1,10 +1,11 @@
-import QtQuick 2.15
-import org.kde.plasma.plasmoid 2.0
+import QtQuick
+import org.kde.plasma.plasmoid
+import org.kde.kirigami as Kirigami
 
 QtObject {
     readonly property bool usingCustomTheme: plasmoid.configuration.backgroundType != 0
-    readonly property color backgroundColor: usingCustomTheme ? plasmoid.configuration.customBackgroundColor : theme.backgroundColor
-    readonly property color textColor: usingCustomTheme ? getReadableTextColor(backgroundColor) : theme.textColor
+    readonly property color backgroundColor: usingCustomTheme ? plasmoid.configuration.customBackgroundColor : Kirigami.Theme.backgroundColor
+    readonly property color textColor: usingCustomTheme ? getReadableTextColor(backgroundColor) : Kirigami.Theme.textColor
     readonly property color softTextColor: soften(textColor, 0.225)
     readonly property color iconColor: soften(textColor, 0.1)
 

@@ -1,18 +1,18 @@
-# Translation of plasma-drawer in Ukrainian
-# Copyright (C) 2023
-# This file is distributed under the same license as the plasma-drawer package.
-# Mykhailo Stetsiuk <yaBobJonez@gmail.com>, 2023–2024.
+# Translation of PlasmaDrawer in Romanian
+# Copyright (C) 2024
+# This file is distributed under the same license as the PlasmaDrawer package.
+# maxhatei2 <mateibota10@outlook.com>, 2024.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: plasma-drawer\n"
+"Project-Id-Version: PlasmaDrawer\n"
 "Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
 "POT-Creation-Date: 2025-01-04 15:55-0600\n"
-"PO-Revision-Date: 2023-07-24 10:55+0300\n"
-"Last-Translator: Mykhailo Stetsiuk <yaBobJonez@gmail.com>\n"
-"Language-Team: \n"
-"Language: uk\n"
+"PO-Revision-Date: 2024-11-21 20:50+2\n"
+"Last-Translator: maxhatei2 <mateibota10@outlook.com\n"
+"Language-Team: Romanian\n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,27 +23,27 @@ msgstr "Plasma Drawer"
 
 #: ../metadata.desktop
 msgid "A fullscreen customizable launcher with application directories and krunner-like search"
-msgstr "Повноекранний налаштовуваний лаунчер з теками програм та пошуком у стилі KRunner"
+msgstr "Un launcher pe tot ecranul customizabil cu aplcații, directoare și căutare care arată ca krunner"
 
 #: ../contents/code/tools.js
 msgid "Remove action"
-msgstr "Видалити дію"
+msgstr "Șterge acțiunea"
 
 #: ../contents/code/tools.js
 msgid "Show all"
-msgstr "Показати всі"
+msgstr "Afișează toate"
 
 #: ../contents/code/tools.js
 msgid "Add to system actions bar"
-msgstr "Додати до системних дій"
+msgstr "Adaugă la bara de acțiuni a sistemului"
 
 #: ../contents/code/tools.js
 msgid "Edit Applications"
-msgstr "Змінити список програм"
+msgstr "Editează aplicațiile"
 
 #: ../contents/config/config.qml
 msgid "General"
-msgstr "Загальне"
+msgstr "General"
 
 #: ../contents/config/config.qml
 msgid "Search Plugins"
@@ -51,41 +51,41 @@ msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Icon:"
-msgstr "Піктограма:"
+msgstr "Iconiță:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgctxt "@item:inmenu Open icon chooser dialog"
 msgid "Choose…"
-msgstr "Обрати…"
+msgstr "Alege..."
 
 #: ../contents/ui/ConfigGeneral.qml
 msgctxt "@item:inmenu Reset icon to default"
 msgid "Clear Icon"
-msgstr "Очистити піктограму"
+msgstr "Șterge Iconița"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background:"
-msgstr "Тло:"
+msgstr "Imagine de fundal:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use theme color"
-msgstr "Використовувати колір теми"
+msgstr "Folosește culoare temei"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use custom color"
-msgstr "Використовувати власний колір"
+msgstr "Folosește culoare personalizată"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use image"
-msgstr "Використовувати зображення"
+msgstr "Folosește imagine"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Custom Color:"
-msgstr "Власний колір:"
+msgstr "Culoare Personalizată:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background Color"
-msgstr "Колір тла"
+msgstr "Culoare de Fundal"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Select Image File"
@@ -93,11 +93,11 @@ msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Path: "
-msgstr "Шлях: "
+msgstr "Drum:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "None"
-msgstr "Немає"
+msgstr "Niciuna"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Please choose an image file"
@@ -113,7 +113,7 @@ msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background opacity:"
-msgstr "Непрозорість тла"
+msgstr "Opacitatea imaginii de fundal:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "%1%"
@@ -121,55 +121,55 @@ msgstr "%1%"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Applications:"
-msgstr "Програми:"
+msgstr "Aplcații"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Max columns in grid:"
-msgstr "Максимум стовпців у сітці:"
+msgstr "Coloane maxime în grilă:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Size of application icons:"
-msgstr "Розмір піктограм програм:"
+msgstr "Dimensiunea iconițelor aplicațiilor:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use directory icons"
-msgstr "Використовувати піктограми для тек"
+msgstr "Folosește iconițele directoarelor"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Search:"
-msgstr "Пошук:"
+msgstr "Caută:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Show search bar"
-msgstr "Показувати поле пошуку"
+msgstr "Afișează bara de căutare"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Adaptive search result size"
-msgstr "Адаптивний розмір результатів пошуку"
+msgstr "Dimensiune adaptivă a rezultatelor căutarilor"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Max size of search result icons:"
-msgstr "Максимальний розмір піктограм результатів пошуку"
+msgstr "Dimensiunea maximă a iconițelor de la rezultatele căutarilor"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Size of search result icons:"
-msgstr "Розмір піктограм результатів пошуку"
+msgstr "Dimensiunea iconițelor de la rezultatele căutărilor:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "System Actions:"
-msgstr "Системні дії:"
+msgstr "Acțiunile Sistemului:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Show system actions"
-msgstr "Показувати системні дії"
+msgstr "Afișează acțiunile sistemului"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Size of system action icons:"
-msgstr "Розмір піктограм системних дій"
+msgstr "Dimensiunea iconițelor ale sistemului:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Show system action labels"
-msgstr "Показувати мітки системних дій"
+msgstr "Afișează etichetele acțiunii a sistemului"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use symbolic system action icons"
@@ -177,83 +177,83 @@ msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Other:"
-msgstr "Інше:"
+msgstr "Alt:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Disable animations"
-msgstr "Вимкнути анімації"
+msgstr "Dezactivează animațiile"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Animation speed multiplier:"
-msgstr "Множник швидкості анімацій:"
+msgstr "Multiplicatorul vitezei animației:"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Unhide all hidden applications"
-msgstr "Відображати всі приховані програми"
+msgstr "Afișează toate aplicațiile ascunse"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Unhidden!"
-msgstr "Показано!"
+msgstr "Ascunse!"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "File Search"
-msgstr "Пошук файлів"
+msgstr "Căutare fișiere"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Browser History"
-msgstr "Журнал навігатора"
+msgstr "Istoric navigator"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Browser Tabs"
-msgstr "Вкладки навігатора"
+msgstr "File de navigator"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Calculator"
-msgstr "Калькулятор"
+msgstr "Calculator"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Help Runner"
-msgstr "Засіб надання довідки"
+msgstr "Lansator de ajutor"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Software Center"
-msgstr "Центр програм"
+msgstr "Centru de aplicații"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Bookmarks"
-msgstr "Закладки"
+msgstr "Semne de carte"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Special Characters"
-msgstr "Спеціальні символи"
+msgstr "Caractere speciale"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Dictionary"
-msgstr "Словник"
+msgstr "Dicționar"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Kate Sessions"
-msgstr "Сеанси Kate"
+msgstr "Sesiuni Kate"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Terminate Applications"
-msgstr "Переривання програм"
+msgstr "Termină aplicații"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Konsole Profiles"
-msgstr "Профілі Konsole"
+msgstr "Profiluri Konsolă"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
@@ -263,77 +263,77 @@ msgstr "KWin"
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Places"
-msgstr "Місця"
+msgstr "Locuri"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Plasma Desktop Shell"
-msgstr "Оболонка стільниці Плазми"
+msgstr "Învelișul de birou Plasma"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Power"
-msgstr "Живлення"
+msgstr ""
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Recent Files"
-msgstr "Нещодавні файли"
+msgstr "Fișiere recente"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Applications"
-msgstr "Програми"
+msgstr "Aplicații"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Desktop Sessions"
-msgstr "Стільничні сеанси"
+msgstr "Sesiuni de birou"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Command Line"
-msgstr "Командний рядок"
+msgstr "Linie de comandă"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Spell Checker"
-msgstr "Перевірка правопису"
+msgstr "Verificator ortografic"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "System Settings"
-msgstr "Системні параметри"
+msgstr "Configurări de sistem"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Web Search Keywords"
-msgstr "Ключові слова пошуку в інтернеті"
+msgstr "Cuvinte-cheie de căutare web"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Locations"
-msgstr "Адреси"
+msgstr "Amplasări"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Activities"
-msgstr "Простори дій"
+msgstr "Activități"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Date and Time"
-msgstr "Дата і час"
+msgstr "Data și ora"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Unit Converter"
-msgstr "Перетворювач одиниць"
+msgstr "Convertor de unități"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Windows"
-msgstr "Вікна"
+msgstr "Ferestre"
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Plugin Allowlist"
@@ -346,7 +346,7 @@ msgstr ""
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "@action:button"
 msgid "Configure Enabled Search Plugins…"
-msgstr "Налаштувати увімкнені додатки для пошуку…"
+msgstr "Configurează plugin-urile pornite de căutare..."
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Custom Search Plugins"
@@ -362,19 +362,19 @@ msgstr ""
 
 #: ../contents/ui/main.qml
 msgid "Edit Applications..."
-msgstr "Змінити список програм..."
+msgstr "Editează Aplicațiile..."
 
 #: ../contents/ui/MenuRepresentation.qml
 msgid "Search"
-msgstr "Пошук"
+msgstr "Caută"
 
 #: ../contents/ui/RunnerResultsView.qml
 msgid "Show Less"
-msgstr "Показати менше"
+msgstr "Afișează mai puțin"
 
 #: ../contents/ui/RunnerResultsView.qml
 msgid "Show More"
-msgstr "Показати більше"
+msgstr "Afișează mai mult"
 
 #~ msgid "Use plasma icons"
-#~ msgstr "Використовувати піктограми Плазми"
+#~ msgstr "Folosește iconițele din Plasma"

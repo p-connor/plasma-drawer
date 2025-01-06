@@ -1,14 +1,14 @@
-# Translation of PlasmaDrawer in Russian
+# Translation of plasma-drawer in Russian
 # Copyright (C) 2023
-# This file is distributed under the same license as the PlasmaDrawer package.
+# This file is distributed under the same license as the plasma-drawer package.
 # Mykhailo Stetsiuk <yaBobJonez@gmail.com>, 2023–2024.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PlasmaDrawer\n"
-"Report-Msgid-Bugs-To: https://github.com/P-Connor/plasma-drawer\n"
-"POT-Creation-Date: 2024-01-28 03:42-0800\n"
+"Project-Id-Version: plasma-drawer\n"
+"Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
+"POT-Creation-Date: 2025-01-04 15:55-0600\n"
 "PO-Revision-Date: 2023-07-24 10:55+0300\n"
 "Last-Translator: Mykhailo Stetsiuk <yaBobJonez@gmail.com>\n"
 "Language-Team: \n"
@@ -44,6 +44,10 @@ msgstr "Изменить список программ"
 #: ../contents/config/config.qml
 msgid "General"
 msgstr "Общее"
+
+#: ../contents/config/config.qml
+msgid "Search Plugins"
+msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Icon:"
@@ -84,12 +88,28 @@ msgid "Background Color"
 msgstr "Цвет фона"
 
 #: ../contents/ui/ConfigGeneral.qml
+msgid "Select Image File"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
 msgid "Path: "
 msgstr "Путь: "
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "None"
 msgstr "Отсутствует"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Please choose an image file"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Image files"
+msgstr ""
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "All files"
+msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background opacity:"
@@ -124,11 +144,6 @@ msgid "Show search bar"
 msgstr "Отображать поле поиска"
 
 #: ../contents/ui/ConfigGeneral.qml
-msgctxt "@action:button"
-msgid "Configure Enabled Search Plugins…"
-msgstr "Настроить активированные плагины для поиска…"
-
-#: ../contents/ui/ConfigGeneral.qml
 msgid "Adaptive search result size"
 msgstr "Адаптивный размер результатов поиска"
 
@@ -157,8 +172,8 @@ msgid "Show system action labels"
 msgstr "Отображать метки системных действий"
 
 #: ../contents/ui/ConfigGeneral.qml
-msgid "Use plasma icons"
-msgstr "Использовать иконки Plasma"
+msgid "Use symbolic system action icons"
+msgstr ""
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Other:"
@@ -180,6 +195,171 @@ msgstr "Показать все скрытые программы"
 msgid "Unhidden!"
 msgstr "Показано!"
 
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "File Search"
+msgstr "Поиск файлов"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Browser History"
+msgstr "Журнал браузера"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Browser Tabs"
+msgstr "Вкладки браузера"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Calculator"
+msgstr "Калькулятор"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Help Runner"
+msgstr "Средство поиска справки"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Software Center"
+msgstr "Центр программ"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Bookmarks"
+msgstr "Закладки"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Special Characters"
+msgstr "Специальные символы"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Dictionary"
+msgstr "Словарь"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Kate Sessions"
+msgstr "Kate: сеансы"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Terminate Applications"
+msgstr "Завершение приложений"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Konsole Profiles"
+msgstr "Konsole: профили"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "KWin"
+msgstr "KWin"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Places"
+msgstr "Точки входа"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Plasma Desktop Shell"
+msgstr "Консоль сценариев Plasma"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Power"
+msgstr "Электропитание"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Recent Files"
+msgstr "Последние файлы"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Applications"
+msgstr "Приложения"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Desktop Sessions"
+msgstr "Сеансы"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Command Line"
+msgstr "Запуск программ"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Spell Checker"
+msgstr "Проверка орфографии"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "System Settings"
+msgstr "Параметры системы"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Web Search Keywords"
+msgstr "Ключевые слова для веб-поиска"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Locations"
+msgstr "Расположения"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Activities"
+msgstr "Комнаты"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Date and Time"
+msgstr "Дата и время"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Unit Converter"
+msgstr "Преобразование величин"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Windows"
+msgstr "Окна"
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Plugin Allowlist"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Note: Selected plugins must also be enabled in System Settings"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "@action:button"
+msgid "Configure Enabled Search Plugins…"
+msgstr "Настроить активированные плагины для поиска…"
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Custom Search Plugins"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Add any custom plugins you've installed"
+msgstr ""
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Plugin ID:"
+msgstr ""
+
 #: ../contents/ui/main.qml
 msgid "Edit Applications..."
 msgstr "Изменить список программ..."
@@ -195,3 +375,6 @@ msgstr "Показать меньше"
 #: ../contents/ui/RunnerResultsView.qml
 msgid "Show More"
 msgstr "Показать больше"
+
+#~ msgid "Use plasma icons"
+#~ msgstr "Использовать иконки Plasma"

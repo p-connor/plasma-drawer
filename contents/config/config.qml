@@ -17,14 +17,19 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.0
+import QtQuick
 
-import org.kde.plasma.configuration 2.0
+import org.kde.plasma.configuration
 
 ConfigModel {
     ConfigCategory {
          name: i18n("General")
          icon: "kde"
          source: "ConfigGeneral.qml"
+    }
+    ConfigCategory {
+         name: i18n("Search Plugins")
+         icon: "search"
+         source: "ConfigSearch.qml"
     }
 }

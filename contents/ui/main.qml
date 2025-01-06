@@ -17,16 +17,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.0
-import QtQuick.Layouts 1.1
-import org.kde.plasma.plasmoid 2.0
+import QtQuick
+import QtQuick.Layouts
+import org.kde.plasma.plasmoid
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.core as PlasmaCore
+import org.kde.ksvg as KSvg
 
-import org.kde.plasma.private.kicker 0.1 as Kicker
+import org.kde.plasma.private.kicker as Kicker
+import org.kde.kitemmodels as KItemModels
 
-Item {
+PlasmoidItem {
     id: kicker
 
     // onActiveFocusItemChanged: {
@@ -37,10 +38,10 @@ Item {
 
     signal reset
 
-    Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
+    preferredRepresentation: fullRepresentation
 
-    Plasmoid.compactRepresentation: null
-    Plasmoid.fullRepresentation: compactRepresentation
+    compactRepresentation: null
+    fullRepresentation: compactRepresentation
 
     property Item dragSource: null
 
@@ -70,10 +71,6 @@ Item {
                 continue;
             }
         }
-    }
-
-    function action_menuedit() {
-        processRunner.runMenuEditor();
     }
 
     Component {
@@ -113,7 +110,7 @@ Item {
         showSeparators: false
         paginate: false
 
-        appletInterface: plasmoid
+        appletInterface: kicker
         appNameFormat: plasmoid.configuration.appNameFormat
 
         Component.onCompleted: {
@@ -134,15 +131,32 @@ Item {
         }
     }
 
-    Kicker.RunnerModel {
+    // Kicker.RunnerModel no longer has the deleteWhenEmpty property, which means we must filter
+    // out the empty results sections ourselves using a wrapper FilterProxyModel
+    KItemModels.KSortFilterProxyModel {
         id: runnerModel
 
-        appletInterface: plasmoid
-        
-        // runners: plasmoid.configuration.useExtraRunners ? new Array("services").concat(plasmoid.configuration.extraRunners) : "services"
+        property alias query: kickerRunnerModel.query
 
-        // mergeResults: true
-        deleteWhenEmpty: true
+        sourceModel: Kicker.RunnerModel {
+            id: kickerRunnerModel
+            appletInterface: kicker
+            runners: plasmoid.configuration.searchRunners
+            onCountChanged: {
+                for (let i = 0; i < count; i++) {
+                    kickerRunnerModel.modelForRow(i).countChanged.connect(runnerModel.invalidateFilter);
+                }
+            }
+        }
+
+        filterRowCallback: (sourceRow, sourceParent) => {
+            return sourceModel.modelForRow(sourceRow).count > 0;
+        }
+
+        function modelForRow(proxyRow) {
+            let sourceRow = runnerModel.mapToSource(runnerModel.index(proxyRow, 0)).row;
+            return sourceModel.modelForRow(sourceRow);
+        }
     }
 
     Kicker.DragHelper {
@@ -153,7 +167,7 @@ Item {
         id: processRunner;
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id : highlightItemSvg
 
         visible: false
@@ -162,7 +176,7 @@ Item {
         prefix: "hover"
     }
 
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id : panelSvg
 
         visible: false
@@ -170,24 +184,15 @@ Item {
         imagePath: "widgets/panel-background"
     }
 
-    PlasmaComponents.Label {
-        id: toolTipDelegate
-
-        width: contentWidth
-        height: contentHeight
-
-        property Item toolTip
-
-        text: (toolTip != null) ? toolTip.text : ""
-    }
-
     function resetDragSource() {
         dragSource = null;
     }
 
-    Component.onCompleted: {
-        plasmoid.setAction("menuedit", i18n("Edit Applications..."), "kmenuedit");
-        // rootModel.refreshed.connect(reset);
-        dragHelper.dropped.connect(resetDragSource);
-    }
+    Plasmoid.contextualActions: [
+        PlasmaCore.Action {
+            text: i18n("Edit Applications...")
+            icon.name: "kmenuedit"
+            onTriggered: processRunner.runMenuEditor()
+        }
+    ]
 }

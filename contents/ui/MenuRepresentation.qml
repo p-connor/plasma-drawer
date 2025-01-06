@@ -18,20 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.plasma.private.kicker 0.1 as Kicker
+import org.kde.plasma.plasmoid
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.private.kicker as Kicker
+import QtQuick.Window
+import Qt5Compat.GraphicalEffects
 
 import "../code/tools.js" as Tools
-import QtQuick.Window 2.0
-import QtQuick.Controls.Styles 1.4
-import QtGraphicalEffects 1.15
-
 
 Kicker.DashboardWindow {
     
@@ -42,7 +39,7 @@ Kicker.DashboardWindow {
 
     readonly property bool searching: searchField.text != ""
 
-    readonly property int contentMargin: Math.max(units.iconSizes.huge, height * .12)
+    readonly property int contentMargin: Math.max(Kirigami.Units.iconSizes.huge, height * .12)
 
     // TODO: remove this and all focus debug rectangles
     property bool debugFocus: false
@@ -108,7 +105,7 @@ Kicker.DashboardWindow {
         ActionMenu {
             id: actionMenu
             // visualParent: rootMouseArea
-            onActionClicked: {
+            onActionClicked: function (actionId, actionArgument) {
                 var closeRequested = Tools.triggerAction(plasmoid, null, -1, actionId, actionArgument);
                 if (closeRequested) {
                     root.toggle();
@@ -116,7 +113,7 @@ Kicker.DashboardWindow {
             }
         }
 
-        onReleased: {
+        onReleased: function (mouse) {
             mouse.accepted = true;
             if (mouse.button == Qt.RightButton) {
                 if (!searching) {
@@ -169,12 +166,12 @@ Kicker.DashboardWindow {
             anchors.top: parent.top
             anchors.topMargin: (contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
-            width: Math.min(units.gridUnit * 20, (root.width * 0.25) + (leftInset * 2))
-            leftInset: -(searchIcon.width + units.smallSpacing * 4)
-            rightInset: -(searchIcon.width + units.smallSpacing * 4)
+            width: Math.min(Kirigami.Units.gridUnit * 20, (root.width * 0.25) + (leftInset * 2))
+            leftInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
+            rightInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
 
             color: drawerTheme.textColor
-            font.pointSize: theme.defaultFont.pointSize + 1
+            font.pointSize: Kirigami.Theme.defaultFont.pointSize + 1
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
             
@@ -193,30 +190,23 @@ Kicker.DashboardWindow {
                 color: colorWithAlpha(drawerTheme.textColor, .15)
             }
 
-            PlasmaCore.IconItem {
+            Kirigami.Icon {
                 id: searchIcon
                 source: "search-icon"
                 visible: true
                 width:  searchFieldBackground.height
                 height: width
                 roundToIconSize: true
-                usesPlasmaTheme: true
                 anchors {
                     left: searchFieldBackground.left
-                    leftMargin: units.smallSpacing * 2
+                    leftMargin: Kirigami.Units.smallSpacing * 2
                     verticalCenter: parent.verticalCenter
                 }
+                isMask: true
+                color: drawerTheme.iconColor
             }
 
-            // Modify search icon color to text color
-            ColorOverlay {
-                anchors.fill: searchIcon
-                source: searchIcon
-                color: drawerTheme.iconColor
-                cached: true
-            }
-            
-            Keys.onPressed: {
+            Keys.onPressed: function (event) {
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
                     if (!content.item.currentMatch) {
@@ -237,7 +227,7 @@ Kicker.DashboardWindow {
                 }
             }
 
-            Keys.onReleased: {
+            Keys.onReleased: function (event) {
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
                     content.item.triggerSelected();
@@ -259,7 +249,7 @@ Kicker.DashboardWindow {
             RunnerResultsView {
                 id: runnerResultsView
 
-                width: Math.min(units.gridUnit * 32, root.width * 0.33)
+                width: Math.min(Kirigami.Units.gridUnit * 32, root.width * 0.33)
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 visible: searching
@@ -292,7 +282,7 @@ Kicker.DashboardWindow {
                 focus: true
 
                 iconSize: plasmoid.configuration.appIconSize
-                numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((root.width - units.largeSpacing * 2) / cellSizeWidth))
+                numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((root.width - Kirigami.Units.largeSpacing * 2) / cellSizeWidth))
 
                 model: appsModel
             }
@@ -336,7 +326,7 @@ Kicker.DashboardWindow {
                 item.keyNavDown.connect(keyNavDown);
             }
 
-            Keys.onPressed: {
+            Keys.onPressed: function (event) {
                 if (event.key == Qt.Key_Backtab) {
                     event.accepted = true;
                     keyNavUp();
@@ -358,12 +348,12 @@ Kicker.DashboardWindow {
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 bottom: parent.bottom
-                margins: units.largeSpacing
+                margins: Kirigami.Units.largeSpacing
                 bottomMargin: (contentMargin / 2) - (height / 2)
             }
 
             iconSize: plasmoid.configuration.systemActionIconSize
-            cellWidth: iconSize + (units.largeSpacing * (showLabels ? 3 : 1))
+            cellWidth: iconSize + (Kirigami.Units.largeSpacing * (showLabels ? 6 : 2))
             cellHeight: cellWidth
             // height: cellHeight
             // width: cellWidth * count
@@ -375,7 +365,7 @@ Kicker.DashboardWindow {
             dragEnabled: true
             showLabels: plasmoid.configuration.showSystemActionLabels
             setIconColorBasedOnTheme: true
-            usesPlasmaTheme: plasmoid.configuration.systemActionsUsePlasmaIcons
+            forceSymbolicIcons: plasmoid.configuration.useSymbolicSystemActionIcons
 
             onKeyNavUp: {
                 currentIndex = -1;
@@ -383,7 +373,7 @@ Kicker.DashboardWindow {
                 content.item.selectLast();
             }
 
-            Keys.onPressed: {
+            Keys.onPressed: function (event) {
                 if (event.key == Qt.Key_Backtab || (event.key == Qt.Key_Tab && !searchField.visible)) {
                     event.accepted = true;
                     currentIndex = -1;
@@ -397,7 +387,7 @@ Kicker.DashboardWindow {
             }
         }
  
-        Keys.onPressed: {
+        Keys.onPressed: function (event) {
             if (searchField.focus || !searchField.visible) {
                 return;
             }

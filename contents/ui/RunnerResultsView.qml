@@ -1,15 +1,11 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.plasmoid
 import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.kquickcontrolsaddons 2.0
-import org.kde.kirigami 2.16 as Kirigami
-
-import "../code/tools.js" as Tools
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.kquickcontrolsaddons
+import org.kde.kirigami as Kirigami
 
 FocusScope {
     id: searchResults
@@ -19,10 +15,8 @@ FocusScope {
     signal keyNavUp
     signal keyNavDown
 
-    width: PlasmaCore.Units.gridUnit * 20
-    height: PlasmaCore.Units.gridUnit * 60
-
-    property bool usesPlasmaTheme: true
+    width: Kirigami.Units.gridUnit * 20
+    height: Kirigami.Units.gridUnit * 60
 
     property alias model: runnerSectionsList.model
     property alias currentSectionIndex: runnerSectionsList.currentIndex
@@ -30,7 +24,7 @@ FocusScope {
     readonly property var currentMatch: currentSection ? currentSection.currentItem : null
     property alias sectionsCount: runnerSectionsList.count
 
-    property int iconSize: units.iconSizes.huge
+    property int iconSize: Kirigami.Units.iconSizes.huge
     property bool shrinkIconsToNative: false
 
     function selectFirst() {
@@ -130,7 +124,7 @@ FocusScope {
                 }
 
                 let headerHeight = section.matchesList.mapToItem(section, 0, 0).y;
-                let matchY = section.y + match.y + headerHeight + units.smallSpacing; // Match's y relative to runnerSectionsList's start
+                let matchY = section.y + match.y + headerHeight + Kirigami.Units.smallSpacing; // Match's y relative to runnerSectionsList's start
                 let mappedY = matchY - contentY; // Match's y adjusted to scrolled position
 
                 if (mappedY < 0) {
@@ -141,10 +135,10 @@ FocusScope {
             }
 
             delegate: FocusScope {
-                width: scrollView.width - scrollView.ScrollBar.vertical.width - units.smallSpacing
-                height: matchesList.height + sectionHeader.height + units.smallSpacing * 5
+                width: scrollView.width - scrollView.ScrollBar.vertical.width - Kirigami.Units.smallSpacing
+                height: matchesList.height + sectionHeader.height + Kirigami.Units.largeSpacing * 4
 
-                visible: matchesList.model && matchesList.model.count > 0
+                visible: matchesList?.model?.count > 0 ?? false
 
                 property alias count: matchesList.count
                 property alias expanded: matchesList.expanded
@@ -176,19 +170,16 @@ FocusScope {
 
                         visible: matchesList.expandable
 
-                        contentItem: PlasmaComponents.Label {
+                        contentItem: PC3.Label {
                             id: showMoreLabel
                             verticalAlignment: Text.AlignBottom
                             text: matchesList.expanded ? i18n("Show Less") : i18n("Show More")
                             color: showMoreButton.hovered ? drawerTheme.textColor : drawerTheme.softTextColor
+                            font.underline: showMoreButton.activeFocus
                         }
-                        background: Rectangle {         
-                            id: showMoreButtonHighlight
-                            height: 1 * units.devicePixelRatio
-                            anchors.bottom: showMoreLabel.bottom
-                            color: drawerTheme.softTextColor
-
-                            visible: showMoreButton.activeFocus
+                        background: Item {         
+                            anchors.fill: showMoreLabel
+                            visible: false
                         }
 
                         onPressed: {
@@ -196,7 +187,7 @@ FocusScope {
                             matchesList.expanded = !matchesList.expanded;
                         }
 
-                        Keys.onPressed: {
+                        Keys.onPressed: function (event) {
                             if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                                 // matchesList.focus = true;
                                 matchesList.expanded = !matchesList.expanded;
@@ -228,10 +219,10 @@ FocusScope {
                 //     anchors.left: runnerName.right
                 //     anchors.right: parent.right
                 //     anchors.verticalCenter: runnerName.verticalCenter
-                //     anchors.leftMargin: units.smallSpacing * 2
+                //     anchors.leftMargin: Kirigami.Units.smallSpacing * 2
                 //     // width: root.width
-                //     height: 2 * units.devicePixelRatio
-                //     color: theme.textColor
+                //     height: 2 * Kirigami.Units.devicePixelRatio
+                //     color: Kirigami.Theme.textColor
                 //     opacity: .05
                 // }
 
@@ -239,7 +230,7 @@ FocusScope {
                     id: matchesList
                     width: parent.width
                     anchors.top: sectionHeader.bottom
-                    anchors.topMargin: units.smallSpacing * 2
+                    anchors.topMargin: Kirigami.Units.smallSpacing * 2
 
                     focus: true
 
@@ -291,7 +282,7 @@ FocusScope {
         }
     }
 
-    Keys.onPressed: {
+    Keys.onPressed: function (event) {
         if (event.key == Qt.Key_Up || event.key == Qt.Key_Down || event.key == Qt.Key_Left || event.key == Qt.Key_Right) {
             if (currentSectionIndex == -1) {
                 event.accepted = true;

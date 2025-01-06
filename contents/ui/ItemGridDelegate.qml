@@ -17,13 +17,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.0
+import QtQuick
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.kquickcontrolsaddons 2.0
-import QtGraphicalEffects 1.15
+import org.kde.plasma.plasmoid
+import org.kde.plasma.components 3.0 as PC3
+import org.kde.kirigami as Kirigami
+import org.kde.kquickcontrolsaddons
+import Qt5Compat.GraphicalEffects
 
 import "../code/tools.js" as Tools
 
@@ -35,6 +35,7 @@ Item {
 
     property bool showLabel: true
     property var iconColorOverride: undefined
+    property bool forceSymbolicIcons: false
 
     readonly property bool isDirectory: model.hasChildren ?? false
     readonly property var directoryModel: isDirectory ? GridView.view.model.modelForRow(itemIndex) : undefined
@@ -72,24 +73,16 @@ Item {
 
         Item {
             anchors.centerIn: parent
-            PlasmaCore.IconItem {
+            Kirigami.Icon {
                 id: icon
                 anchors.centerIn: parent
                 width: parent.width
                 height: parent.height
                 animated: false
-                usesPlasmaTheme: loaderUsesPlasmaTheme
-                source: model.decoration
-                roundToIconSize: width > units.iconSizes.huge ? false : true
-            }
-
-            // Modify icon color to text color if using custom theme
-            ColorOverlay {
-                visible: typeof iconColorOverride != undefined
-                anchors.fill: icon
-                source: icon
-                color: iconColorOverride ?? "#00000000"
-                cached: true
+                source: model.decoration + (forceSymbolicIcons ? "-symbolic" : "")
+                roundToIconSize: width > Kirigami.Units.iconSizes.huge ? false : true
+                isMask: iconColorOverride !== undefined
+                color: iconColorOverride ?? "transparent"
             }
         }
     }
@@ -102,7 +95,7 @@ Item {
 
             // anchors.fill: parent
             radius: width / 4
-            //border.color: theme.textColor
+            //border.color: Kirigami.Theme.textColor
             //border.width: 2
             color: "#33000005"
 
@@ -111,7 +104,7 @@ Item {
                 
                 anchors.fill: parent
                 anchors.margins: parent.width / 10
-                cellWidth: (width / 2) * 0.9 > units.iconSizes.small ? width / 2 : width
+                cellWidth: (width / 2) * 0.9 > Kirigami.Units.iconSizes.small ? width / 2 : width
                 cellHeight: cellWidth
                 
                 // TODO - don't use clip here for performance reasons
@@ -124,7 +117,7 @@ Item {
                     width: directoryGridView.cellWidth
                     height: directoryGridView.cellHeight
 
-                    PlasmaCore.IconItem {
+                    Kirigami.Icon {
                         id: directoryIconItem
 
                         width: parent.width * 0.9
@@ -132,9 +125,8 @@ Item {
                         anchors.centerIn: parent
 
                         animated: false
-                        usesPlasmaTheme: loaderUsesPlasmaTheme
-                        source: model.decoration
-                        roundToIconSize: width > units.iconSizes.medium ? false : true
+                        source: model.decoration + (forceSymbolicIcons ? "-symbolic" : "")
+                        roundToIconSize: width > Kirigami.Units.iconSizes.medium ? false : true
                     }
                 }
             }
@@ -154,9 +146,6 @@ Item {
         Loader {
             id: displayLoader
             anchors.fill: parent
-
-            property bool loaderUsesPlasmaTheme: item.GridView.view.usesPlasmaTheme
-
             sourceComponent: isDirectory && !plasmoid.configuration.useDirectoryIcons ? directoryViewComponent : iconComponent
         }        
     }
@@ -172,14 +161,14 @@ Item {
     //     // color: "transparent"
     // }
 
-    PlasmaComponents.Label {
+    PC3.Label {
         id: label
 
         visible: showLabel
 
         anchors {
             top: displayBox.bottom
-            topMargin: units.smallSpacing
+            topMargin: Kirigami.Units.largeSpacing * 1.5
             left: parent.left
             leftMargin: highlightItemSvg.margins.left
             right: parent.right
@@ -195,14 +184,14 @@ Item {
         color: drawerTheme.textColor
     }
 
-    // PlasmaComponents.Label {
+    // PC3.Label {
     //     id: folderArrow
 
     //     visible: isDirectory
 
     //     anchors {
     //         top: label.bottom
-    //         topMargin: units.smallSpacing
+    //         topMargin: Kirigami.Units.smallSpacing
     //         left: parent.left
     //         leftMargin: highlightItemSvg.margins.left
     //         right: parent.right

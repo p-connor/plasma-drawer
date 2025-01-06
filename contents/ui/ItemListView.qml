@@ -1,10 +1,9 @@
-import QtQuick 2.15
+import QtQuick
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.kquickcontrolsaddons 2.0
+import org.kde.plasma.plasmoid
+import org.kde.plasma.extras as PlasmaExtras
+import org.kde.kirigami as Kirigami
+import org.kde.kquickcontrolsaddons
 
 import "../code/tools.js" as Tools
 
@@ -16,10 +15,10 @@ FocusScope {
     signal keyNavUp
     signal keyNavDown
 
-    width: PlasmaCore.Units.gridUnit * 20
+    width: Kirigami.Units.gridUnit * 20
     height: background.height
 
-    property int iconSize: units.iconSizes.large
+    property int iconSize: Kirigami.Units.iconSizes.large
     
     property int maxVisibleRows: -1
     readonly property int lastVisibleIndex: expandable && !expanded ? maxVisibleRows - 1 : count - 1
@@ -69,7 +68,7 @@ FocusScope {
 
         visualParent: listView
         
-        onActionClicked: {
+        onActionClicked: function (actionId, actionArgument) {
             var closeRequested = Tools.triggerAction(plasmoid, model, targetIndex, actionId, actionArgument);
 
             if (closeRequested) {
@@ -93,16 +92,16 @@ FocusScope {
     Rectangle {
         id: background
         width: rowWidth
-        height: listView.height + (units.smallSpacing * 2)
+        height: listView.height + (Kirigami.Units.smallSpacing * 2)
         color: colorWithAlpha(drawerTheme.textColor, 0.05)
-        radius: units.smallSpacing * 3
+        radius: Kirigami.Units.smallSpacing * 3
 
         ListView {
             id: listView
             width: parent.width
             height: contentHeight
             state: "UNEXPANDED"
-            y: units.smallSpacing
+            y: Kirigami.Units.smallSpacing
 
             clip: true
 
@@ -110,14 +109,14 @@ FocusScope {
 
             currentIndex: -1
             highlightFollowsCurrentItem: true
-            highlight: PlasmaComponents.Highlight {}
+            highlight: PlasmaExtras.Highlight {}
             highlightMoveDuration: 0
 
             property int targetIconSize: itemList.iconSize
             onCountChanged: {
                 if (shrinkIconsToNative) {
                     let smaller = 0;
-                    let nextSmallestSize = units.iconSizes.tiny;
+                    let nextSmallestSize = Kirigami.Units.iconSizes.tiny;
                     for (let i = 0; i < count; i++) {
                         let item = itemAtIndex(i);
                         if (!item) {
@@ -159,7 +158,7 @@ FocusScope {
                 NumberAnimation { 
                     target: listView
                     property: "height"
-                    duration: plasmoid.configuration.disableAnimations ? 0 : units.veryLongDuration / plasmoid.configuration.animationSpeedMultiplier
+                    duration: plasmoid.configuration.disableAnimations ? 0 : Kirigami.Units.veryLongDuration / plasmoid.configuration.animationSpeedMultiplier
                     easing.type: Easing.OutCubic 
                 }
             }
@@ -198,21 +197,21 @@ FocusScope {
                     // itemList.focus = true;
                 }
 
-                onPressed: {
+                onPressed: function (mouse) {
                     if (mouse.button == Qt.RightButton && currentItem && currentItem.hasActionList) {
                         mouse.accepted = true;
                         itemList.openActionMenu(mouse.x, mouse.y, currentItem.getActionList());
                     }
                 }
 
-                onReleased: {
+                onReleased: function (mouse) {
                     if (mouse.button != Qt.RightButton && currentIndex != -1) {
                         mouse.accepted = true;
                         itemList.trigger(currentIndex);
                     }
                 }
 
-                onPositionChanged: {
+                onPositionChanged: function (mouse) {
                     updatePositionProperties(mouse.x, mouse.y);
                 }
 
@@ -225,7 +224,7 @@ FocusScope {
         }
     }
 
-    Keys.onPressed: {
+    Keys.onPressed: function (event) {
         if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
             event.accepted = true;
             itemList.trigger(currentIndex);
