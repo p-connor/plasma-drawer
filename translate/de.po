@@ -208,7 +208,7 @@ msgstr "Browser-Verlauf"
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Browser Tabs"
-msgstr "Browser Registerkarten"
+msgstr "Browser-Unterfenster"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
@@ -308,7 +308,7 @@ msgstr "Systemeinstellungen"
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
 msgid "Web Search Keywords"
-msgstr "Web-Suche Schlüsselwörter"
+msgstr "Web-Kürzel"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "KRunner Plugin"
