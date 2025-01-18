@@ -47,7 +47,7 @@ msgstr "Allgemein"
 
 #: ../contents/config/config.qml
 msgid "Search Plugins"
-msgstr ""
+msgstr "Such-Plugins"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Icon:"
@@ -89,7 +89,7 @@ msgstr "Hintergrundfarbe"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Select Image File"
-msgstr ""
+msgstr "Bild auswählen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Path: "
@@ -101,15 +101,15 @@ msgstr "Kein"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Please choose an image file"
-msgstr ""
+msgstr "Bitte wählen Sie ein Bild aus"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Image files"
-msgstr ""
+msgstr "Bilder"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "All files"
-msgstr ""
+msgstr "Alle Dateien"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Background opacity:"
@@ -173,7 +173,7 @@ msgstr "Beschreibungen der Systemaktionen anzeigen"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Use symbolic system action icons"
-msgstr ""
+msgstr "Symbole für Systemaktionen verwenden"
 
 #: ../contents/ui/ConfigGeneral.qml
 msgid "Other:"
@@ -337,11 +337,11 @@ msgstr "Fenster"
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Plugin Allowlist"
-msgstr ""
+msgstr "Liste der erlaubten Plugins"
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Note: Selected plugins must also be enabled in System Settings"
-msgstr ""
+msgstr "Hinweis: Ausgewählte Plugins müssen in den Systemeinstellungen eingeschaltet sein"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "@action:button"
@@ -350,15 +350,15 @@ msgstr "Verfügbare Such Plugins konfigurieren…"
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Custom Search Plugins"
-msgstr ""
+msgstr "Benutzerdefinierte Such-Plugins"
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Add any custom plugins you've installed"
-msgstr ""
+msgstr "Fügen Sie installierte Plugins hinzu"
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Plugin ID:"
-msgstr ""
+msgstr "Plugin ID:"
 
 #: ../contents/ui/main.qml
 msgid "Edit Applications..."
