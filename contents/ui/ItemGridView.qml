@@ -187,7 +187,6 @@ FocusScope {
                 visible: model ? model.count > 0 : false
                 currentIndex: -1
                 // clip: true
-                layer.enabled : true
 
                 keyNavigationWraps: false
                 boundsBehavior: Flickable.StopAtBounds
