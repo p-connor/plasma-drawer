@@ -102,14 +102,13 @@ FocusScope {
 
             cellWidth:  cellSizeWidth
             cellHeight: cellSizeHeight
-
-            
             iconSize: appsGrid.iconSize
 
             model: appsGrid.model
             
             dragEnabled: false
             hoverEnabled: true
+            layer.enabled: true
 
             onKeyNavUp: {
                 currentIndex = -1;
