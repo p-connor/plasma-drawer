@@ -51,7 +51,9 @@ FullScreenDialog {
         if (visible) {
             // Set favorites here to ensure system actions are available
             systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
+            contentOpenAnimation.restart();
         } else {
+            contentOpenAnimation.stop();
             reset();
         }
     }
@@ -325,6 +327,35 @@ FullScreenDialog {
                     event.accepted = true;
                     keyNavDown();
                 }
+            }
+        }
+
+        ParallelAnimation {
+            id: contentOpenAnimation
+
+            readonly property int duration: plasmoid.configuration.disableAnimations ? 0
+                : Kirigami.Units.longDuration * 1.5 / plasmoid.configuration.animationSpeedMultiplier
+
+            NumberAnimation {
+                target: content
+                property: "scale"
+                from: 1.2
+                to: 1
+                duration: contentOpenAnimation.duration
+                easing.type: Easing.OutCubic
+            }
+            NumberAnimation {
+                target: content
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: contentOpenAnimation.duration
+                easing.type: Easing.OutCubic
+            }
+
+            onStopped: {
+                content.scale = 1;
+                content.opacity = 1;
             }
         }
 
