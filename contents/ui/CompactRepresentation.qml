@@ -24,8 +24,6 @@ import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami as Kirigami
 
-import org.kde.plasma.private.kicker as Kicker
-
 Item {
     id: root
 
@@ -39,7 +37,7 @@ Item {
         && plasmoid.configuration.customButtonImage.length != 0)
 
     readonly property Component dashWindowComponent: Qt.createComponent(Qt.resolvedUrl("./MenuRepresentation.qml"), root)
-    readonly property Kicker.DashboardWindow dashWindow: dashWindowComponent && dashWindowComponent.status === Component.Ready
+    readonly property FullScreenDialog dashWindow: dashWindowComponent && dashWindowComponent.status === Component.Ready
         ? dashWindowComponent.createObject(root, { visualParent: root }) : null
 
     Plasmoid.status: dashWindow && dashWindow.visible ? PlasmaCore.Types.RequiresAttentionStatus : PlasmaCore.Types.PassiveStatus

@@ -22,20 +22,19 @@ import QtQuick
 import QtQuick.Controls
 
 import org.kde.plasma.plasmoid
+import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
-import org.kde.plasma.private.kicker as Kicker
 import QtQuick.Window
 import Qt5Compat.GraphicalEffects
 
 import "../code/tools.js" as Tools
 
-Kicker.DashboardWindow {
-    
+FullScreenDialog {
     id: root
 
-    // keyEventProxy: searchField
-    backgroundColor: "transparent"
+    animated: !plasmoid.configuration.disableAnimations
+    removeBackground: true
 
     readonly property bool searching: searchField.text != ""
 
@@ -60,14 +59,6 @@ Kicker.DashboardWindow {
     onSearchingChanged: {
         if (!searching) {
             reset();
-        }
-    }
-
-    onKeyEscapePressed: {
-        if (searching) {
-            searchField.text = "";
-        } else {
-            root.leave();
         }
     }
 
@@ -96,7 +87,7 @@ Kicker.DashboardWindow {
 
     mainItem: MouseArea {
         id: rootMouseArea
-        anchors.fill: parent
+        focus: true
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
         LayoutMirroring.childrenInherit: true
@@ -388,6 +379,16 @@ Kicker.DashboardWindow {
         }
  
         Keys.onPressed: function (event) {
+            if (event.key == Qt.Key_Escape) {
+                event.accepted = true;
+                if (searching) {
+                    searchField.text = "";
+                } else {
+                    root.leave();
+                }
+                return;
+            }
+
             if (searchField.focus || !searchField.visible) {
                 return;
             }
