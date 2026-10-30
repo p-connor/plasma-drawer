@@ -16,7 +16,7 @@ PlasmaCore.Dialog {
         // Background covers full screen, content covers non-panel area. Panels shown
         Maximized
     }
-    property int windowMode: FullScreenDialog.WindowMode.Fullscreen
+    property int windowMode: AdaptiveDialog.WindowMode.Fullscreen
     
     // The content item, sized by the dialog
     required property Item content
@@ -38,11 +38,11 @@ PlasmaCore.Dialog {
 
     hideOnWindowDeactivate: true
     // Ensure we stack above panels in Fullscreen mode
-    type: windowMode === FullScreenDialog.WindowMode.Fullscreen ? PlasmaCore.Dialog.Dock : PlasmaCore.Dialog.Normal
+    type: windowMode === AdaptiveDialog.WindowMode.Fullscreen ? PlasmaCore.Dialog.Dock : PlasmaCore.Dialog.Normal
 
     readonly property var _screenInfo: visualParent ? visualParent.Screen : Screen
     readonly property rect _screenRect: Qt.rect(_screenInfo.virtualX, _screenInfo.virtualY, _screenInfo.width, _screenInfo.height)
-    readonly property rect _contentRect: (windowMode === FullScreenDialog.WindowMode.Maximized 
+    readonly property rect _contentRect: (windowMode === AdaptiveDialog.WindowMode.Maximized 
         && plasmoid.containment.availableScreenRect.width > 0 
         && plasmoid.containment.availableScreenRect.height > 0)
             ? plasmoid.containment.availableScreenRect 

@@ -37,7 +37,7 @@ Item {
         && plasmoid.configuration.customButtonImage.length != 0)
 
     readonly property Component dashWindowComponent: Qt.createComponent(Qt.resolvedUrl("./MenuRepresentation.qml"), root)
-    readonly property FullScreenDialog dashWindow: dashWindowComponent && dashWindowComponent.status === Component.Ready
+    readonly property AdaptiveDialog dashWindow: dashWindowComponent && dashWindowComponent.status === Component.Ready
         ? dashWindowComponent.createObject(root, { visualParent: root }) : null
 
     Plasmoid.status: dashWindow && dashWindow.visible ? PlasmaCore.Types.RequiresAttentionStatus : PlasmaCore.Types.PassiveStatus

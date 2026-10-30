@@ -30,7 +30,7 @@ import Qt5Compat.GraphicalEffects
 
 import "../code/tools.js" as Tools
 
-FullScreenDialog {
+AdaptiveDialog {
     id: root
 
     animated: !plasmoid.configuration.disableAnimations
