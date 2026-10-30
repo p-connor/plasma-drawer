@@ -1,0 +1,377 @@
+# Translation of plasma-drawer in it
+# Copyright (C) 2025
+# This file is distributed under the same license as the plasma-drawer package.
+# Christian Franco <chry55player@gmail.com>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-drawer\n"
+"Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
+"POT-Creation-Date: 2026-08-18 10:27+0200\n"
+"PO-Revision-Date: 2026-08-17 15:30+2\n"
+"Last-Translator: Christian Franco <chry55player@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../metadata.desktop
+msgid "Plasma Drawer"
+msgstr "Plasma Drawer"
+
+#: ../metadata.desktop
+msgid "A fullscreen customizable launcher with application directories and krunner-like search"
+msgstr "Un avviatore personalizzabile a schermo intero con elenco applicazioni e ricerca stile krunner"
+
+#: ../contents/code/tools.js
+msgid "Remove action"
+msgstr "Rimuovi azione"
+
+#: ../contents/code/tools.js
+msgid "Show all"
+msgstr "Mostra tutto"
+
+#: ../contents/code/tools.js
+msgid "Add to system actions bar"
+msgstr "Aggiungi alla barra azioni di sistema"
+
+#: ../contents/code/tools.js
+msgid "Edit Applications"
+msgstr "Modifica Applicazioni"
+
+#: ../contents/config/config.qml
+msgid "General"
+msgstr "Generale"
+
+#: ../contents/config/config.qml
+msgid "Search Plugins"
+msgstr "Estensioni di ricerca"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Icon:"
+msgstr "Icona:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Scegli…"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Ripristina Icona"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background:"
+msgstr "Sfondo:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use theme color"
+msgstr "Usa colore del tema"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use custom color"
+msgstr "Usa colore personalizzato"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use image"
+msgstr "Usa immagine"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Custom Color:"
+msgstr "Colore personalizzato:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background Color"
+msgstr "Colore di sfondo"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Select Image File"
+msgstr "Seleziona file immagine"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Path: "
+msgstr "Percorso: "
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "None"
+msgstr "Nessuno"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Please choose an image file"
+msgstr "Per favore seleziona un file immagine"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Image files"
+msgstr "File immagine"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "All files"
+msgstr "Tutti i file"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Background opacity:"
+msgstr "Opacità di sfondo:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "%1%"
+msgstr "%1%"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Applications:"
+msgstr "Applicazioni:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max columns in grid:"
+msgstr "Numero massimo di colonne nella griglia:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of application icons:"
+msgstr "Dimensione delle icone delle applicazioni:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use directory icons"
+msgstr "Usa le icone delle cartelle"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Search:"
+msgstr "Ricerca:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show search bar"
+msgstr "Mostra barra di ricerca"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Adaptive search result size"
+msgstr "Dimensione adattiva dei risultati di ricerca"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Max size of search result icons:"
+msgstr "Dimensione massima delle icone dei risultati di ricerca:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of search result icons:"
+msgstr "Dimensione delle icone dei risultati di ricerca:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "System Actions:"
+msgstr "Azioni di sistema:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system actions"
+msgstr "Mostra le azioni di sistema"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Size of system action icons:"
+msgstr "Dimensione delle icone delle azioni di sistema:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Show system action labels"
+msgstr "Mostra le etichette delle azioni di sistema"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Use symbolic system action icons"
+msgstr "Usa icone simboliche per le azioni di sistema"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Other:"
+msgstr "Altro:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Disable animations"
+msgstr "Disabilita le animazioni"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Animation speed multiplier:"
+msgstr "Moltiplicatore della velocità delle animazioni:"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhide all hidden applications"
+msgstr "Mostra tutte le applicazioni nascoste"
+
+#: ../contents/ui/ConfigGeneral.qml
+msgid "Unhidden!"
+msgstr "Applicazioni nuovamente visibili!"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "File Search"
+msgstr "Ricerca file"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Browser History"
+msgstr "Cronologia del browser"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Browser Tabs"
+msgstr "Schede del browser"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Calculator"
+msgstr "Calcolatrice"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Help Runner"
+msgstr "Ricerca nella guida"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Software Center"
+msgstr "Centro software"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Bookmarks"
+msgstr "Segnalibri"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Special Characters"
+msgstr "Caratteri speciali"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Dictionary"
+msgstr "Dizionario"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Kate Sessions"
+msgstr "Sessioni di Kate"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Terminate Applications"
+msgstr "Termina applicazioni"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Konsole Profiles"
+msgstr "Profili di Konsole"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "KWin"
+msgstr "KWin"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Places"
+msgstr "Risorse"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Plasma Desktop Shell"
+msgstr "Shell desktop di Plasma"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Power"
+msgstr "Alimentazione"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Recent Files"
+msgstr "File recenti"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Applications"
+msgstr "Applicazioni"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Desktop Sessions"
+msgstr "Sessioni desktop"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Command Line"
+msgstr "Riga di comando"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Spell Checker"
+msgstr "Controllo ortografico"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "System Settings"
+msgstr "Impostazioni di sistema"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Web Search Keywords"
+msgstr "Parole chiave per la ricerca web"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Locations"
+msgstr "Posizioni"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Activities"
+msgstr "Attività"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Date and Time"
+msgstr "Data e ora"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Unit Converter"
+msgstr "Convertitore di unità"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "KRunner Plugin"
+msgid "Windows"
+msgstr "Finestre"
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Plugin Allowlist"
+msgstr "Elenco consentiti dei plugin"
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Note: Selected plugins must also be enabled in System Settings"
+msgstr "Nota: i plugin selezionati devono essere abilitati anche nelle Impostazioni di sistema"
+
+#: ../contents/ui/ConfigSearch.qml
+msgctxt "@action:button"
+msgid "Configure Enabled Search Plugins…"
+msgstr "Configura i plugin di ricerca abilitati…"
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Custom Search Plugins"
+msgstr "Plugin di ricerca personalizzati"
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Add any custom plugins you've installed"
+msgstr "Aggiungi i plugin personalizzati che hai installato"
+
+#: ../contents/ui/ConfigSearch.qml
+msgid "Plugin ID:"
+msgstr "ID del plugin:"
+
+#: ../contents/ui/main.qml
+msgid "Edit Applications..."
+msgstr "Modifica applicazioni..."
+
+#: ../contents/ui/MenuRepresentation.qml
+msgid "Search"
+msgstr "Cerca"
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show Less"
+msgstr "Mostra meno"
+
+#: ../contents/ui/RunnerResultsView.qml
+msgid "Show More"
+msgstr "Mostra di più"

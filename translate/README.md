@@ -52,6 +52,7 @@ The following scripts were retrieved from [Zren's Widget Library Repository](htt
 |----------|---------|-------|
 | Template |      82 |       |
 | de       |   82/82 |  100% |
+| it       |   82/82 |  100% |
 | pl       |   82/82 |  100% |
 | pt_BR    |   82/82 |  100% |
 | ro       |   70/82 |   85% |

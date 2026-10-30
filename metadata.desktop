@@ -18,12 +18,14 @@ X-KDE-PluginInfo-Category=Application Launchers
 KPackageStructure=Plasma/Applet
 
 Name[de]=Plasma Drawer
+Name[it]=Plasma Drawer
 Name[pl]=Szuflada Plasma
 Name[pt_BR]=Plasma Drawer
 Name[ro]=Plasma Drawer
 Name[ru]=Plasma Drawer
 Name[uk]=Plasma Drawer
 Comment[de]=Ein konfigurierbarer Fullscreen Launcher mit Anwendungsordnern und einer Krunner-artigen Suche
+Comment[it]=Un avviatore personalizzabile a schermo intero con elenco applicazioni e ricerca stile krunner
 Comment[pl]=Konfigurowalny launcher pełnoekranowy z katalogami aplikacji i wyszukiwaniem podobnym do KRunnera
 Comment[pt_BR]=Um inicializador em tela cheia personalizável com diretórios de aplicativos e busca similar ao krunner
 Comment[ro]=Un launcher pe tot ecranul customizabil cu aplcații, directoare și căutare care arată ca krunner
