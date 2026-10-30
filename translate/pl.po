@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-drawer\n"
 "Report-Msgid-Bugs-To: https://github.com/p-connor/plasma-drawer\n"
-"POT-Creation-Date: 2025-01-04 15:55-0600\n"
+"POT-Creation-Date: 2026-06-12 13:07-0300\n"
 "PO-Revision-Date: 2025-11-11 18:00+0100\n"
 "Last-Translator: RygorrMortis <rygorrmortis@github.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -23,8 +23,12 @@ msgid "Plasma Drawer"
 msgstr "Szuflada Plasma"
 
 #: ../metadata.desktop
-msgid "A fullscreen customizable launcher with application directories and krunner-like search"
-msgstr "Konfigurowalny launcher pełnoekranowy z katalogami aplikacji i wyszukiwaniem podobnym do KRunnera"
+msgid ""
+"A fullscreen customizable launcher with application directories and krunner-"
+"like search"
+msgstr ""
+"Konfigurowalny launcher pełnoekranowy z katalogami aplikacji i wyszukiwaniem "
+"podobnym do KRunnera"
 
 #: ../contents/code/tools.js
 msgid "Remove action"
@@ -342,7 +346,8 @@ msgstr "Lista dozwolonych wtyczek"
 
 #: ../contents/ui/ConfigSearch.qml
 msgid "Note: Selected plugins must also be enabled in System Settings"
-msgstr "Uwaga: Wybrane wtyczki muszą być również włączone w Ustawieniach systemowych"
+msgstr ""
+"Uwaga: Wybrane wtyczki muszą być również włączone w Ustawieniach systemowych"
 
 #: ../contents/ui/ConfigSearch.qml
 msgctxt "@action:button"
