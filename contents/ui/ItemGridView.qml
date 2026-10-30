@@ -362,7 +362,7 @@ FocusScope {
                         } else if (!dragHelper.dragging) {
                             // TODO - pass mouse events down to root instead
                             if (mouse.button == Qt.RightButton) {
-                                var cpos = mapToItem(root.mainItem, mouse.x, mouse.y);
+                                var cpos = mapToItem(root.content, mouse.x, mouse.y);
                                 root.openActionMenu(cpos.x, cpos.y);
                             } else {
                                 root.leave();

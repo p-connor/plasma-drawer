@@ -32,6 +32,19 @@
       <default>false</default>
     </entry>
 
+    <entry name="windowMode" type="Enum">
+      <label>How much of the screen the menu window covers</label>
+      <choices>
+        <choice name="fullscreen">
+          <label>The entire screen, including the area covered by panels</label>
+        </choice>
+        <choice name="maximized">
+          <label>Only the area not covered by panels, like a maximized window</label>
+        </choice>
+      </choices>
+      <default>0</default> <!-- fullscreen -->
+    </entry>
+
     <entry name="backgroundType" type="Enum">
       <label>The type of background to use</label>
       <choices>

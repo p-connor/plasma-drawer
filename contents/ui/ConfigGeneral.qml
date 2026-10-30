@@ -57,6 +57,7 @@ KCM.SimpleKCM {
     property int cfg_systemActionIconSize:              plasmoid.configuration.systemActionIconSize
     property var cfg_favoriteSystemActions:             plasmoid.configuration.favoriteSystemActions
 
+    property alias cfg_windowMode:                      windowMode.currentIndex
     property alias cfg_disableAnimations:               disableAnimations.checked
     property alias cfg_animationSpeedMultiplier:        animationSpeedMultiplier.value
     
@@ -158,6 +159,21 @@ KCM.SimpleKCM {
                     }
                 }
             }
+        }
+
+        // ----------------- Window Mode -----------------
+        Item {
+            Kirigami.FormData.isSection: true
+        }
+
+        ComboBox {
+            id: windowMode
+            Kirigami.FormData.label: i18n("Window mode:")
+
+            model: [
+                i18n("Fullscreen"),
+                i18n("Maximized (keep panels visible)")
+            ]
         }
 
         // ----------------- Background -----------------

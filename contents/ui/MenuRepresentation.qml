@@ -34,11 +34,11 @@ FullScreenDialog {
     id: root
 
     animated: !plasmoid.configuration.disableAnimations
-    removeBackground: true
+    windowMode: plasmoid.configuration.windowMode
 
     readonly property bool searching: searchField.text != ""
 
-    readonly property int contentMargin: Math.max(Kirigami.Units.iconSizes.huge, height * .12)
+    readonly property int contentMargin: Math.max(Kirigami.Units.iconSizes.huge, rootContentArea.height * .12)
 
     // TODO: remove this and all focus debug rectangles
     property bool debugFocus: false
@@ -87,35 +87,9 @@ FullScreenDialog {
         actionMenu.open(x, y);
     }
 
-    mainItem: MouseArea {
-        id: rootMouseArea
-        focus: true
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
-        LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
-        LayoutMirroring.childrenInherit: true
-        // hoverEnabled: true
-
-        ActionMenu {
-            id: actionMenu
-            // visualParent: rootMouseArea
-            onActionClicked: function (actionId, actionArgument) {
-                var closeRequested = Tools.triggerAction(plasmoid, null, -1, actionId, actionArgument);
-                if (closeRequested) {
-                    root.toggle();
-                }
-            }
-        }
-
-        onReleased: function (mouse) {
-            mouse.accepted = true;
-            if (mouse.button == Qt.RightButton) {
-                if (!searching) {
-                    root.openActionMenu(mouse.x, mouse.y);
-                }
-            } else {
-                root.leave();
-            }
-        }
+    background: Loader {
+        id: backgroundLoader
+        sourceComponent: plasmoid.configuration.backgroundType == 2 ? backgroundImageComponent : backgroundRectComponent
 
         Component {
             id: backgroundRectComponent
@@ -132,11 +106,34 @@ FullScreenDialog {
             }
         }
 
-        Loader {
-            id: backgroundLoader
-            anchors.fill: parent
-            sourceComponent: plasmoid.configuration.backgroundType == 2 ? backgroundImageComponent : backgroundRectComponent
+        ActionMenu {
+            id: actionMenu
+            visualParent: backgroundLoader
+            onActionClicked: function (actionId, actionArgument) {
+                var closeRequested = Tools.triggerAction(plasmoid, null, -1, actionId, actionArgument);
+                if (closeRequested) {
+                    root.toggle();
+                }
+            }
         }
+    }
+
+    onBackgroundReleased: function (mouse) {
+        mouse.accepted = true;
+        if (mouse.button == Qt.RightButton) {
+            if (!searching) {
+                root.openActionMenu(mouse.x, mouse.y);
+            }
+        } else {
+            root.leave();
+        }
+    }
+
+    content: Item {
+        id: rootContentArea
+        focus: true
+        LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
+        LayoutMirroring.childrenInherit: true
 
         PlasmaExtras.Heading {
             id: dummyHeading
@@ -159,7 +156,7 @@ FullScreenDialog {
             anchors.top: parent.top
             anchors.topMargin: (contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
-            width: Math.min(Kirigami.Units.gridUnit * 20, (root.width * 0.25) + (leftInset * 2))
+            width: Math.min(Kirigami.Units.gridUnit * 20, (parent.width * 0.25) + (leftInset * 2))
             leftInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
             rightInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
 
@@ -242,7 +239,7 @@ FullScreenDialog {
             RunnerResultsView {
                 id: runnerResultsView
 
-                width: Math.min(Kirigami.Units.gridUnit * 32, root.width * 0.33)
+                width: Math.min(Kirigami.Units.gridUnit * 32, rootContentArea.width * 0.33)
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 visible: searching
@@ -275,7 +272,7 @@ FullScreenDialog {
                 focus: true
 
                 iconSize: plasmoid.configuration.appIconSize
-                numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((root.width - Kirigami.Units.largeSpacing * 2) / cellSizeWidth))
+                numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((rootContentArea.width - Kirigami.Units.largeSpacing * 2) / cellSizeWidth))
 
                 model: appsModel
             }
