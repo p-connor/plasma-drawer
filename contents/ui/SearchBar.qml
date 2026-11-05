@@ -1,0 +1,45 @@
+import QtQuick
+import QtQuick.Controls
+
+import org.kde.kirigami as Kirigami
+
+TextField {
+    id: root
+
+    readonly property bool searching: text != ""
+
+    color: drawerTheme.textColor
+    font.pointSize: Kirigami.Theme.defaultFont.pointSize + 1
+    horizontalAlignment: TextInput.AlignHCenter
+    verticalAlignment: TextInput.AlignVCenter
+    
+    placeholderText: i18n("Search")
+    placeholderTextColor: drawerTheme.softTextColor
+
+    leftInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
+    rightInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
+
+    background: Rectangle {
+        id: background
+        anchors.verticalCenter: parent.verticalCenter
+        height: parent.height * 0.85
+        radius: height * 0.25
+        color: colorWithAlpha(drawerTheme.textColor, .15)
+    }
+
+    Kirigami.Icon {
+        id: searchIcon
+        source: "search-icon"
+        visible: true
+        width:  background.height
+        height: width
+        roundToIconSize: true
+        anchors {
+            left: background.left
+            leftMargin: Kirigami.Units.smallSpacing * 2
+            verticalCenter: parent.verticalCenter
+        }
+        isMask: true
+        color: drawerTheme.iconColor
+    }
+}

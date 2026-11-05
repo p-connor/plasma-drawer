@@ -147,7 +147,7 @@ AdaptiveDialog {
             font: dummyHeading.font
         }
 
-        TextField {
+        SearchBar {
             id: searchField
 
             visible: plasmoid.configuration.showSearch
@@ -157,46 +157,13 @@ AdaptiveDialog {
             anchors.topMargin: (contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
             width: Math.min(Kirigami.Units.gridUnit * 20, (parent.width * 0.25) + (leftInset * 2))
-            leftInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
-            rightInset: -(searchIcon.width + Kirigami.Units.smallSpacing * 4)
-
-            color: drawerTheme.textColor
-            font.pointSize: Kirigami.Theme.defaultFont.pointSize + 1
-            horizontalAlignment: TextInput.AlignHCenter
-            verticalAlignment: TextInput.AlignVCenter
-            
-            placeholderText: i18n("Search")
-            placeholderTextColor: drawerTheme.softTextColor
 
             onTextChanged: {
                 runnerModel.query = text;
             }
 
-            background: Rectangle {
-                id: searchFieldBackground
-                anchors.verticalCenter: parent.verticalCenter
-                height: parent.height * 0.85
-                radius: height * 0.25
-                color: colorWithAlpha(drawerTheme.textColor, .15)
-            }
-
-            Kirigami.Icon {
-                id: searchIcon
-                source: "search-icon"
-                visible: true
-                width:  searchFieldBackground.height
-                height: width
-                roundToIconSize: true
-                anchors {
-                    left: searchFieldBackground.left
-                    leftMargin: Kirigami.Units.smallSpacing * 2
-                    verticalCenter: parent.verticalCenter
-                }
-                isMask: true
-                color: drawerTheme.iconColor
-            }
-
             Keys.onPressed: function (event) {
+                // TODO: replace with key forwarding to content Keys.forwardTo
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
                     if (!content.item.currentMatch) {
@@ -206,6 +173,7 @@ AdaptiveDialog {
                     return;
                 }
 
+                //TODO: replace with activeFocusOnTab chains
                 if (event.key == Qt.Key_Tab || event.key == Qt.Key_Down || (event.key == Qt.Key_Backtab && !systemActionsGrid.visible)) {
                     event.accepted = true;
                     content.focus = true;
