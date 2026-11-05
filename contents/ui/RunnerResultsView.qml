@@ -270,13 +270,7 @@ FocusScope {
                         keyNavLeft.connect(searchResults.keyNavLeft);
                     }
 
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "blue"
-                        opacity: 0.05
-                        visible: root.debugFocus && parent.activeFocus
-                        z: 100
-                    }
+                    DebugRect {}
                 }
             }
         }

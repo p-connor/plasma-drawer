@@ -203,6 +203,8 @@ FocusScope {
                     showLabel: showLabels
                     iconColorOverride: setIconColorBasedOnTheme && drawerTheme.usingCustomTheme ? drawerTheme.iconColor : undefined
                     forceSymbolicIcons: itemGrid.forceSymbolicIcons
+
+                    DebugRect {}
                 }
 
                 onModelChanged: {

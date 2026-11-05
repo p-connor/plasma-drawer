@@ -39,9 +39,6 @@ AdaptiveDialog {
     readonly property bool searching: searchField.text != ""
 
     readonly property int contentMargin: Math.max(Kirigami.Units.iconSizes.huge, rootContentArea.height * .12)
-
-    // TODO: remove this and all focus debug rectangles
-    property bool debugFocus: false
     
     function colorWithAlpha(color, alpha) {
         return Qt.rgba(color.r, color.g, color.b, alpha)
@@ -193,13 +190,7 @@ AdaptiveDialog {
                 }
             }
 
-            Rectangle {
-                anchors.fill: parent
-                color: "red"
-                opacity: 0.05
-                visible: root.debugFocus && searchField.activeFocus
-                z: 100
-            }
+            DebugRect {}
         }
 
         Component {
@@ -218,13 +209,7 @@ AdaptiveDialog {
                 iconSize: plasmoid.configuration.searchIconSize
                 shrinkIconsToNative: plasmoid.configuration.adaptiveSearchIconSize
 
-                Rectangle {
-                    anchors.fill: parent
-                    color: "red"
-                    opacity: 0.05
-                    visible: root.debugFocus && parent.activeFocus
-                    z: 100
-                }
+                DebugRect {}
 
                 model: runnerModel
             }
@@ -243,6 +228,8 @@ AdaptiveDialog {
                 numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((rootContentArea.width - Kirigami.Units.largeSpacing * 2) / cellSizeWidth))
 
                 model: appsModel
+
+                DebugRect {}
             }
         }
 
@@ -372,6 +359,8 @@ AdaptiveDialog {
                     searchField.focus = true;
                 }
             }
+
+            DebugRect {}
         }
  
         Keys.onPressed: function (event) {

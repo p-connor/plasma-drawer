@@ -168,13 +168,7 @@ FocusScope {
                 height: rowHeight
                 iconSize: itemList.iconSize
 
-                Rectangle {
-                    anchors.fill: parent
-                    color: "green"
-                    opacity: 0.1
-                    visible: root.debugFocus && parent.activeFocus
-                    z: 100
-                }
+                DebugRect {}
             }
 
             Component.onCompleted: {
