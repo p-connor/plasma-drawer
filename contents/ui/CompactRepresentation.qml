@@ -19,31 +19,22 @@
 
 import QtQuick
 import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
 
 import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
-import org.kde.kirigami as Kirigami
 
 Item {
     id: root
 
     readonly property var screenGeometry: plasmoid.screenGeometry
-    readonly property bool inPanel: (plasmoid.location == PlasmaCore.Types.TopEdge
-        || plasmoid.location == PlasmaCore.Types.RightEdge
-        || plasmoid.location == PlasmaCore.Types.BottomEdge
-        || plasmoid.location == PlasmaCore.Types.LeftEdge)
+    readonly property bool inPanel: (plasmoid.location == PlasmaCore.Types.TopEdge || plasmoid.location == PlasmaCore.Types.RightEdge || plasmoid.location == PlasmaCore.Types.BottomEdge || plasmoid.location == PlasmaCore.Types.LeftEdge)
     readonly property bool vertical: (plasmoid.formFactor == PlasmaCore.Types.Vertical)
-    readonly property bool useCustomButtonImage: (plasmoid.configuration.useCustomButtonImage
-        && plasmoid.configuration.customButtonImage.length != 0)
-
+    readonly property bool useCustomButtonImage: (plasmoid.configuration.useCustomButtonImage && plasmoid.configuration.customButtonImage.length != 0)
     readonly property Component dashWindowComponent: Qt.createComponent(Qt.resolvedUrl("./MenuRepresentation.qml"), root)
-    readonly property AdaptiveDialog dashWindow: dashWindowComponent && dashWindowComponent.status === Component.Ready
-        ? dashWindowComponent.createObject(root, { visualParent: root }) : null
-
-    Plasmoid.status: dashWindow && dashWindow.visible ? PlasmaCore.Types.RequiresAttentionStatus : PlasmaCore.Types.PassiveStatus
-
-    onWidthChanged: updateSizeHints()
-    onHeightChanged: updateSizeHints()
+    readonly property AdaptiveDialog dashWindow: dashWindowComponent && dashWindowComponent.status === Component.Ready ? dashWindowComponent.createObject(root, {
+        visualParent: root
+    }) : null
 
     function updateSizeHints() {
         if (useCustomButtonImage) {
@@ -64,18 +55,26 @@ Item {
         }
     }
 
+    Plasmoid.status: dashWindow && dashWindow.visible ? PlasmaCore.Types.RequiresAttentionStatus : PlasmaCore.Types.PassiveStatus
+
+    onWidthChanged: updateSizeHints()
+    onHeightChanged: updateSizeHints()
+    Component.onCompleted: {
+        // dashWindow = Qt.createQmlObject("MenuRepresentation {}", root);
+        plasmoid.activated.connect(function () {
+            //<>dashWindow.visible = !dashWindow.visible;
+            dashWindow.toggle();
+        });
+    }
+
     Kirigami.Icon {
         id: buttonIcon
 
+        readonly property double aspectRatio: (vertical ? implicitHeight / implicitWidth : implicitWidth / implicitHeight)
+
         anchors.fill: parent
-
-        readonly property double aspectRatio: (vertical ? implicitHeight / implicitWidth
-            : implicitWidth / implicitHeight)
-
         source: useCustomButtonImage ? plasmoid.configuration.customButtonImage : plasmoid.configuration.icon
-
         active: mouseArea.containsMouse
-
         smooth: true
 
         // A custom icon could also be rectangular. However, if a square, custom, icon is given, assume it
@@ -84,40 +83,28 @@ Item {
 
         onSourceChanged: updateSizeHints()
     }
-
-    MouseArea
-    {
+    MouseArea {
         id: mouseArea
 
         anchors.fill: parent
-
         activeFocusOnTab: true
         hoverEnabled: !root.dashWindow || !root.dashWindow.visible
-
-        Keys.onPressed: function (event) {
-            switch (event.key) {
-                case Qt.Key_Space:
-                case Qt.Key_Enter:
-                case Qt.Key_Return:
-                case Qt.Key_Select:
-                    Plasmoid.activated();
-                    break;
-            }
-        }
         Accessible.name: Plasmoid.title
         Accessible.description: toolTipSubText
         Accessible.role: Accessible.Button
 
-        onClicked: {
-            dashWindow.toggle()
+        Keys.onPressed: function (event) {
+            switch (event.key) {
+            case Qt.Key_Space:
+            case Qt.Key_Enter:
+            case Qt.Key_Return:
+            case Qt.Key_Select:
+                Plasmoid.activated();
+                break;
+            }
         }
-    }
-
-    Component.onCompleted: {
-        // dashWindow = Qt.createQmlObject("MenuRepresentation {}", root);
-        plasmoid.activated.connect(function() {
-            //<>dashWindow.visible = !dashWindow.visible;
-            dashWindow.toggle()
-        });
+        onClicked: {
+            dashWindow.toggle();
+        }
     }
 }

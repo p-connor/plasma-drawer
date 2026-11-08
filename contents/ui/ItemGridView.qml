@@ -20,12 +20,12 @@
 import QtQuick
 import QtQuick.Controls
 
+import "../code/tools.js" as Tools
+import org.kde.draganddrop
+import org.kde.kquickcontrolsaddons
+
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras as PlasmaExtras
-import org.kde.kquickcontrolsaddons
-import org.kde.draganddrop
-
-import "../code/tools.js" as Tools
 
 FocusScope {
     id: itemGrid
@@ -34,17 +34,13 @@ FocusScope {
     property bool showLabels: true
     property bool setIconColorBasedOnTheme: false
     property bool forceSymbolicIcons: false
-
     property int iconSize: Kirigami.Units.iconSizes.large
-
     property int numberColumns: Math.floor(width / cellWidth)
     property int maxVisibleRows: -1
     readonly property int numberRows: Math.ceil(count / numberColumns)
     property alias cellWidth: gridView.cellWidth
     property alias cellHeight: gridView.cellHeight
-
     property alias model: gridView.model
-
     property alias currentIndex: gridView.currentIndex
     property alias currentItem: gridView.currentItem
     property alias contentItem: gridView.contentItem
@@ -52,22 +48,12 @@ FocusScope {
     property alias count: gridView.count
     property alias flow: gridView.flow
     property alias snapMode: gridView.snapMode
-
     property alias hoverEnabled: mouseArea.hoverEnabled
-
     property alias populateTransition: gridView.populate
-
-    // ScrollView needs additional space on the right for the scrollbar,
-    // so we add additional padding on the left to center the gridview
-    implicitWidth: scrollView.width + scrollView.ScrollBar.vertical.width
-    implicitHeight: scrollView.height
-
-    Keys.forwardTo: [gridView]
 
     function itemAtIndex(index) {
         return gridView.itemAtIndex(index);
     }
-
     function currentRow() {
         if (currentIndex == -1) {
             return -1;
@@ -75,7 +61,6 @@ FocusScope {
 
         return Math.floor(currentIndex / numberColumns);
     }
-
     function currentCol() {
         if (currentIndex == -1) {
             return -1;
@@ -83,11 +68,9 @@ FocusScope {
 
         return currentIndex - (currentRow() * numberColumns);
     }
-
     function lastRow() {
         return numberRows - 1;
     }
-
     function trySelect(row, col) {
         if (count) {
             // Constrains between 0 and numberRows - 1
@@ -98,7 +81,6 @@ FocusScope {
             gridView.forceActiveFocus();
         }
     }
-
     function trigger(index) {
         if (gridView.model.modelForRow(index) != null) {
             appsGrid.tryEnterDirectory(index);
@@ -107,30 +89,9 @@ FocusScope {
             root.toggle();
         }
     }
-
     function forceLayout() {
         gridView.forceLayout();
     }
-
-    ActionMenu {
-        id: actionMenu
-
-        property int targetIndex: -1
-
-        visualParent: gridView
-        
-        onActionClicked: function (actionId, actionArgument) {
-            var closeRequested = Tools.triggerAction(plasmoid, model, targetIndex, actionId, actionArgument);
-            if (closeRequested) {
-                root.toggle();
-            }
-        }
-
-        onClosed: {
-            currentIndex = -1;
-        }
-    }
-
     function openActionMenu(x, y, actionList) {
         if (actionList && "length" in actionList && actionList.length > 0) {
             actionMenu.actionList = actionList;
@@ -139,6 +100,29 @@ FocusScope {
         }
     }
 
+    // ScrollView needs additional space on the right for the scrollbar,
+    // so we add additional padding on the left to center the gridview
+    implicitWidth: scrollView.width + scrollView.ScrollBar.vertical.width
+    implicitHeight: scrollView.height
+    Keys.forwardTo: [gridView]
+
+    ActionMenu {
+        id: actionMenu
+
+        property int targetIndex: -1
+
+        visualParent: gridView
+
+        onActionClicked: function (actionId, actionArgument) {
+            var closeRequested = Tools.triggerAction(plasmoid, model, targetIndex, actionId, actionArgument);
+            if (closeRequested) {
+                root.toggle();
+            }
+        }
+        onClosed: {
+            currentIndex = -1;
+        }
+    }
     DropArea {
         id: dropArea
 
@@ -159,14 +143,13 @@ FocusScope {
         // See https://code.qt.io/cgit/qt/qtdeclarative.git/tree/src/quicktemplates/qquickscrollview.cpp?h=6.9.3#n642
         PC3.ScrollView {
             id: scrollView
+
             width: (numberColumns * cellWidth) + ScrollBar.vertical.width
             height: parent.height
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
-
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             ScrollBar.vertical.interactive: true
-
             focus: true
 
             GridView {
@@ -188,13 +171,12 @@ FocusScope {
                 boundsBehavior: Flickable.StopAtBounds
                 snapMode: GridView.SnapToRow
                 flickDeceleration: 4000
-
                 highlightFollowsCurrentItem: true
+                highlightMoveDuration: 0
+
                 highlight: PlasmaExtras.Highlight {
                     visible: gridView.highlightFollowsCurrentItem
                 }
-                highlightMoveDuration: 0
-
                 delegate: ItemGridDelegate {
                     showLabel: showLabels
                     iconColorOverride: setIconColorBasedOnTheme && drawerTheme.usingCustomTheme ? drawerTheme.iconColor : undefined
@@ -206,7 +188,6 @@ FocusScope {
                 onModelChanged: {
                     currentIndex = -1;
                 }
-
                 onActiveFocusChanged: {
                     if (activeFocus) {
                         currentIndex = lastActiveFocusIndex ?? 0;
@@ -215,7 +196,6 @@ FocusScope {
                         currentIndex = -1;
                     }
                 }
-
                 Keys.onPressed: function (event) {
                     function accept(event) {
                         // Take focus on forwarded key events
@@ -236,77 +216,70 @@ FocusScope {
                     }
 
                     switch (event.key) {
-                        case Qt.Key_Up:
-                            if (!ensureSelection(event) && currentRow() != 0) {
-                                accept(event);
-                                moveCurrentIndexUp();
-                                positionViewAtIndex(currentIndex, GridView.Contain);
-                            }  
-                            break;
-                        case Qt.Key_Down:
-                            if (!ensureSelection(event) && currentRow() < itemGrid.lastRow()) {
-                                // moveCurrentIndexDown() doesn't handle spatial nav down into partial rows.
-                                accept(event);
-                                var columns = Math.floor(width / cellWidth);
-                                var newIndex = currentIndex + columns;
-                                currentIndex = Math.min(newIndex, count - 1);
-                                positionViewAtIndex(currentIndex, GridView.Contain);
-                            }
-                            break;
-                        case Qt.Key_Left:
-                            if (!ensureSelection(event) && !(event.modifiers & Qt.ControlModifier) && currentCol() != 0) {
-                                accept(event);
-                                moveCurrentIndexLeft();
-                            }
-                            break;
-                        case Qt.Key_Right:
-                            if (!ensureSelection(event) && !(event.modifiers & Qt.ControlModifier) && currentCol() != numberColumns - 1 && currentIndex != count - 1) {
-                                accept(event);
-                                moveCurrentIndexRight();
-                            }
-                            break;
-                        case Qt.Key_PageUp:
-                            if (currentRow() != 0) {
-                                accept(event);
-                                trySelect(currentRow() - rowsInPage, currentCol());
-                                positionViewAtIndex(currentIndex, GridView.Beginning);
-                            }
-                            break;
-                        case Qt.Key_PageDown:
-                            if (currentRow() != numberRows - 1) {
-                                accept(event);
-                                trySelect(currentRow() + numberRows, currentCol());
-                                positionViewAtIndex(currentIndex, GridView.Beginning);
-                            }   
-                            break;
-                        case Qt.Key_Menu:
-                            if (currentItem && currentItem.hasActionList) {
-                                accept(event);
-                                openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
-                            }
-                            break;
-                        case Qt.Key_Enter:
-                        case Qt.Key_Return:
-                            if (currentIndex != -1) {
-                                accept(event);
-                                itemGrid.trigger(currentIndex);
-                            }
-                            break;
+                    case Qt.Key_Up:
+                        if (!ensureSelection(event) && currentRow() != 0) {
+                            accept(event);
+                            moveCurrentIndexUp();
+                            positionViewAtIndex(currentIndex, GridView.Contain);
+                        }
+                        break;
+                    case Qt.Key_Down:
+                        if (!ensureSelection(event) && currentRow() < itemGrid.lastRow()) {
+                            // moveCurrentIndexDown() doesn't handle spatial nav down into partial rows.
+                            accept(event);
+                            var columns = Math.floor(width / cellWidth);
+                            var newIndex = currentIndex + columns;
+                            currentIndex = Math.min(newIndex, count - 1);
+                            positionViewAtIndex(currentIndex, GridView.Contain);
+                        }
+                        break;
+                    case Qt.Key_Left:
+                        if (!ensureSelection(event) && !(event.modifiers & Qt.ControlModifier) && currentCol() != 0) {
+                            accept(event);
+                            moveCurrentIndexLeft();
+                        }
+                        break;
+                    case Qt.Key_Right:
+                        if (!ensureSelection(event) && !(event.modifiers & Qt.ControlModifier) && currentCol() != numberColumns - 1 && currentIndex != count - 1) {
+                            accept(event);
+                            moveCurrentIndexRight();
+                        }
+                        break;
+                    case Qt.Key_PageUp:
+                        if (currentRow() != 0) {
+                            accept(event);
+                            trySelect(currentRow() - rowsInPage, currentCol());
+                            positionViewAtIndex(currentIndex, GridView.Beginning);
+                        }
+                        break;
+                    case Qt.Key_PageDown:
+                        if (currentRow() != numberRows - 1) {
+                            accept(event);
+                            trySelect(currentRow() + numberRows, currentCol());
+                            positionViewAtIndex(currentIndex, GridView.Beginning);
+                        }
+                        break;
+                    case Qt.Key_Menu:
+                        if (currentItem && currentItem.hasActionList) {
+                            accept(event);
+                            openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
+                        }
+                        break;
+                    case Qt.Key_Enter:
+                    case Qt.Key_Return:
+                        if (currentIndex != -1) {
+                            accept(event);
+                            itemGrid.trigger(currentIndex);
+                        }
+                        break;
                     }
                 }
 
                 MouseArea {
                     id: mouseArea
-                    anchors.fill: parent
-                    anchors.bottomMargin: 2; // Prevents autoscrolling down when mouse at bottom of grid
 
                     property int pressX: -1
                     property int pressY: -1
-
-                    acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-                    enabled: itemGrid.enabled
-                    hoverEnabled: enabled
 
                     function updatePositionProperties(x, y) {
                         var cPos = mapToItem(gridView.contentItem, x, y);
@@ -316,6 +289,13 @@ FocusScope {
 
                         return index;
                     }
+
+                    anchors.fill: parent
+                    anchors.bottomMargin: 2 // Prevents autoscrolling down when mouse at bottom of grid
+
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    enabled: itemGrid.enabled
+                    hoverEnabled: enabled
 
                     onPressed: function (mouse) {
                         mouse.accepted = true;
@@ -330,7 +310,6 @@ FocusScope {
                             }
                         }
                     }
-
                     onReleased: function (mouse) {
                         mouse.accepted = true;
                         itemGrid.focus = true;
@@ -349,7 +328,6 @@ FocusScope {
                         pressX = -1;
                         pressY = -1;
                     }
-
                     onPressAndHold: function (mouse) {
                         if (!dragEnabled) {
                             pressX = -1;
@@ -372,15 +350,13 @@ FocusScope {
                         pressX = -1;
                         pressY = -1;
                     }
-
                     onPositionChanged: function (mouse) {
                         updatePositionProperties(mouse.x, mouse.y);
 
                         if (gridView.currentIndex != -1 && currentItem && currentItem.m != null) {
                             if (dragEnabled && pressX != -1 && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y)) {
                                 if ("pluginName" in currentItem.m) {
-                                    dragHelper.startDrag(kicker, currentItem.url, currentItem.icon,
-                                    "text/x-plasmoidservicename", currentItem.m.pluginName);
+                                    dragHelper.startDrag(kicker, currentItem.url, currentItem.icon, "text/x-plasmoidservicename", currentItem.m.pluginName);
                                 } else {
                                     dragHelper.startDrag(kicker, currentItem.url, currentItem.icon);
                                 }
@@ -392,7 +368,6 @@ FocusScope {
                             }
                         }
                     }
-
                     onContainsMouseChanged: {
                         if (!containsMouse) {
                             if (!actionMenu.opened) {

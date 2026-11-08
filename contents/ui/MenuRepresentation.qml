@@ -18,49 +18,28 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick
-import QtQuick.Controls
-
-import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.extras as PlasmaExtras
-import org.kde.kirigami as Kirigami
-import QtQuick.Window
 import Qt5Compat.GraphicalEffects
 
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Window
+
 import "../code/tools.js" as Tools
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.extras as PlasmaExtras
+
+import org.kde.plasma.plasmoid
 
 AdaptiveDialog {
     id: root
 
-    animated: !plasmoid.configuration.disableAnimations
-    windowMode: plasmoid.configuration.windowMode
-
     readonly property bool searching: searchField.text != ""
-
     readonly property int contentMargin: Math.max(Kirigami.Units.iconSizes.huge, rootContentArea.height * .12)
-    
+
     function colorWithAlpha(color, alpha) {
-        return Qt.rgba(color.r, color.g, color.b, alpha)
+        return Qt.rgba(color.r, color.g, color.b, alpha);
     }
-
-    onVisibleChanged: {
-        if (visible) {
-            // Set favorites here to ensure system actions are available
-            systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
-            contentOpenAnimation.restart();
-        } else {
-            contentOpenAnimation.stop();
-            reset();
-        }
-    }
-
-    onSearchingChanged: {
-        if (!searching) {
-            reset();
-        }
-    }
-
     function leave() {
         if (!searching && !content.item.isAtRoot) {
             content.item.tryExitDirectory();
@@ -68,7 +47,6 @@ AdaptiveDialog {
             root.toggle();
         }
     }
-
     function reset() {
         searchField.text = "";
         // appsGridView.returnToRootDirectory(false);
@@ -76,7 +54,6 @@ AdaptiveDialog {
         content.focus = false;
         systemActionsGrid.focus = false;
     }
-
     function openActionMenu(x, y, actionList = undefined) {
         if (actionList) {
             actionMenu.actionList = actionList;
@@ -86,28 +63,34 @@ AdaptiveDialog {
         actionMenu.open(x, y);
     }
 
+    animated: !plasmoid.configuration.disableAnimations
+    windowMode: plasmoid.configuration.windowMode
+
     background: Loader {
         id: backgroundLoader
+
         sourceComponent: plasmoid.configuration.backgroundType == 2 ? backgroundImageComponent : backgroundRectComponent
 
         Component {
             id: backgroundRectComponent
+
             Rectangle {
                 color: colorWithAlpha(drawerTheme.backgroundColor, plasmoid.configuration.backgroundOpacity / 100)
             }
         }
-
         Component {
             id: backgroundImageComponent
+
             Image {
                 source: plasmoid.configuration.customBackgroundImagePath ?? ""
                 opacity: plasmoid.configuration.backgroundOpacity / 100
             }
         }
-
         ActionMenu {
             id: actionMenu
+
             visualParent: backgroundLoader
+
             onActionClicked: function (actionId, actionArgument) {
                 var closeRequested = Tools.triggerAction(plasmoid, null, -1, actionId, actionArgument);
                 if (closeRequested) {
@@ -116,44 +99,43 @@ AdaptiveDialog {
             }
         }
     }
-
-    onBackgroundReleased: function (mouse) {
-        mouse.accepted = true;
-        if (mouse.button == Qt.RightButton) {
-            if (!searching) {
-                root.openActionMenu(mouse.x, mouse.y);
-            }
-        } else {
-            root.leave();
-        }
-    }
-
     content: FocusScope {
         id: rootContentArea
+
         focus: true
         LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
         LayoutMirroring.childrenInherit: true
+        Keys.forwardTo: [content.item, searchField]
+
+        Keys.onPressed: function (event) {
+            if (event.key == Qt.Key_Escape) {
+                if (searchField.focus || content.focus || systemActionsGrid.focus) {
+                    reset();
+                } else {
+                    root.leave();
+                }
+                event.accepted = true;
+            }
+        }
 
         PlasmaExtras.Heading {
             id: dummyHeading
+
             visible: false
             width: 0
             level: 5
         }
-
         TextMetrics {
             id: headingMetrics
+
             font: dummyHeading.font
         }
-
         SearchBar {
             id: searchField
 
             visible: plasmoid.configuration.showSearch
             enabled: visible
-
             activeFocusOnTab: true
-
             anchors.top: parent.top
             anchors.topMargin: (contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
@@ -162,7 +144,6 @@ AdaptiveDialog {
             onTextChanged: {
                 runnerModel.query = text;
             }
-
             Keys.onPressed: function (event) {
                 // TODO: replace with key forwarding to content Keys.forwardTo
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
@@ -172,7 +153,6 @@ AdaptiveDialog {
                     return;
                 }
             }
-
             Keys.onUpPressed: function (event) {
                 nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason);
             }
@@ -182,41 +162,35 @@ AdaptiveDialog {
 
             DebugRect {}
         }
-
         Component {
             id: runnerResultsViewComponent
+
             RunnerResultsView {
                 id: runnerResultsView
 
                 width: Math.min(Kirigami.Units.gridUnit * 32, rootContentArea.width * 0.33)
                 anchors.horizontalCenter: parent.horizontalCenter
-
                 visible: searching
                 enabled: visible
-                
                 focus: true
-
                 iconSize: plasmoid.configuration.searchIconSize
                 shrinkIconsToNative: plasmoid.configuration.adaptiveSearchIconSize
+                model: runnerModel
 
                 DebugRect {}
-
-                model: runnerModel
             }
         }
-
         Component {
             id: appsGridViewComponent
+
             AppsGridView {
                 id: appsGridView
 
                 visible: !searching && appsModel.count > 0
                 enabled: visible
                 focus: true
-
                 iconSize: plasmoid.configuration.appIconSize
                 numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((rootContentArea.width - Kirigami.Units.largeSpacing * 2) / cellSizeWidth))
-
                 model: appsModel
 
                 DebugRect {}
@@ -226,14 +200,7 @@ AdaptiveDialog {
         // Switch between apps grid or runner results based on whether searching or not
         Loader {
             id: content
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                top: parent.top
-                bottom: parent.bottom
-                topMargin: contentMargin
-                bottomMargin: contentMargin
-                // margins: contentMargin
-            }
+
             sourceComponent: !searching ? appsGridViewComponent : runnerResultsViewComponent
             active: root.visible
             activeFocusOnTab: true
@@ -244,13 +211,25 @@ AdaptiveDialog {
             Keys.onDownPressed: function (event) {
                 nextItemInFocusChain(true).forceActiveFocus(Qt.FocusReason);
             }
-        }
 
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top: parent.top
+                bottom: parent.bottom
+                topMargin: contentMargin
+                bottomMargin: contentMargin
+                // margins: contentMargin
+            }
+        }
         ParallelAnimation {
             id: contentOpenAnimation
 
-            readonly property int duration: plasmoid.configuration.disableAnimations ? 0
-                : Kirigami.Units.longDuration * 1.5 / plasmoid.configuration.animationSpeedMultiplier
+            readonly property int duration: plasmoid.configuration.disableAnimations ? 0 : Kirigami.Units.longDuration * 1.5 / plasmoid.configuration.animationSpeedMultiplier
+
+            onStopped: {
+                content.scale = 1;
+                content.opacity = 1;
+            }
 
             NumberAnimation {
                 target: content
@@ -268,29 +247,14 @@ AdaptiveDialog {
                 duration: contentOpenAnimation.duration
                 easing.type: Easing.OutCubic
             }
-
-            onStopped: {
-                content.scale = 1;
-                content.opacity = 1;
-            }
         }
-
         ItemGridView {
             id: systemActionsGrid
-            
-            model: systemFavoritesModel
 
+            model: systemFavoritesModel
             visible: count > 0 && plasmoid.configuration.showSystemActions
             enabled: visible
             activeFocusOnTab: true
-
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                bottom: parent.bottom
-                margins: Kirigami.Units.largeSpacing
-                bottomMargin: (contentMargin / 2) - (height / 2)
-            }
-
             iconSize: plasmoid.configuration.systemActionIconSize
             cellWidth: iconSize + (Kirigami.Units.largeSpacing * (showLabels ? 6 : 2))
             cellHeight: cellWidth
@@ -298,9 +262,8 @@ AdaptiveDialog {
             // width: cellWidth * count
             numberColumns: model.count
             // maxVisibleRows: 1
-            
-            opacity: 0.9
 
+            opacity: 0.9
             dragEnabled: true
             showLabels: plasmoid.configuration.showSystemActionLabels
             setIconColorBasedOnTheme: true
@@ -313,22 +276,41 @@ AdaptiveDialog {
                 nextItemInFocusChain(true).forceActiveFocus(Qt.FocusReason);
             }
 
-            DebugRect {}
-        }
-
-        Keys.forwardTo: [content.item, searchField]
-        Keys.onPressed: function (event) {
-            if (event.key == Qt.Key_Escape) {
-                if (searchField.focus || content.focus || systemActionsGrid.focus) {
-                    reset();
-                } else {
-                    root.leave();
-                }
-                event.accepted = true;
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                bottom: parent.bottom
+                margins: Kirigami.Units.largeSpacing
+                bottomMargin: (contentMargin / 2) - (height / 2)
             }
+            DebugRect {}
         }
     }
 
+    onVisibleChanged: {
+        if (visible) {
+            // Set favorites here to ensure system actions are available
+            systemFavoritesModel.favorites = plasmoid.configuration.favoriteSystemActions;
+            contentOpenAnimation.restart();
+        } else {
+            contentOpenAnimation.stop();
+            reset();
+        }
+    }
+    onSearchingChanged: {
+        if (!searching) {
+            reset();
+        }
+    }
+    onBackgroundReleased: function (mouse) {
+        mouse.accepted = true;
+        if (mouse.button == Qt.RightButton) {
+            if (!searching) {
+                root.openActionMenu(mouse.x, mouse.y);
+            }
+        } else {
+            root.leave();
+        }
+    }
     Component.onCompleted: {
         kicker.reset.connect(reset);
     }

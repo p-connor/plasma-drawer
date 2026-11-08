@@ -1,6 +1,6 @@
 import QtQuick
-import org.kde.plasma.plasmoid
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid
 
 QtObject {
     readonly property bool usingCustomTheme: plasmoid.configuration.backgroundType != 0
@@ -17,7 +17,7 @@ QtObject {
     function soften(color, adjustment) {
         if (getPerceivedBrightness(color) > .5) {
             adjustment *= -1;
-        } 
+        }
         return brighten(color, adjustment);
     }
 
@@ -30,7 +30,7 @@ QtObject {
         let newR = Math.sqrt((Math.pow(initialBrightness + adjustment, 2) / (.299 + .587 * Math.pow(relG, 2) + .144 * Math.pow(relB, 2))));
         let newG = newR * relG;
         let newB = newR * relB;
-        
+
         return Qt.rgba(newR, newG, newB, color.a);
     }
 

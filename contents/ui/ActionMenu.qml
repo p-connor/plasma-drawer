@@ -33,14 +33,6 @@ Item {
     signal actionClicked(string actionId, variant actionArgument)
     signal closed
 
-    onActionListChanged: refreshMenu();
-
-    onOpenedChanged: {
-        if (!opened) {
-            closed();
-        }
-    }
-
     function open(x, y) {
         if (!actionList) {
             return;
@@ -52,7 +44,6 @@ Item {
             menu.open();
         }
     }
-
     function refreshMenu() {
         if (menu) {
             menu.destroy();
@@ -66,26 +57,28 @@ Item {
 
         fillMenu(menu, actionList);
     }
-
     function fillMenu(menu, items) {
-        items.forEach(function(actionItem) {
+        items.forEach(function (actionItem) {
             if (actionItem.subActions) {
                 // This is a menu
-                var submenuItem = contextSubmenuItemComponent.createObject(
-                                          menu, { "actionItem" : actionItem });
+                var submenuItem = contextSubmenuItemComponent.createObject(menu, {
+                    "actionItem": actionItem
+                });
 
                 fillMenu(submenuItem.submenu, actionItem.subActions);
-
             } else {
-                var item = contextMenuItemComponent.createObject(
-                                menu,
-                                {
-                                    "actionItem": actionItem,
-                                }
-                );
+                var item = contextMenuItemComponent.createObject(menu, {
+                    "actionItem": actionItem
+                });
             }
         });
+    }
 
+    onActionListChanged: refreshMenu()
+    onOpenedChanged: {
+        if (!opened) {
+            closed();
+        }
     }
 
     Component {
@@ -95,7 +88,6 @@ Item {
             visualParent: root.visualParent
         }
     }
-
     Component {
         id: contextSubmenuItemComponent
 
@@ -103,29 +95,27 @@ Item {
             id: submenuItem
 
             property variant actionItem
-
-            text: actionItem.text ? actionItem.text : ""
-            icon: actionItem.icon ? actionItem.icon : null
-
             property PlasmaExtras.Menu submenu: PlasmaExtras.Menu {
                 visualParent: submenuItem.action
             }
+
+            text: actionItem.text ? actionItem.text : ""
+            icon: actionItem.icon ? actionItem.icon : null
         }
     }
-
     Component {
         id: contextMenuItemComponent
 
         PlasmaExtras.MenuItem {
             property variant actionItem
 
-            text      : actionItem.text ? actionItem.text : ""
-            enabled   : actionItem.type !== "title" && ("enabled" in actionItem ? actionItem.enabled : true)
-            separator : actionItem.type === "separator"
-            section   : actionItem.type === "title"
-            icon      : actionItem.icon ? actionItem.icon : null
-            checkable : actionItem.checkable ? actionItem.checkable : false
-            checked   : actionItem.checked ? actionItem.checked : false
+            text: actionItem.text ? actionItem.text : ""
+            enabled: actionItem.type !== "title" && ("enabled" in actionItem ? actionItem.enabled : true)
+            separator: actionItem.type === "separator"
+            section: actionItem.type === "title"
+            icon: actionItem.icon ? actionItem.icon : null
+            checkable: actionItem.checkable ? actionItem.checkable : false
+            checked: actionItem.checked ? actionItem.checked : false
 
             onClicked: {
                 root.actionClicked(actionItem.actionId, actionItem.actionArgument);

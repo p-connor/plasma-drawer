@@ -17,57 +17,52 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
+import QtCore 6.3
+
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
-import QtCore 6.3
 import QtQuick.Dialogs
-
-import org.kde.plasma.core as PlasmaCore
-import org.kde.kirigami as Kirigami
+import QtQuick.Layouts
+import org.kde.draganddrop as DragDrop
 import org.kde.iconthemes as KIconThemes
 import org.kde.kcmutils as KCM
-import org.kde.ksvg as KSvg
+import org.kde.kirigami as Kirigami
 import org.kde.kquickcontrols as KQuickControls
-import org.kde.draganddrop as DragDrop
+import org.kde.ksvg as KSvg
+
+import org.kde.plasma.core as PlasmaCore
 
 KCM.SimpleKCM {
     id: configGeneral
 
-    property string cfg_icon:                           plasmoid.configuration.icon
-    property bool cfg_useCustomButtonImage:             plasmoid.configuration.useCustomButtonImage
-    property string cfg_customButtonImage:              plasmoid.configuration.customButtonImage
+    property string cfg_icon: plasmoid.configuration.icon
+    property bool cfg_useCustomButtonImage: plasmoid.configuration.useCustomButtonImage
+    property string cfg_customButtonImage: plasmoid.configuration.customButtonImage
+    property alias cfg_backgroundType: backgroundType.currentIndex
+    property var cfg_customBackgroundColor: plasmoid.configuration.customBackgroundColor
+    property var cfg_customBackgroundImagePath: plasmoid.configuration.customBackgroundImagePath
+    property alias cfg_backgroundOpacity: backgroundOpacity.value
+    property int cfg_appIconSize: plasmoid.configuration.appIconSize
+    property alias cfg_useDirectoryIcons: useDirectoryIcons.checked
+    property alias cfg_maxNumberColumns: maxNumberColumns.value
+    property alias cfg_showSearch: showSearch.checked
+    property alias cfg_adaptiveSearchIconSize: adaptSearchIcons.checked
+    property int cfg_searchIconSize: plasmoid.configuration.searchIconSize
+    property alias cfg_showSystemActions: showSystemActions.checked
+    property alias cfg_showSystemActionLabels: showSystemActionLabels.checked
+    property alias cfg_useSymbolicSystemActionIcons: useSymbolicSystemActionIcons.checked
+    property int cfg_systemActionIconSize: plasmoid.configuration.systemActionIconSize
+    property var cfg_favoriteSystemActions: plasmoid.configuration.favoriteSystemActions
+    property alias cfg_windowMode: windowMode.currentIndex
+    property alias cfg_disableAnimations: disableAnimations.checked
+    property alias cfg_animationSpeedMultiplier: animationSpeedMultiplier.value
 
-    property alias cfg_backgroundType:                  backgroundType.currentIndex
-    property var cfg_customBackgroundColor:             plasmoid.configuration.customBackgroundColor
-    property var cfg_customBackgroundImagePath:         plasmoid.configuration.customBackgroundImagePath
-    property alias cfg_backgroundOpacity:               backgroundOpacity.value
-
-    property int cfg_appIconSize:                       plasmoid.configuration.appIconSize
-    property alias cfg_useDirectoryIcons:               useDirectoryIcons.checked
-    property alias cfg_maxNumberColumns:                maxNumberColumns.value
-
-    property alias cfg_showSearch:                      showSearch.checked
-    property alias cfg_adaptiveSearchIconSize:          adaptSearchIcons.checked
-    property int cfg_searchIconSize:                    plasmoid.configuration.searchIconSize  
-
-    property alias cfg_showSystemActions:               showSystemActions.checked
-    property alias cfg_showSystemActionLabels:          showSystemActionLabels.checked
-    property alias cfg_useSymbolicSystemActionIcons:    useSymbolicSystemActionIcons.checked
-    property int cfg_systemActionIconSize:              plasmoid.configuration.systemActionIconSize
-    property var cfg_favoriteSystemActions:             plasmoid.configuration.favoriteSystemActions
-
-    property alias cfg_windowMode:                      windowMode.currentIndex
-    property alias cfg_disableAnimations:               disableAnimations.checked
-    property alias cfg_animationSpeedMultiplier:        animationSpeedMultiplier.value
-    
     Kirigami.FormLayout {
         // ----------------- Icon -----------------
         Button {
             id: iconButton
 
             Kirigami.FormData.label: i18n("Icon:")
-
             implicitWidth: previewFrame.width + Kirigami.Units.smallSpacing * 2
             implicitHeight: previewFrame.height + Kirigami.Units.smallSpacing * 2
 
@@ -100,7 +95,6 @@ KCM.SimpleKCM {
                     }
                 }
                 onDragLeave: containsAcceptableDrag = false
-
                 onDrop: function (event) {
                     if (containsAcceptableDrag) {
                         // Strip file:// prefix, we already verified in onDragEnter that we have only local URLs.
@@ -109,23 +103,21 @@ KCM.SimpleKCM {
                     containsAcceptableDrag = false;
                 }
             }
-
             KIconThemes.IconDialog {
                 id: iconDialog
 
                 function setCustomButtonImage(image) {
-                    cfg_customButtonImage = image || cfg_icon || "start-here-kde-symbolic"
+                    cfg_customButtonImage = image || cfg_icon || "start-here-kde-symbolic";
                     cfg_useCustomButtonImage = true;
                 }
 
-                onIconNameChanged: setCustomButtonImage(iconName);
+                onIconNameChanged: setCustomButtonImage(iconName)
             }
-
             KSvg.FrameSvgItem {
                 id: previewFrame
+
                 anchors.centerIn: parent
-                imagePath: plasmoid.location === PlasmaCore.Types.Vertical || plasmoid.location === PlasmaCore.Types.Horizontal
-                        ? "widgets/panel-background" : "widgets/background"
+                imagePath: plasmoid.location === PlasmaCore.Types.Vertical || plasmoid.location === PlasmaCore.Types.Horizontal ? "widgets/panel-background" : "widgets/background"
                 width: Kirigami.Units.iconSizes.large + fixedMargins.left + fixedMargins.right
                 height: Kirigami.Units.iconSizes.large + fixedMargins.top + fixedMargins.bottom
 
@@ -136,26 +128,27 @@ KCM.SimpleKCM {
                     source: cfg_useCustomButtonImage ? cfg_customButtonImage : cfg_icon
                 }
             }
-
             Menu {
                 id: iconMenu
 
                 // Appear below the button
                 y: +parent.height
 
-                onClosed: iconButton.checked = false;
+                onClosed: iconButton.checked = false
 
                 MenuItem {
                     text: i18nc("@item:inmenu Open icon chooser dialog", "Choose…")
                     icon.name: "document-open-folder"
+
                     onClicked: iconDialog.open()
                 }
                 MenuItem {
                     text: i18nc("@item:inmenu Reset icon to default", "Clear Icon")
                     icon.name: "edit-clear"
+
                     onClicked: {
-                        cfg_icon = "start-here-kde"
-                        cfg_useCustomButtonImage = false
+                        cfg_icon = "start-here-kde";
+                        cfg_useCustomButtonImage = false;
                     }
                 }
             }
@@ -165,62 +158,54 @@ KCM.SimpleKCM {
         Item {
             Kirigami.FormData.isSection: true
         }
-
         ComboBox {
             id: windowMode
-            Kirigami.FormData.label: i18n("Window mode:")
 
-            model: [
-                i18n("Fullscreen"),
-                i18n("Maximized (keep panels visible)")
-            ]
+            Kirigami.FormData.label: i18n("Window mode:")
+            model: [i18n("Fullscreen"), i18n("Maximized (keep panels visible)")]
         }
 
         // ----------------- Background -----------------
         Item {
             Kirigami.FormData.isSection: true
         }
-
         ComboBox {
             id: backgroundType
-            Kirigami.FormData.label: i18n("Background:")
-            
-            model: [ 
-                i18n("Use theme color"), 
-                i18n("Use custom color"), 
-                i18n("Use image")
-            ]
-        }
 
+            Kirigami.FormData.label: i18n("Background:")
+            model: [i18n("Use theme color"), i18n("Use custom color"), i18n("Use image")]
+        }
         RowLayout {
             Layout.fillWidth: true
             visible: backgroundType.currentIndex == 1   // backgroundType in custom color mode
-            
+
             Label {
                 text: i18n("Custom Color:")
             }
             KQuickControls.ColorButton {
                 id: backgroundColorPicker
+
                 dialogTitle: i18n("Background Color")
                 showAlphaChannel: false
+
                 onAccepted: {
-                    cfg_customBackgroundColor = color
+                    cfg_customBackgroundColor = color;
                 }
                 Component.onCompleted: {
-                    color = plasmoid.configuration.customBackgroundColor
+                    color = plasmoid.configuration.customBackgroundColor;
                 }
             }
         }
-
         RowLayout {
             Layout.fillWidth: true
             visible: backgroundType.currentIndex == 2   // backgroundType in image mode
-            
+
             Button {
                 text: i18n("Select Image File")
                 icon.name: "fileopen"
+
                 onClicked: {
-                    backgroundImageFileDialog.open()
+                    backgroundImageFileDialog.open();
                 }
             }
             Label {
@@ -229,29 +214,31 @@ KCM.SimpleKCM {
         }
         FileDialog {
             id: backgroundImageFileDialog
+
             title: i18n("Please choose an image file")
             currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
-            nameFilters: [ i18n("Image files") + " (*.jpg *.jpeg *.png *.bmp)", i18n("All files") + " (*)" ]
+            nameFilters: [i18n("Image files") + " (*.jpg *.jpeg *.png *.bmp)", i18n("All files") + " (*)"]
+
             onAccepted: {
                 cfg_customBackgroundImagePath = String(selectedFile).replace("file://", "");
             }
         }
-        
         RowLayout {
             Layout.fillWidth: true
-            
+
             Label {
                 text: i18n("Background opacity:")
             }
-            Slider{
+            Slider {
                 id: backgroundOpacity
+
                 from: 0
                 to: 100
                 stepSize: 5
                 implicitWidth: 200
             }
             Label {
-                text: i18n("%1%", backgroundOpacity.value);
+                text: i18n("%1%", backgroundOpacity.value)
             }
         }
 
@@ -259,92 +246,78 @@ KCM.SimpleKCM {
         Item {
             Kirigami.FormData.isSection: true
         }
-
         RowLayout {
             Layout.fillWidth: true
             Kirigami.FormData.label: i18n("Applications:")
-            
+
             Label {
                 text: i18n("Max columns in grid:")
             }
-            SpinBox{
+            SpinBox {
                 id: maxNumberColumns
+
                 from: 3
                 to: 20
             }
         }
-
         RowLayout {
             Layout.fillWidth: true
-            
+
             Label {
                 text: i18n("Size of application icons:")
             }
             ComboBox {
                 id: appIconSize
-                model: [ 
-                    i18n(Kirigami.Units.iconSizes.medium), 
-                    i18n(Kirigami.Units.iconSizes.large), 
-                    i18n(Kirigami.Units.iconSizes.huge), 
-                    i18n(Kirigami.Units.iconSizes.huge + ((Kirigami.Units.iconSizes.enormous - Kirigami.Units.iconSizes.huge) / 2)),
-                    i18n(Kirigami.Units.iconSizes.enormous),
-                    i18n(Kirigami.Units.iconSizes.enormous + (Kirigami.Units.iconSizes.enormous / 2)),
-                    i18n(Kirigami.Units.iconSizes.enormous * 2)
-                ]
+
+                model: [i18n(Kirigami.Units.iconSizes.medium), i18n(Kirigami.Units.iconSizes.large), i18n(Kirigami.Units.iconSizes.huge), i18n(Kirigami.Units.iconSizes.huge + ((Kirigami.Units.iconSizes.enormous - Kirigami.Units.iconSizes.huge) / 2)), i18n(Kirigami.Units.iconSizes.enormous), i18n(Kirigami.Units.iconSizes.enormous + (Kirigami.Units.iconSizes.enormous / 2)), i18n(Kirigami.Units.iconSizes.enormous * 2)]
+
                 onActivated: {
                     cfg_appIconSize = parseInt(currentText);
                 }
                 Component.onCompleted: {
-                    currentIndex = model.findIndex((size) => size == cfg_appIconSize);
+                    currentIndex = model.findIndex(size => size == cfg_appIconSize);
                 }
             }
         }
-
-        CheckBox {        
+        CheckBox {
             id: useDirectoryIcons
-            text:  i18n("Use directory icons")
+
+            text: i18n("Use directory icons")
         }
 
         // ----------------- Search -----------------
         Item {
             Kirigami.FormData.isSection: true
         }
-
         CheckBox {
-            Kirigami.FormData.label: i18n("Search:")
-
             id: showSearch
-            text:  i18n("Show search bar")
-        }
 
-        CheckBox {        
-            id: adaptSearchIcons
-            enabled: showSearch.checked
-            text:  i18n("Adaptive search result size")
+            Kirigami.FormData.label: i18n("Search:")
+            text: i18n("Show search bar")
         }
-        
+        CheckBox {
+            id: adaptSearchIcons
+
+            enabled: showSearch.checked
+            text: i18n("Adaptive search result size")
+        }
         RowLayout {
             Layout.fillWidth: true
             enabled: showSearch.checked
-            
+
             Label {
                 text: adaptSearchIcons.checked ? i18n("Max size of search result icons:") : i18n("Size of search result icons:")
             }
             ComboBox {
                 id: searchIconSize
-                model: [ 
-                    i18n(Kirigami.Units.iconSizes.small),
-                    i18n(Kirigami.Units.iconSizes.smallMedium),
-                    i18n(Kirigami.Units.iconSizes.medium), 
-                    i18n(Kirigami.Units.iconSizes.large), 
-                    i18n(Kirigami.Units.iconSizes.huge), 
-                    i18n(Kirigami.Units.iconSizes.enormous)
-                ]
+
+                model: [i18n(Kirigami.Units.iconSizes.small), i18n(Kirigami.Units.iconSizes.smallMedium), i18n(Kirigami.Units.iconSizes.medium), i18n(Kirigami.Units.iconSizes.large), i18n(Kirigami.Units.iconSizes.huge), i18n(Kirigami.Units.iconSizes.enormous)]
+
                 onActivated: {
                     cfg_searchIconSize = parseInt(currentText);
                 }
                 Component.onCompleted: {
-                    currentIndex = model.findIndex((size) => size == cfg_searchIconSize);
+                    currentIndex = model.findIndex(size => size == cfg_searchIconSize);
                 }
             }
         }
@@ -354,48 +327,46 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: true
         }
         CheckBox {
-            Kirigami.FormData.label: i18n("System Actions:")
-
             id: showSystemActions
-            text:  i18n("Show system actions")
+
+            Kirigami.FormData.label: i18n("System Actions:")
+            text: i18n("Show system actions")
 
             onToggled: {
-                cfg_favoriteSystemActions = !checked
-                                            ? plasmoid.configuration.favoriteSystemActions 
-                                            : ["shutdown", "reboot", "logout", "hibernate", "suspend", "save-session", "lock-screen", "switch-user"];
+                cfg_favoriteSystemActions = !checked ? plasmoid.configuration.favoriteSystemActions : ["shutdown", "reboot", "logout", "hibernate", "suspend", "save-session", "lock-screen", "switch-user"];
             }
         }
         RowLayout {
             Layout.fillWidth: true
             enabled: showSystemActions.checked
+
             Label {
                 text: i18n("Size of system action icons:")
             }
             ComboBox {
                 id: systemActionIconSize
-                model: [ 
-                    i18n(Kirigami.Units.iconSizes.medium), 
-                    i18n(Kirigami.Units.iconSizes.large), 
-                    i18n(Kirigami.Units.iconSizes.huge), 
-                    i18n(Kirigami.Units.iconSizes.huge + ((Kirigami.Units.iconSizes.enormous - Kirigami.Units.iconSizes.huge) / 2))
-                ]
+
+                model: [i18n(Kirigami.Units.iconSizes.medium), i18n(Kirigami.Units.iconSizes.large), i18n(Kirigami.Units.iconSizes.huge), i18n(Kirigami.Units.iconSizes.huge + ((Kirigami.Units.iconSizes.enormous - Kirigami.Units.iconSizes.huge) / 2))]
+
                 onActivated: {
                     cfg_systemActionIconSize = parseInt(currentText);
                 }
                 Component.onCompleted: {
-                    currentIndex = model.findIndex((size) => size == cfg_systemActionIconSize);
+                    currentIndex = model.findIndex(size => size == cfg_systemActionIconSize);
                 }
             }
         }
         CheckBox {
             id: showSystemActionLabels
+
             enabled: showSystemActions.checked
-            text:  i18n("Show system action labels")
+            text: i18n("Show system action labels")
         }
         CheckBox {
             id: useSymbolicSystemActionIcons
+
             enabled: showSystemActions.checked
-            text:  i18n("Use symbolic system action icons")
+            text: i18n("Use symbolic system action icons")
         }
 
         // RowLayout {
@@ -410,44 +381,42 @@ KCM.SimpleKCM {
         //     }
         // }
 
-        
         // ----------------- Other -----------------
         Item {
             Kirigami.FormData.isSection: true
         }
-
-        CheckBox {       
-            Kirigami.FormData.label: i18n("Other:")
-
+        CheckBox {
             id: disableAnimations
-            text:  i18n("Disable animations")
-        }
 
+            Kirigami.FormData.label: i18n("Other:")
+            text: i18n("Disable animations")
+        }
         RowLayout {
             Layout.fillWidth: true
             enabled: !disableAnimations.checked
-            
+
             Label {
                 text: i18n("Animation speed multiplier:")
             }
-            Slider{
+            Slider {
                 id: animationSpeedMultiplier
+
                 from: 0.1
                 to: 3.0
                 stepSize: 0.1
                 implicitWidth: 200
             }
             Label {
-                text: (animationSpeedMultiplier.value).toFixed(1);
+                text: (animationSpeedMultiplier.value).toFixed(1)
             }
         }
-        
         RowLayout {
             Layout.fillWidth: true
 
             Button {
                 text: i18n("Unhide all hidden applications")
                 icon.name: "view-visible"
+
                 onClicked: {
                     plasmoid.configuration.hiddenApplications = [""];
                     unhideAllAppsPopup.text = i18n("Unhidden!");
@@ -460,5 +429,3 @@ KCM.SimpleKCM {
         }
     }
 }
-
-

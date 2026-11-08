@@ -26,5 +26,8 @@ uninstall:
 test: metadata.json
 	QT_LOGGING_RULES="qml.debug=true" plasmoidviewer -a ./
 
+format:
+	qmlformat -i ./contents/ui/*
+
 clean:
 	rm *.plasmoid metadata.json
