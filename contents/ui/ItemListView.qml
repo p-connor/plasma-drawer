@@ -10,11 +10,6 @@ import "../code/tools.js" as Tools
 FocusScope {
     id: itemList
 
-    signal keyNavLeft
-    signal keyNavRight
-    signal keyNavUp
-    signal keyNavDown
-
     width: Kirigami.Units.gridUnit * 20
     height: background.height
 
@@ -106,6 +101,15 @@ FocusScope {
             clip: true
 
             focus: true
+            onActiveFocusChanged: {
+                if (activeFocus) {
+                    if (currentIndex == -1) {
+                        currentIndex = 0;
+                    }
+                } else {
+                    currentIndex = -1;
+                }
+            }
 
             currentIndex: -1
             highlightFollowsCurrentItem: true
@@ -218,12 +222,15 @@ FocusScope {
         }
     }
 
-    Keys.onPressed: function (event) {
-        if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
+    Keys.onReleased: function (event) {
+        if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return) && currentIndex != -1) {
             event.accepted = true;
             itemList.trigger(currentIndex);
             return;
         }
+    }
+
+    Keys.onPressed: function (event) {
         if (event.key == Qt.Key_Menu && currentItem && currentItem.hasActionList) {
             event.accepted = true;
             openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
@@ -231,79 +238,17 @@ FocusScope {
         } 
         
         if (event.key == Qt.Key_Up) {
-            if (currentIndex == -1) {
-                currentIndex = 0;
-                return;
-            }
-            
             if (currentIndex > 0) {
                 event.accepted = true;
                 listView.decrementCurrentIndex();
-            } else {
-                currentIndex = -1;
-                keyNavUp();
-            }
-            return;
+            }            
         }
         
         if (event.key == Qt.Key_Down) {
-            if (currentIndex == -1) {
-                currentIndex = 0;
-                return;
-            }
-            
             if (currentIndex < lastVisibleIndex) {
                 event.accepted = true;
                 listView.incrementCurrentIndex();
-            } else {
-                currentIndex = -1;
-                keyNavDown();
-            }
-            return;
-        }
-        
-        if (event.key == Qt.Key_Left) {
-            if (currentIndex == -1) {
-                currentIndex = 0;
-                return;
-            }
-            
-            currentIndex = -1;
-            keyNavLeft();
-            return;
-        }
-        
-        if (event.key == Qt.Key_Right) {
-            if (currentIndex == -1) {
-                currentIndex = 0;
-                return;
-            }
-
-            currentIndex = -1;
-            keyNavRight();
-            return;
-        }
-
-        if (event.key == Qt.Key_PageUp) {
-            if (currentIndex == -1) {
-                currentIndex = 0;
-                return;
-            }
-            
-            currentIndex = -1;
-            keyNavUp();
-            return;
-        }
-        
-        if (event.key == Qt.Key_PageDown) {
-            if (currentIndex == -1) {
-                currentIndex = 0;
-                return;
-            }
-            
-            currentIndex = -1;
-            keyNavDown();
-            return;
+            }        
         }
     }
 }

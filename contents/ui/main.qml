@@ -47,7 +47,7 @@ PlasmoidItem {
 
     property alias systemFavoritesModel: systemModel.favoritesModel
 
-    property bool debugMode: false
+    property bool debugMode: true
 
     function logModelChildren(model, leadingSpace = 0) {
         let spacing = Array(leadingSpace + 1).join(" ");

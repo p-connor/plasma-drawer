@@ -8,11 +8,6 @@ import org.kde.kirigami as Kirigami
 FocusScope {
     id: appsGrid
 
-    signal keyNavLeft
-    signal keyNavRight
-    signal keyNavUp
-    signal keyNavDown
-
     property int iconSize: Kirigami.Units.iconSizes.huge
     
     // TODO - polish cell sizes for different resolutions
@@ -47,6 +42,9 @@ FocusScope {
                                     (item.y + (cellSizeHeight / 2)) - (currentItemGrid.height / 2) - currentItemGrid.contentY )
             }
             stackView.push(directoryView, {model: dir, origin: origin});
+            // Grid focus is temporarily removed, and re-enabled on any keyboard navigation attempt below.
+            // This prevents the highlight from showing before any keystroke
+            stackView.focus = false;
         }
     }
 
@@ -75,12 +73,13 @@ FocusScope {
         }
     }
 
-    function removeSelection() {
-        if (currentItemGrid) {
-            currentItemGrid.currentIndex = -1;
+    onActiveFocusChanged: function() {
+        // If we lose focus, re-enable the grid focus in case we get it back later
+        if (!activeFocus) {
+            stackView.focus = true;
         }
     }
-
+    
     // ActionMenu {
     //     id: actionMenu
     //     onActionClicked: visualParent.actionTriggered(actionId, actionArgument)
@@ -109,20 +108,6 @@ FocusScope {
             dragEnabled: false
             hoverEnabled: true
             layer.enabled: true
-
-            onKeyNavUp: {
-                currentIndex = -1;
-                appsGrid.keyNavUp();
-            }
-            onKeyNavDown: {
-                currentIndex = -1;
-                appsGrid.keyNavDown();
-            }
-
-            Component.onCompleted: {
-                keyNavLeft.connect(appsGrid.keyNavLeft);
-                keyNavRight.connect(appsGrid.keyNavRight);
-            }
         }
     }
 
@@ -223,6 +208,23 @@ FocusScope {
 
             PropertyAction { property: "opacity"; value: 0 }
             PropertyAction { property: "scale"; value: 0 }
+        }
+    }
+
+    Keys.forwardTo: [currentItemGrid]
+    onCurrentItemGridChanged: function() {
+        Keys.forwardTo = [currentItemGrid];
+    }
+    Keys.onPressed: function (event) {
+        switch (event.key) {
+            case Qt.Key_Escape:
+            case Qt.Key_Backspace:
+                if (!isAtRoot) {
+                    stackView.focus = true;
+                    event.accepted = true;
+                    tryExitDirectory();
+                }
+                break;
         }
     }
 }

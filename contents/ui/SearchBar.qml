@@ -42,4 +42,19 @@ TextField {
         isMask: true
         color: drawerTheme.iconColor
     }
+
+    Keys.onPressed: function (event) {
+        if (event.key == Qt.Key_Escape) {
+            if (text != "") {
+                event.accepted = true;
+                text = "";
+            }
+            return;
+        }
+
+        // Accept focus from forwarded Key events
+        if (event.text != "" && !root.activeFocus) {
+            root.forceActiveFocus();
+        }
+    }
 }

@@ -72,7 +72,9 @@ AdaptiveDialog {
     function reset() {
         searchField.text = "";
         // appsGridView.returnToRootDirectory(false);
-        content.focus = true;
+        searchField.focus = false;
+        content.focus = false;
+        systemActionsGrid.focus = false;
     }
 
     function openActionMenu(x, y, actionList = undefined) {
@@ -126,7 +128,7 @@ AdaptiveDialog {
         }
     }
 
-    content: Item {
+    content: FocusScope {
         id: rootContentArea
         focus: true
         LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
@@ -150,6 +152,8 @@ AdaptiveDialog {
             visible: plasmoid.configuration.showSearch
             enabled: visible
 
+            activeFocusOnTab: true
+
             anchors.top: parent.top
             anchors.topMargin: (contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
@@ -163,31 +167,17 @@ AdaptiveDialog {
                 // TODO: replace with key forwarding to content Keys.forwardTo
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
-                    if (!content.item.currentMatch) {
-                        content.item.selectFirst();
-                    }
-                    //content.item.triggerSelected();
+                    // Pass focus to content who should handle onReleased
+                    content.item.forceActiveFocus();
                     return;
-                }
-
-                //TODO: replace with activeFocusOnTab chains
-                if (event.key == Qt.Key_Tab || event.key == Qt.Key_Down || (event.key == Qt.Key_Backtab && !systemActionsGrid.visible)) {
-                    event.accepted = true;
-                    content.focus = true;
-                    content.item.selectFirst();
-                } else if (event.key == Qt.Key_Backtab) {
-                    event.accepted = true;
-                    systemActionsGrid.focus = true;
-                    systemActionsGrid.trySelect(0, 0);
                 }
             }
 
-            Keys.onReleased: function (event) {
-                if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
-                    event.accepted = true;
-                    content.item.triggerSelected();
-                    return;
-                }
+            Keys.onUpPressed: function (event) {
+                nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason);
+            }
+            Keys.onDownPressed: function (event) {
+                nextItemInFocusChain(true).forceActiveFocus(Qt.FocusReason);
             }
 
             DebugRect {}
@@ -246,39 +236,13 @@ AdaptiveDialog {
             }
             sourceComponent: !searching ? appsGridViewComponent : runnerResultsViewComponent
             active: root.visible
-            focus: true
+            activeFocusOnTab: true
 
-            function keyNavUp() {
-                if (searchField.visible) {
-                    item.removeSelection();
-                    searchField.focus = true;
-                } else if (systemActionsGrid.visible) {
-                    keyNavDown();
-                }
+            Keys.onUpPressed: function (event) {
+                nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason);
             }
-            function keyNavDown() {
-                if (systemActionsGrid.visible) {
-                    item.removeSelection();
-                    systemActionsGrid.focus = true;
-                    systemActionsGrid.trySelect(0, 0);
-                } else if (searchField.visible) {
-                    keyNavUp();
-                }
-            }
-
-            onLoaded: {
-                item.keyNavUp.connect(keyNavUp);
-                item.keyNavDown.connect(keyNavDown);
-            }
-
-            Keys.onPressed: function (event) {
-                if (event.key == Qt.Key_Backtab) {
-                    event.accepted = true;
-                    keyNavUp();
-                } else if (event.key == Qt.Key_Tab) {
-                    event.accepted = true;
-                    keyNavDown();
-                }
+            Keys.onDownPressed: function (event) {
+                nextItemInFocusChain(true).forceActiveFocus(Qt.FocusReason);
             }
         }
 
@@ -318,6 +282,7 @@ AdaptiveDialog {
 
             visible: count > 0 && plasmoid.configuration.showSystemActions
             enabled: visible
+            activeFocusOnTab: true
 
             anchors {
                 horizontalCenter: parent.horizontalCenter
@@ -341,51 +306,25 @@ AdaptiveDialog {
             setIconColorBasedOnTheme: true
             forceSymbolicIcons: plasmoid.configuration.useSymbolicSystemActionIcons
 
-            onKeyNavUp: {
-                currentIndex = -1;
-                content.focus = true;
-                content.item.selectLast();
+            Keys.onUpPressed: function (event) {
+                nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason);
             }
-
-            Keys.onPressed: function (event) {
-                if (event.key == Qt.Key_Backtab || (event.key == Qt.Key_Tab && !searchField.visible)) {
-                    event.accepted = true;
-                    currentIndex = -1;
-                    content.focus = true;
-                    content.item.selectFirst();
-                } else if (event.key == Qt.Key_Tab) {
-                    event.accepted = true;
-                    currentIndex = -1;
-                    searchField.focus = true;
-                }
+            Keys.onDownPressed: function (event) {
+                nextItemInFocusChain(true).forceActiveFocus(Qt.FocusReason);
             }
 
             DebugRect {}
         }
- 
+
+        Keys.forwardTo: [content.item, searchField]
         Keys.onPressed: function (event) {
             if (event.key == Qt.Key_Escape) {
-                event.accepted = true;
-                if (searching) {
-                    searchField.text = "";
+                if (searchField.focus || content.focus || systemActionsGrid.focus) {
+                    reset();
                 } else {
                     root.leave();
                 }
-                return;
-            }
-
-            if (searchField.focus || !searchField.visible) {
-                return;
-            }
-
-            if (event.key == Qt.Key_Backspace) {
                 event.accepted = true;
-                searchField.focus = true;
-                searchField.text = searchField.text.slice(0, -1);
-            } else if (event.text != "") {
-                event.accepted = true;
-                searchField.focus = true;
-                searchField.text = searchField.text + event.text;
             }
         }
     }

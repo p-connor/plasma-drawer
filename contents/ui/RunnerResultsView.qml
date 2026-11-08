@@ -10,11 +10,6 @@ import org.kde.kirigami as Kirigami
 FocusScope {
     id: searchResults
 
-    signal keyNavLeft
-    signal keyNavRight
-    signal keyNavUp
-    signal keyNavDown
-
     width: Kirigami.Units.gridUnit * 20
     height: Kirigami.Units.gridUnit * 60
 
@@ -56,6 +51,8 @@ FocusScope {
         }
     }
 
+    // TODO: Move off of ScrollView as it hijacks up/down key events
+    // See https://code.qt.io/cgit/qt/qtdeclarative.git/tree/src/quicktemplates/qquickscrollview.cpp?h=6.9.3#n642
     PC3.ScrollView {
         id: scrollView
         // Add spacing on the left by right adjusting the ScrollView, which
@@ -90,11 +87,6 @@ FocusScope {
             highlightResizeDuration: 0
 
             function moveUp() {
-                if (currentIndex <= 0) {
-                    keyNavUp();
-                    return;
-                }
-
                 decrementCurrentIndex();
                 if (currentItem && "count" in currentItem) {
                     currentItem.currentIndex = currentItem.lastVisibleIndex;
@@ -102,11 +94,6 @@ FocusScope {
             }
 
             function moveDown() {
-                if (currentIndex >= count - 1) {
-                    keyNavDown();
-                    return;
-                }
-
                 incrementCurrentIndex();
                 if (currentItem && "count" in currentItem) {
                     currentItem.currentIndex = 0;
@@ -139,6 +126,7 @@ FocusScope {
                 height: matchesList.height + sectionHeader.height + Kirigami.Units.largeSpacing * 4
 
                 visible: matchesList?.model?.count > 0 ?? false
+                focus: index == 0;
 
                 property alias count: matchesList.count
                 property alias expanded: matchesList.expanded
@@ -169,6 +157,7 @@ FocusScope {
                         anchors.bottom: parent.bottom
 
                         visible: matchesList.expandable
+                        focusPolicy: Qt.ClickFocus
 
                         contentItem: PC3.Label {
                             id: showMoreLabel
@@ -211,6 +200,8 @@ FocusScope {
                                 return;
                             }
                         }
+
+                        DebugRect {}
                     }
                 }
 
@@ -241,7 +232,7 @@ FocusScope {
 
                     interactive: false
 
-                    // currentIndex: index == 0 ? 0 : -1
+                    //currentIndex: index == 0 ? 0 : -1
                     onCurrentIndexChanged: {
                         if (currentIndex != -1) {
                             runnerSectionsList.currentIndex = index;
@@ -251,37 +242,52 @@ FocusScope {
 
                     model: runnerSectionsList.model.modelForRow(index)
 
-                    onKeyNavUp: {
-                        runnerSectionsList.moveUp();
-                    }
-
-                    onKeyNavDown: {
-                        runnerSectionsList.moveDown();
-                    }
-
-                    onKeyNavRight: {
-                        if (showMoreButton.visible) {
+                    Keys.onPressed: function (event) {
+                        if (event.key == Qt.Key_Right && showMoreButton.visible) {
+                            event.accepted = true;
                             showMoreButton.focus = true;
                         }
-                    }
-
-                    Component.onCompleted: {
-                        keyNavRight.connect(searchResults.keyNavRight);
-                        keyNavLeft.connect(searchResults.keyNavLeft);
                     }
 
                     DebugRect {}
                 }
             }
+
+            Keys.onPressed: function (event) {
+                switch (event.key) {
+                    case Qt.Key_Up:
+                    case Qt.Key_PageUp:
+                        if (currentIndex > 0) {
+                            event.accepted = true;
+                            moveUp();
+                        }
+                        break;
+                    case Qt.Key_Down:
+                    case Qt.Key_PageDown:
+                        if (currentIndex < count - 1) {
+                            event.accepted = true;
+                            moveDown();
+                        }
+                        break;
+                    case Qt.Key_Right:
+                        if (showMoreButton.visible) {
+                            event.accepted = true;
+                            showMoreButton.focus = true;
+                        }
+                        break;
+                }
+            }
+
+            DebugRect {}
         }
     }
 
-    Keys.onPressed: function (event) {
-        if (event.key == Qt.Key_Up || event.key == Qt.Key_Down || event.key == Qt.Key_Left || event.key == Qt.Key_Right) {
-            if (currentSectionIndex == -1) {
-                event.accepted = true;
-                runnerSectionsList.moveDown();
-            }
-        }
-    }
+    // Keys.onPressed: function (event) {
+    //     if (event.key == Qt.Key_Up || event.key == Qt.Key_Down || event.key == Qt.Key_Left || event.key == Qt.Key_Right) {
+    //         if (currentSectionIndex == -1) {
+    //             event.accepted = true;
+    //             runnerSectionsList.moveDown();
+    //         }
+    //     }
+    // }
 }

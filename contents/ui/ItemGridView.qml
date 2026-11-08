@@ -30,11 +30,6 @@ import "../code/tools.js" as Tools
 FocusScope {
     id: itemGrid
 
-    signal keyNavLeft
-    signal keyNavRight
-    signal keyNavUp
-    signal keyNavDown
-
     property bool dragEnabled: true
     property bool showLabels: true
     property bool setIconColorBasedOnTheme: false
@@ -67,11 +62,7 @@ FocusScope {
     implicitWidth: scrollView.width + scrollView.ScrollBar.vertical.width
     implicitHeight: scrollView.height
 
-    onFocusChanged: {
-        if (!focus) {
-            currentIndex = -1;
-        }
-    }
+    Keys.forwardTo: [gridView]
 
     function itemAtIndex(index) {
         return gridView.itemAtIndex(index);
@@ -164,6 +155,8 @@ FocusScope {
             }
         }
 
+        // TODO: Move off of ScrollView as it hijacks up/down key events
+        // See https://code.qt.io/cgit/qt/qtdeclarative.git/tree/src/quicktemplates/qquickscrollview.cpp?h=6.9.3#n642
         PC3.ScrollView {
             id: scrollView
             width: (numberColumns * cellWidth) + ScrollBar.vertical.width
@@ -178,6 +171,9 @@ FocusScope {
 
             GridView {
                 id: gridView
+
+                property var lastActiveFocusIndex: undefined
+
                 width: numberColumns * cellWidth
                 height: parent.height
                 // anchors.left: parent.left
@@ -211,114 +207,91 @@ FocusScope {
                     currentIndex = -1;
                 }
 
-                Keys.onLeftPressed: function (event) {
-                    if (currentIndex == -1) {
-                        currentIndex = 0;
-                        return;
-                    }
-
-                    if (!(event.modifiers & Qt.ControlModifier) && currentCol() != 0) {
-                        event.accepted = true;
-                        moveCurrentIndexLeft();
+                onActiveFocusChanged: {
+                    if (activeFocus) {
+                        currentIndex = lastActiveFocusIndex ?? 0;
                     } else {
-                        itemGrid.keyNavLeft();
-                    }
-                }
-
-                Keys.onRightPressed: function (event) {
-                    if (currentIndex == -1) {
-                        currentIndex = 0;
-                        return;
-                    }
-
-                    var columns = Math.floor(width / cellWidth);
-
-                    if (!(event.modifiers & Qt.ControlModifier) && currentCol() != columns - 1 && currentIndex != count - 1) {
-                        event.accepted = true;
-                        moveCurrentIndexRight();
-                    } else {
-                        itemGrid.keyNavRight();
-                    }
-                }
-
-                Keys.onUpPressed: function (event) {
-                    if (currentIndex == -1) {
-                        currentIndex = 0;
-                        return;
-                    }
-
-                    if (currentRow() != 0) {
-                        event.accepted = true;
-                        moveCurrentIndexUp();
-                        positionViewAtIndex(currentIndex, GridView.Contain);
-                    } else {
-                        itemGrid.keyNavUp();
-                    }
-                }
-
-                Keys.onDownPressed: function (event) {
-                    if (currentIndex == -1) {
-                        currentIndex = 0;
-                        return;
-                    }
-
-                    if (currentRow() < itemGrid.lastRow()) {
-                        // Fix moveCurrentIndexDown()'s lack of proper spatial nav down
-                        // into partial columns.
-                        event.accepted = true;
-                        var columns = Math.floor(width / cellWidth);
-                        var newIndex = currentIndex + columns;
-                        currentIndex = Math.min(newIndex, count - 1);
-                        positionViewAtIndex(currentIndex, GridView.Contain);
-                    } else {
-                        itemGrid.keyNavDown();
+                        lastActiveFocusIndex = currentIndex;
+                        currentIndex = -1;
                     }
                 }
 
                 Keys.onPressed: function (event) {
-                    if (event.key == Qt.Key_Menu && currentItem && currentItem.hasActionList) {
+                    function accept(event) {
+                        // Take focus on forwarded key events
+                        if (!gridView.activeFocus) {
+                            gridView.forceActiveFocus();
+                        }
                         event.accepted = true;
-                        openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
-                        return;
-                    } 
-                    if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return && currentIndex != -1)) {
-                        event.accepted = true;
-                        itemGrid.trigger(currentIndex);
-                        // root.toggle();
                     }
 
-                    let rowsInPage = Math.floor(gridView.height / cellHeight);
-
-                    if (event.key == Qt.Key_PageUp) {
+                    // Returns true if nothing was previously selected
+                    function ensureSelection(event) {
                         if (currentIndex == -1) {
                             currentIndex = 0;
-                            return;
+                            accept(event);
+                            return true;
                         }
-
-                        if (currentRow() != 0) {
-                            event.accepted = true;
-                            trySelect(currentRow() - rowsInPage, currentCol());
-                            positionViewAtIndex(currentIndex, GridView.Beginning);
-                        } else {
-                            itemGrid.keyNavUp();
-                        }
-                        return;
+                        return false;
                     }
-                    
-                    if (event.key == Qt.Key_PageDown) {
-                        if (currentIndex == -1) {
-                            currentIndex = 0;
-                            return;
-                        }
 
-                        if (currentRow() != numberRows - 1) {
-                            event.accepted = true;
-                            trySelect(currentRow() + rowsInPage, currentCol());
-                            positionViewAtIndex(currentIndex, GridView.Beginning);
-                        } else {
-                            itemGrid.keyNavDown();
-                        }
-                        return;
+                    switch (event.key) {
+                        case Qt.Key_Up:
+                            if (!ensureSelection(event) && currentRow() != 0) {
+                                accept(event);
+                                moveCurrentIndexUp();
+                                positionViewAtIndex(currentIndex, GridView.Contain);
+                            }  
+                            break;
+                        case Qt.Key_Down:
+                            if (!ensureSelection(event) && currentRow() < itemGrid.lastRow()) {
+                                // moveCurrentIndexDown() doesn't handle spatial nav down into partial rows.
+                                accept(event);
+                                var columns = Math.floor(width / cellWidth);
+                                var newIndex = currentIndex + columns;
+                                currentIndex = Math.min(newIndex, count - 1);
+                                positionViewAtIndex(currentIndex, GridView.Contain);
+                            }
+                            break;
+                        case Qt.Key_Left:
+                            if (!ensureSelection(event) && !(event.modifiers & Qt.ControlModifier) && currentCol() != 0) {
+                                accept(event);
+                                moveCurrentIndexLeft();
+                            }
+                            break;
+                        case Qt.Key_Right:
+                            if (!ensureSelection(event) && !(event.modifiers & Qt.ControlModifier) && currentCol() != numberColumns - 1 && currentIndex != count - 1) {
+                                accept(event);
+                                moveCurrentIndexRight();
+                            }
+                            break;
+                        case Qt.Key_PageUp:
+                            if (currentRow() != 0) {
+                                accept(event);
+                                trySelect(currentRow() - rowsInPage, currentCol());
+                                positionViewAtIndex(currentIndex, GridView.Beginning);
+                            }
+                            break;
+                        case Qt.Key_PageDown:
+                            if (currentRow() != numberRows - 1) {
+                                accept(event);
+                                trySelect(currentRow() + numberRows, currentCol());
+                                positionViewAtIndex(currentIndex, GridView.Beginning);
+                            }   
+                            break;
+                        case Qt.Key_Menu:
+                            if (currentItem && currentItem.hasActionList) {
+                                accept(event);
+                                openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
+                            }
+                            break;
+                        case Qt.Key_Enter:
+                        case Qt.Key_Return:
+                            if (currentIndex != -1) {
+                                accept(event);
+                                itemGrid.trigger(currentIndex);
+                            }
+                            break;
                     }
                 }
 
@@ -339,7 +312,7 @@ FocusScope {
                         var cPos = mapToItem(gridView.contentItem, x, y);
                         var index = gridView.indexAt(cPos.x, cPos.y);
                         gridView.currentIndex = index;
-                        itemGrid.focus = true;
+                        //itemGrid.focus = true;
 
                         return index;
                     }
@@ -347,6 +320,7 @@ FocusScope {
                     onPressed: function (mouse) {
                         mouse.accepted = true;
                         updatePositionProperties(mouse.x, mouse.y);
+                        itemGrid.focus = true;
                         pressX = mouse.x;
                         pressY = mouse.y;
 
@@ -359,6 +333,7 @@ FocusScope {
 
                     onReleased: function (mouse) {
                         mouse.accepted = true;
+                        itemGrid.focus = true;
                         if (gridView.currentItem) {
                             itemGrid.trigger(gridView.currentIndex);
                         } else if (!dragHelper.dragging) {
