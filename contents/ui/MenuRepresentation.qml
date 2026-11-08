@@ -118,18 +118,6 @@ AdaptiveDialog {
             }
         }
 
-        PlasmaExtras.Heading {
-            id: dummyHeading
-
-            visible: false
-            width: 0
-            level: 5
-        }
-        TextMetrics {
-            id: headingMetrics
-
-            font: dummyHeading.font
-        }
         SearchBar {
             id: searchField
 
