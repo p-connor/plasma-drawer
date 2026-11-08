@@ -93,7 +93,12 @@ KCM.SimpleKCM {
                 }
                 Label {
                     Layout.fillWidth: true
-                    text: defaultRunners.find((m) => m.id === modelData)?.name ?? modelData
+                    text: {
+                        var m = defaultRunners.find(function (item) {
+                            return item.id === modelData;
+                        });
+                        return (m && m.name !== undefined) ? m.name : modelData;
+                    }
                 }
                 CheckBox {
                     checked: isActive

@@ -125,7 +125,7 @@ FocusScope {
                 width: scrollView.width - scrollView.ScrollBar.vertical.width - Kirigami.Units.smallSpacing
                 height: matchesList.height + sectionHeader.height + Kirigami.Units.largeSpacing * 4
 
-                visible: matchesList?.model?.count > 0 ?? false
+                visible: (matchesList && matchesList.model && matchesList.model.count > 0)
                 focus: index == 0;
 
                 property alias count: matchesList.count
