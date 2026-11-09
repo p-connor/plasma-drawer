@@ -9,14 +9,10 @@ FocusScope {
     id: appsGrid
 
     property int iconSize: Kirigami.Units.iconSizes.huge
-
-    // TODO - polish cell sizes for different resolutions
-    readonly property int cellSizeWidth: (iconSize * 1.5) + Kirigami.Units.gridUnit + (2 * Kirigami.Units.smallSpacing) + (2 * Math.max(highlightItemSvg.margins.top + highlightItemSvg.margins.bottom, highlightItemSvg.margins.left + highlightItemSvg.margins.right))
-    readonly property int minCellSizeHeight: (cellSizeWidth - (iconSize * .33))
-    // cellSizeHeight grows to match the appsGrid height if there is some space left at the bottom
-    readonly property int cellSizeHeight: minCellSizeHeight + ((height % minCellSizeHeight) / Math.floor(height / minCellSizeHeight))
     property int numberColumns: 5
-    property int numberRows: Math.floor(height / cellSizeHeight)
+    property int numberRows: 4
+    readonly property int implicitCellWidth: currentItemGrid.implicitCellWidth
+    readonly property int implicitCellHeight: currentItemGrid.implicitCellHeight
     required property var model
     readonly property var currentItemGrid: stackView.currentItem
     readonly property var currentModel: currentItemGrid ? currentItemGrid.model : null //modelStack[modelStackLength - 1]
@@ -29,7 +25,7 @@ FocusScope {
             let origin = Qt.point(0, 0);
             let item = currentItemGrid.itemAtIndex(directoryIndex);
             if (item) {
-                origin = Qt.point((item.x + (cellSizeWidth / 2)) - (currentItemGrid.width / 2), (item.y + (cellSizeHeight / 2)) - (currentItemGrid.height / 2) - currentItemGrid.contentY);
+                origin = Qt.point((item.x + (currentItemGrid.cellWidth / 2)) - (currentItemGrid.width / 2), (item.y + (currentItemGrid.cellHeight / 2)) - (currentItemGrid.height / 2) - currentItemGrid.contentY);
             }
             stackView.push(directoryView, {
                 model: dir,
@@ -62,8 +58,8 @@ FocusScope {
         }
     }
 
-    implicitWidth: currentItemGrid.implicitWidth
-    implicitHeight: currentItemGrid.implicitHeight
+    implicitWidth: stackView.implicitWidth
+    implicitHeight: stackView.implicitHeight
     Keys.forwardTo: [currentItemGrid]
 
     onActiveFocusChanged: function () {
@@ -103,12 +99,8 @@ FocusScope {
         ItemGridView {
             property var origin: Qt.point(0, 0)
 
-            // width: appsGrid.numberColumns * cellSizeWidth
-            // height: appsGrid.numberRows * cellSizeHeight
             numberColumns: appsGrid.numberColumns
-            maxVisibleRows: appsGrid.numberRows
-            cellWidth: cellSizeWidth
-            cellHeight: cellSizeHeight
+            numberRows: appsGrid.numberRows
             iconSize: appsGrid.iconSize
             model: appsGrid.model
             dragEnabled: false
@@ -124,7 +116,7 @@ FocusScope {
         initialItem: directoryView
         implicitWidth: currentItemGrid.implicitWidth
         implicitHeight: currentItemGrid.implicitHeight
-        anchors.top: parent.top
+        anchors.fill: parent
         focus: true
         pushEnter: !plasmoid.configuration.disableAnimations ? pushEnterTransition : instantEnterTransition
         pushExit: !plasmoid.configuration.disableAnimations ? pushExitTransition : instantExitTransition

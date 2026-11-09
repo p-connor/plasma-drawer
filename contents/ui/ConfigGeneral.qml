@@ -38,6 +38,7 @@ KCM.SimpleKCM {
     property string cfg_icon: plasmoid.configuration.icon
     property bool cfg_useCustomButtonImage: plasmoid.configuration.useCustomButtonImage
     property string cfg_customButtonImage: plasmoid.configuration.customButtonImage
+    property alias cfg_windowMode: windowMode.currentIndex
     property alias cfg_backgroundType: backgroundType.currentIndex
     property var cfg_customBackgroundColor: plasmoid.configuration.customBackgroundColor
     property var cfg_customBackgroundImagePath: plasmoid.configuration.customBackgroundImagePath
@@ -45,6 +46,7 @@ KCM.SimpleKCM {
     property int cfg_appIconSize: plasmoid.configuration.appIconSize
     property alias cfg_useDirectoryIcons: useDirectoryIcons.checked
     property alias cfg_maxNumberColumns: maxNumberColumns.value
+    property alias cfg_maxNumberRows: maxNumberRows.value
     property alias cfg_showSearch: showSearch.checked
     property alias cfg_adaptiveSearchIconSize: adaptSearchIcons.checked
     property int cfg_searchIconSize: plasmoid.configuration.searchIconSize
@@ -53,7 +55,6 @@ KCM.SimpleKCM {
     property alias cfg_useSymbolicSystemActionIcons: useSymbolicSystemActionIcons.checked
     property int cfg_systemActionIconSize: plasmoid.configuration.systemActionIconSize
     property var cfg_favoriteSystemActions: plasmoid.configuration.favoriteSystemActions
-    property alias cfg_windowMode: windowMode.currentIndex
     property alias cfg_disableAnimations: disableAnimations.checked
     property alias cfg_animationSpeedMultiplier: animationSpeedMultiplier.value
 
@@ -162,7 +163,7 @@ KCM.SimpleKCM {
             id: windowMode
 
             Kirigami.FormData.label: i18n("Window mode:")
-            model: [i18n("Fullscreen"), i18n("Maximized (keep panels visible)")]
+            model: [i18n("Fullscreen"), i18n("Maximized (keep panels visible)"), i18n("Floating")]
         }
 
         // ----------------- Background -----------------
@@ -257,6 +258,20 @@ KCM.SimpleKCM {
                 id: maxNumberColumns
 
                 from: 3
+                to: 20
+            }
+        }
+        RowLayout {
+            Layout.fillWidth: true
+            visible: cfg_windowMode == 2
+
+            Label {
+                text: i18n("Max rows in grid:")
+            }
+            SpinBox {
+                id: maxNumberRows
+
+                from: 1
                 to: 20
             }
         }

@@ -35,21 +35,20 @@ AdaptiveDialog {
     id: root
 
     readonly property bool searching: searchField.text != ""
-    readonly property int contentMargin: Math.max(Kirigami.Units.iconSizes.huge, rootContentArea.height * .12)
 
     function colorWithAlpha(color, alpha) {
         return Qt.rgba(color.r, color.g, color.b, alpha);
     }
     function leave() {
-        if (!searching && !content.item.isAtRoot) {
-            content.item.tryExitDirectory();
+        if (!searching && content.currentItem.tryExitDirectory && !content.currentItem.isAtRoot) {
+            content.currentItem.tryExitDirectory();
         } else {
             root.toggle();
         }
     }
     function reset() {
         searchField.text = "";
-        // appsGridView.returnToRootDirectory(false);
+        appsGridView.returnToRootDirectory(false);
         searchField.focus = false;
         content.focus = false;
         systemActionsGrid.focus = false;
@@ -102,10 +101,15 @@ AdaptiveDialog {
     content: FocusScope {
         id: rootContentArea
 
+        // Use screenInfo instead of rootContentArea.height to avoid binding loop
+        readonly property int contentMargin: Math.max(systemActionsGrid.visible ? systemActionsGrid.implicitHeight : 0, searchField.visible ? searchField.implicitHeight * 2 : 0, root.windowMode !== 2 ? Kirigami.Units.iconSizes.huge : 0, root.windowMode !== 2 ? root.screenInfo.height * .12 : 0) + Kirigami.Units.gridUnit
+
         focus: true
         LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
         LayoutMirroring.childrenInherit: true
-        Keys.forwardTo: [content.item, searchField]
+        implicitWidth: content.implicitWidth
+        implicitHeight: content.implicitHeight + (contentMargin * 2)
+        Keys.forwardTo: [content.currentItem, searchField]
 
         Keys.onPressed: function (event) {
             if (event.key == Qt.Key_Escape) {
@@ -125,9 +129,9 @@ AdaptiveDialog {
             enabled: visible
             activeFocusOnTab: true
             anchors.top: parent.top
-            anchors.topMargin: (contentMargin / 2) - (height / 2)
+            anchors.topMargin: (rootContentArea.contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
-            width: Math.min(Kirigami.Units.gridUnit * 20, (parent.width * 0.25) + (leftInset * 2))
+            width: content.runnerResultsWidth + (leftInset * 2) - Kirigami.Units.gridUnit * 6
 
             onTextChanged: {
                 runnerModel.query = text;
@@ -137,7 +141,7 @@ AdaptiveDialog {
                 if (searching && (event.key == Qt.Key_Enter || event.key == Qt.Key_Return)) {
                     event.accepted = true;
                     // Pass focus to content who should handle onReleased
-                    content.item.forceActiveFocus();
+                    content.currentItem.forceActiveFocus();
                     return;
                 }
             }
@@ -150,48 +154,33 @@ AdaptiveDialog {
 
             DebugRect {}
         }
-        Component {
-            id: runnerResultsViewComponent
 
-            RunnerResultsView {
-                id: runnerResultsView
+        // Switch between apps grid or runner results based on whether searching or not
+        StackView {
+            id: content
 
-                width: Math.min(Kirigami.Units.gridUnit * 32, rootContentArea.width * 0.33)
-                anchors.horizontalCenter: parent.horizontalCenter
-                visible: searching
-                enabled: visible
-                focus: true
-                iconSize: plasmoid.configuration.searchIconSize
-                shrinkIconsToNative: plasmoid.configuration.adaptiveSearchIconSize
-                model: runnerModel
+            readonly property var runnerResultsWidth: Math.min(Math.max(appsGridView.implicitWidth * 0.75, Kirigami.Units.gridUnit * 20), Kirigami.Units.gridUnit * 32)
 
-                DebugRect {}
-            }
-        }
-        Component {
-            id: appsGridViewComponent
+            implicitWidth: Math.max(appsGridView.implicitWidth, runnerResultsWidth)
+            implicitHeight: appsGridView.implicitHeight
+            focus: true
+            activeFocusOnTab: true
+            replaceEnter: null
+            replaceExit: null
 
-            AppsGridView {
+            initialItem: AppsGridView {
                 id: appsGridView
 
                 visible: !searching && appsModel.count > 0
                 enabled: visible
                 focus: true
                 iconSize: plasmoid.configuration.appIconSize
-                numberColumns: Math.min(plasmoid.configuration.maxNumberColumns, Math.floor((rootContentArea.width - Kirigami.Units.largeSpacing * 2) / cellSizeWidth))
+                numberColumns: plasmoid.configuration.maxNumberColumns
+                numberRows: windowMode === 2 ? plasmoid.configuration.maxNumberRows : Math.floor(content.height / appsGridView.implicitCellHeight)
                 model: appsModel
 
                 DebugRect {}
             }
-        }
-
-        // Switch between apps grid or runner results based on whether searching or not
-        Loader {
-            id: content
-
-            sourceComponent: !searching ? appsGridViewComponent : runnerResultsViewComponent
-            active: root.visible
-            activeFocusOnTab: true
 
             Keys.onUpPressed: function (event) {
                 nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason);
@@ -204,9 +193,42 @@ AdaptiveDialog {
                 horizontalCenter: parent.horizontalCenter
                 top: parent.top
                 bottom: parent.bottom
-                topMargin: contentMargin
-                bottomMargin: contentMargin
-                // margins: contentMargin
+                topMargin: rootContentArea.contentMargin
+                bottomMargin: rootContentArea.contentMargin
+                // margins: rootContentArea.contentMargin
+            }
+            Component {
+                id: runnerResultsViewComponent
+
+                RunnerResultsView {
+                    id: runnerResultsView
+
+                    width: content.runnerResultsWidth
+                    visible: searching
+                    enabled: visible
+                    focus: true
+                    iconSize: plasmoid.configuration.searchIconSize
+                    shrinkIconsToNative: plasmoid.configuration.adaptiveSearchIconSize
+                    model: runnerModel
+
+                    anchors {
+                        top: content.top
+                        bottom: content.bottom
+                        horizontalCenter: content.horizontalCenter
+                    }
+                    DebugRect {}
+                }
+            }
+            Connections {
+                function onSearchingChanged() {
+                    if (searching) {
+                        content.replace(runnerResultsViewComponent);
+                    } else {
+                        content.replace(appsGridView);
+                    }
+                }
+
+                target: root
             }
         }
         ParallelAnimation {
@@ -244,13 +266,9 @@ AdaptiveDialog {
             enabled: visible
             activeFocusOnTab: true
             iconSize: plasmoid.configuration.systemActionIconSize
-            cellWidth: iconSize + (Kirigami.Units.largeSpacing * (showLabels ? 6 : 2))
-            cellHeight: cellWidth
-            // height: cellHeight
-            // width: cellWidth * count
+            cellContentSpacing: Kirigami.Units.smallSpacing
+            numberRows: 1
             numberColumns: model.count
-            // maxVisibleRows: 1
-
             opacity: 0.9
             dragEnabled: true
             showLabels: plasmoid.configuration.showSystemActionLabels
@@ -268,7 +286,7 @@ AdaptiveDialog {
                 horizontalCenter: parent.horizontalCenter
                 bottom: parent.bottom
                 margins: Kirigami.Units.largeSpacing
-                bottomMargin: (contentMargin / 2) - (height / 2)
+                bottomMargin: (rootContentArea.contentMargin / 2) - (height / 2)
             }
             DebugRect {}
         }

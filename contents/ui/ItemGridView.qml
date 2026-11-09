@@ -22,11 +22,15 @@ import QtQuick.Controls
 
 import "../code/tools.js" as Tools
 import org.kde.draganddrop
+import org.kde.kirigami as Kirigami
 import org.kde.kquickcontrolsaddons
 
 import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.extras as PlasmaExtras
 
+// ItemGridView sets implicit size based on assigned numberColumns, numberRows, iconSize.
+// Setting width or height explicitly will cause the assigned number of columns or rows to
+// grow or shrink to fill the space.
 FocusScope {
     id: itemGrid
 
@@ -35,11 +39,14 @@ FocusScope {
     property bool setIconColorBasedOnTheme: false
     property bool forceSymbolicIcons: false
     property int iconSize: Kirigami.Units.iconSizes.large
-    property int numberColumns: Math.floor(width / cellWidth)
-    property int maxVisibleRows: -1
-    readonly property int numberRows: Math.ceil(count / numberColumns)
-    property alias cellWidth: gridView.cellWidth
-    property alias cellHeight: gridView.cellHeight
+    // If unset, fill any assigned width / height with implicitly sized cells
+    property int numberColumns: width != undefined ? Math.floor(width / implicitCellWidth) : 3
+    property int numberRows: height != undefined ? Math.floor(height / implicitCellHeight) : 3
+    property int cellContentSpacing: Kirigami.Units.largeSpacing * 1.5
+    property int implicitCellWidth: implicitCellHeight * (showLabels ? 1.1 : 1)
+    property int implicitCellHeight: iconSize + (cellContentSpacing * 2) + (showLabels ? labelRef.implicitHeight + cellContentSpacing : 0) + highlightRef.marginHints.bottom + highlightRef.marginHints.top
+    readonly property alias cellWidth: gridView.cellWidth
+    readonly property alias cellHeight: gridView.cellHeight
     property alias model: gridView.model
     property alias currentIndex: gridView.currentIndex
     property alias currentItem: gridView.currentItem
@@ -100,10 +107,8 @@ FocusScope {
         }
     }
 
-    // ScrollView needs additional space on the right for the scrollbar,
-    // so we add additional padding on the left to center the gridview
-    implicitWidth: scrollView.width + scrollView.ScrollBar.vertical.width
-    implicitHeight: scrollView.height
+    implicitWidth: dropArea.implicitWidth
+    implicitHeight: dropArea.implicitHeight
     Keys.forwardTo: [gridView]
 
     ActionMenu {
@@ -123,12 +128,24 @@ FocusScope {
             currentIndex = -1;
         }
     }
+    PlasmaExtras.Highlight {
+        id: highlightRef
+
+        visible: false
+    }
+    PC3.Label {
+        id: labelRef
+
+        visible: false
+    }
     DropArea {
         id: dropArea
 
-        width: numberColumns * cellWidth
-        height: (maxVisibleRows == -1 ? numberRows : maxVisibleRows) * cellHeight
-        anchors.centerIn: parent
+        // ScrollView needs additional space on the right for the scrollbar,
+        // so we add additional padding on the left to center the gridview
+        implicitWidth: scrollView.implicitWidth + scrollView.ScrollBar.vertical.width
+        implicitHeight: scrollView.implicitHeight
+        anchors.fill: parent
 
         onDragMove: function (event) {
             var cPos = mapToItem(gridView.contentItem, event.x, event.y);
@@ -144,9 +161,13 @@ FocusScope {
         PC3.ScrollView {
             id: scrollView
 
-            width: (numberColumns * cellWidth) + ScrollBar.vertical.width
+            implicitWidth: gridView.implicitWidth + ScrollBar.vertical.width
+            implicitHeight: gridView.implicitHeight
+            width: parent.width - ScrollBar.vertical.width
             height: parent.height
+            rightPadding: ScrollBar.vertical.width
             anchors.left: parent.left
+            anchors.leftMargin: ScrollBar.vertical.width
             anchors.verticalCenter: parent.verticalCenter
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             ScrollBar.vertical.interactive: true
@@ -157,11 +178,12 @@ FocusScope {
 
                 property var lastActiveFocusIndex: undefined
 
-                width: numberColumns * cellWidth
-                height: parent.height
-                // anchors.left: parent.left
-                // anchors.verticalCenter: parent.verticalCenter
-
+                implicitWidth: numberColumns * implicitCellWidth
+                implicitHeight: numberRows * implicitCellHeight
+                cellWidth: width / numberColumns
+                cellHeight: height / numberRows
+                width: parent.availableWidth 
+                height: parent.availableHeight
                 focus: true
                 visible: model ? model.count > 0 : false
                 currentIndex: -1
@@ -178,9 +200,10 @@ FocusScope {
                     visible: gridView.highlightFollowsCurrentItem
                 }
                 delegate: ItemGridDelegate {
-                    showLabel: showLabels
-                    iconColorOverride: setIconColorBasedOnTheme && drawerTheme.usingCustomTheme ? drawerTheme.iconColor : undefined
+                    showLabel: itemGrid.showLabels
+                    iconColorOverride: itemGrid.setIconColorBasedOnTheme && drawerTheme.usingCustomTheme ? drawerTheme.iconColor : undefined
                     forceSymbolicIcons: itemGrid.forceSymbolicIcons
+                    contentSpacing: itemGrid.cellContentSpacing
 
                     DebugRect {}
                 }

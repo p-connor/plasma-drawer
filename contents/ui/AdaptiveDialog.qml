@@ -14,7 +14,9 @@ PlasmaCore.Dialog {
         // Background and content cover full screen over panels
         Fullscreen,
         // Background covers full screen, content covers non-panel area. Panels shown
-        Maximized
+        Maximized,
+        // Window and background use the implicit size of content
+        Floating
     }
 
     property int windowMode: AdaptiveDialog.WindowMode.Fullscreen
@@ -28,8 +30,9 @@ PlasmaCore.Dialog {
 
     // Whether to enable opening animations
     property bool animated: true
-    readonly property var _screenInfo: visualParent ? visualParent.Screen : Screen
-    readonly property rect _screenRect: Qt.rect(_screenInfo.virtualX, _screenInfo.virtualY, _screenInfo.width, _screenInfo.height)
+    readonly property bool isFloating: windowMode === AdaptiveDialog.WindowMode.Floating
+    readonly property var screenInfo: visualParent ? visualParent.Screen : Screen
+    readonly property rect _screenRect: Qt.rect(screenInfo.virtualX, screenInfo.virtualY, screenInfo.width, screenInfo.height)
     readonly property rect _contentRect: (windowMode === AdaptiveDialog.WindowMode.Maximized && plasmoid.containment.availableScreenRect.width > 0 && plasmoid.containment.availableScreenRect.height > 0) ? plasmoid.containment.availableScreenRect : Qt.rect(0, 0, _screenRect.width, _screenRect.height)
 
     // -- ANIMATION --
@@ -65,7 +68,7 @@ PlasmaCore.Dialog {
         // Dialog's frame background is a sibling of mainItem under the window's contentItem
         for (const child of dialog.contentItem.children) {
             if (child !== mainItem) {
-                child.visible = !background;
+                child.visible = (!background || isFloating);
             }
         }
     }
@@ -84,12 +87,12 @@ PlasmaCore.Dialog {
     // Dialog sizes the window from mainItem and offsets it by its theme-set frame margins (by overriding x/y).
     // So mainItem covers the whole screen, shifted back by the margins, and holds our background and content.
     mainItem: Item {
-        width: dialog._screenRect.width
-        height: dialog._screenRect.height
+        width: isFloating ? contentContainer.width : dialog._screenRect.width
+        height: isFloating ? contentContainer.height : dialog._screenRect.height
 
         transform: Translate {
-            x: -dialog.margins.left
-            y: -dialog.margins.top
+            x: isFloating ? 0 : -dialog.margins.left
+            y: isFloating ? 0 : -dialog.margins.top
         }
 
         Item {
@@ -113,8 +116,8 @@ PlasmaCore.Dialog {
 
             x: dialog._contentRect.x
             y: dialog._contentRect.y
-            width: dialog._contentRect.width
-            height: dialog._contentRect.height
+            width: isFloating ? dialog.content.implicitWidth : dialog._contentRect.width
+            height: isFloating ? dialog.content.implicitHeight : dialog._contentRect.height
         }
     }
 
@@ -135,7 +138,9 @@ PlasmaCore.Dialog {
     onContentChanged: {
         if (content) {
             content.parent = contentContainer;
-            content.anchors.fill = contentContainer;
+            if (!isFloating) {
+                content.anchors.fill = contentContainer;
+            }
         }
     }
     Component.onCompleted: updateBackgroundVisibility()

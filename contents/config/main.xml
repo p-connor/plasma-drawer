@@ -27,6 +27,10 @@
       <label>The max number of columns in the applications grid</label>
       <default>5</default>
     </entry>
+    <entry name="maxNumberRows" type="Int">
+      <label>The max number of rows in the applications grid in Floating window mode</label>
+      <default>4</default>
+    </entry>
     <entry name="useDirectoryIcons" type="Bool">
       <label>Determines whether directories should be displayed by their icon rather than a collection of their contents</label>
       <default>false</default>

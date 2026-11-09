@@ -32,7 +32,7 @@ PlasmoidItem {
 
     property Item dragSource: null
     property alias systemFavoritesModel: systemModel.favoritesModel
-    property bool debugMode: true
+    property bool debugMode: false
     readonly property DrawerTheme drawerTheme: DrawerTheme {}
     readonly property Kicker.AppsModel appsModel: Kicker.AppsModel {
         autoPopulate: true
@@ -164,18 +164,5 @@ PlasmoidItem {
     }
     Kicker.ProcessRunner {
         id: processRunner
-    }
-    KSvg.FrameSvgItem {
-        id: highlightItemSvg
-
-        visible: false
-        imagePath: "widgets/viewitem"
-        prefix: "hover"
-    }
-    KSvg.FrameSvgItem {
-        id: panelSvg
-
-        visible: false
-        imagePath: "widgets/panel-background"
     }
 }

@@ -43,6 +43,7 @@ Item {
     readonly property url url: model.url != undefined ? model.url : ""
     property bool pressed: false
     readonly property bool hasActionList: ((("hasActionList" in model) && (model.hasActionList == true)) || isSystemAction)
+    property int contentSpacing: Kirigami.Units.largeSpacing * 1.5
 
     function getActionList() {
         return isSystemAction ? Tools.createSystemActionActions(i18n, GridView.view.model.favoritesModel, model.favoriteId) : model.actionList;
@@ -131,7 +132,7 @@ Item {
 
         width: iconSize
         height: width
-        y: (item.height / 2) - (height / 2) - (showLabel ? label.height / 2 : 0)
+        y: (item.height / 2) - ((height + (showLabel ? label.height + contentSpacing : 0)) / 2)
         anchors.horizontalCenter: parent.horizontalCenter
         // anchors.verticalCenter: parent.verticalCenter - (showLabel ? label.height / 2 : 0)
         color: "transparent"
@@ -168,11 +169,9 @@ Item {
 
         anchors {
             top: displayBox.bottom
-            topMargin: Kirigami.Units.largeSpacing * 1.5
+            topMargin: contentSpacing
             left: parent.left
-            leftMargin: highlightItemSvg.margins.left
             right: parent.right
-            rightMargin: highlightItemSvg.margins.right
         }
     }
 
