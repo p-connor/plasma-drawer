@@ -131,6 +131,9 @@ PlasmaCore.Dialog {
         }
         updateBackgroundVisibility();
     }
+    onIsFloatingChanged: {
+        updateBackgroundVisibility();
+    }
     onContentChanged: {
         if (content) {
             content.parent = contentContainer;

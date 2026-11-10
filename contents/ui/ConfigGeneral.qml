@@ -38,7 +38,7 @@ KCM.SimpleKCM {
     property string cfg_icon: plasmoid.configuration.icon
     property bool cfg_useCustomButtonImage: plasmoid.configuration.useCustomButtonImage
     property string cfg_customButtonImage: plasmoid.configuration.customButtonImage
-    property alias cfg_windowMode: windowMode.currentIndex
+    property int cfg_windowMode: plasmoid.configuration.windowMode
     property alias cfg_backgroundType: backgroundType.currentIndex
     property var cfg_customBackgroundColor: plasmoid.configuration.customBackgroundColor
     property var cfg_customBackgroundImagePath: plasmoid.configuration.customBackgroundImagePath
@@ -163,7 +163,27 @@ KCM.SimpleKCM {
             id: windowMode
 
             Kirigami.FormData.label: i18n("Window mode:")
-            model: [i18n("Fullscreen"), i18n("Maximized (keep panels visible)"), i18n("Floating")]
+            model: [i18n("Fullscreen"), i18n("Floating")]
+
+            onActivated: function (index) {
+                cfg_windowMode = index == 0 ? showUnderPanels.checked : 2;
+            }
+            Component.onCompleted: {
+                currentIndex = plasmoid.configuration.windowMode <= 1 ? 0 : 1;
+            }
+        }
+        CheckBox {
+            id: showUnderPanels
+
+            visible: windowMode.currentIndex == 0
+            text: i18n("Show under panels")
+
+            onCheckedChanged: function () {
+                cfg_windowMode = showUnderPanels.checked;
+            }
+            Component.onCompleted: {
+                checked = plasmoid.configuration.windowMode == 1;
+            }
         }
 
         // ----------------- Background -----------------
@@ -226,6 +246,9 @@ KCM.SimpleKCM {
         }
         RowLayout {
             Layout.fillWidth: true
+            // In floating mode, the Dialog background is always the theme's background.
+            // Other background modes can still add on top if desired.
+            visible: !(cfg_windowMode == 2 && backgroundType.currentIndex == 0)
 
             Label {
                 text: i18n("Background opacity:")
