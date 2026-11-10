@@ -182,7 +182,7 @@ FocusScope {
                 implicitHeight: numberRows * implicitCellHeight
                 cellWidth: width / numberColumns
                 cellHeight: height / numberRows
-                width: parent.availableWidth 
+                width: parent.availableWidth
                 height: parent.availableHeight
                 focus: true
                 visible: model ? model.count > 0 : false

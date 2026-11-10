@@ -103,6 +103,8 @@ AdaptiveDialog {
 
         // Use screenInfo instead of rootContentArea.height to avoid binding loop
         readonly property int contentMargin: Math.max(systemActionsGrid.visible ? systemActionsGrid.implicitHeight : 0, searchField.visible ? searchField.implicitHeight * 2 : 0, root.windowMode !== 2 ? Kirigami.Units.iconSizes.huge : 0, root.windowMode !== 2 ? root.screenInfo.height * .12 : 0) + Kirigami.Units.gridUnit
+        readonly property int maxSearchWidth: Kirigami.Units.gridUnit * 32
+        readonly property int searchWidth: content.width > maxSearchWidth ? Math.min(content.width * 0.75, maxSearchWidth) : content.width
 
         focus: true
         LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
@@ -131,7 +133,7 @@ AdaptiveDialog {
             anchors.top: parent.top
             anchors.topMargin: (rootContentArea.contentMargin / 2) - (height / 2)
             anchors.horizontalCenter: parent.horizontalCenter
-            width: content.runnerResultsWidth + (leftInset * 2) - Kirigami.Units.gridUnit * 6
+            width: rootContentArea.searchWidth + (leftInset * 2) - Kirigami.Units.gridUnit * (rootContentArea.implicitWidth > rootContentArea.maxSearchWidth ? 6 : 2)
 
             onTextChanged: {
                 runnerModel.query = text;
@@ -159,9 +161,7 @@ AdaptiveDialog {
         StackView {
             id: content
 
-            readonly property var runnerResultsWidth: Math.min(Math.max(appsGridView.implicitWidth * 0.75, Kirigami.Units.gridUnit * 20), Kirigami.Units.gridUnit * 32)
-
-            implicitWidth: Math.max(appsGridView.implicitWidth, runnerResultsWidth)
+            implicitWidth: appsGridView.implicitWidth
             implicitHeight: appsGridView.implicitHeight
             focus: true
             activeFocusOnTab: true
@@ -203,7 +203,7 @@ AdaptiveDialog {
                 RunnerResultsView {
                     id: runnerResultsView
 
-                    width: content.runnerResultsWidth
+                    width: rootContentArea.searchWidth
                     visible: searching
                     enabled: visible
                     focus: true
@@ -235,11 +235,10 @@ AdaptiveDialog {
             id: contentOpenAnimation
 
             readonly property int duration: plasmoid.configuration.disableAnimations ? 0 : Kirigami.Units.longDuration * 1.5 / plasmoid.configuration.animationSpeedMultiplier
-            
+
             onStarted: {
                 content.layer.enabled = true;
             }
-
             onStopped: {
                 content.layer.enabled = false;
                 content.scale = 1;
