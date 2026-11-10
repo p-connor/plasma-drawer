@@ -102,7 +102,7 @@ AdaptiveDialog {
         id: rootContentArea
 
         // Use screenInfo instead of rootContentArea.height to avoid binding loop
-        readonly property int contentMargin: Math.max(systemActionsGrid.visible ? systemActionsGrid.implicitHeight : 0, searchField.visible ? searchField.implicitHeight * 2 : 0, root.windowMode !== 2 ? Kirigami.Units.iconSizes.huge : 0, root.windowMode !== 2 ? root.screenInfo.height * .12 : 0) + Kirigami.Units.gridUnit
+        readonly property int contentMargin: Math.max(systemActionsGrid.visible ? systemActionsGrid.implicitHeight : 0, searchField.visible ? searchField.implicitHeight * 2 : 0, root.windowMode !== AdaptiveDialog.WindowMode.Floating ? Kirigami.Units.iconSizes.huge : 0, root.windowMode !== AdaptiveDialog.WindowMode.Floating ? root.screenInfo.height * .12 : 0) + Kirigami.Units.gridUnit
         readonly property int maxSearchWidth: Kirigami.Units.gridUnit * 32
         readonly property int searchWidth: content.width > maxSearchWidth ? Math.min(content.width * 0.75, maxSearchWidth) : content.width
 
@@ -176,8 +176,12 @@ AdaptiveDialog {
                 focus: true
                 iconSize: plasmoid.configuration.appIconSize
                 numberColumns: plasmoid.configuration.maxNumberColumns
-                numberRows: windowMode === 2 ? plasmoid.configuration.maxNumberRows : Math.floor(content.height / appsGridView.implicitCellHeight)
                 model: appsModel
+
+                Binding on numberRows {
+                    value: plasmoid.configuration.maxNumberRows
+                    when: root.windowMode === AdaptiveDialog.WindowMode.Floating
+                }
 
                 DebugRect {}
             }

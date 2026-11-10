@@ -9,10 +9,8 @@ FocusScope {
     id: appsGrid
 
     property int iconSize: Kirigami.Units.iconSizes.huge
-    property int numberColumns: 5
-    property int numberRows: 4
-    readonly property int implicitCellWidth: currentItemGrid.implicitCellWidth
-    readonly property int implicitCellHeight: currentItemGrid.implicitCellHeight
+    property var numberColumns
+    property var numberRows
     required property var model
     readonly property var currentItemGrid: stackView.currentItem
     readonly property var currentModel: currentItemGrid ? currentItemGrid.model : null //modelStack[modelStackLength - 1]
@@ -99,13 +97,20 @@ FocusScope {
         ItemGridView {
             property var origin: Qt.point(0, 0)
 
-            numberColumns: appsGrid.numberColumns
-            numberRows: appsGrid.numberRows
             iconSize: appsGrid.iconSize
             model: appsGrid.model
             dragEnabled: false
             hoverEnabled: true
             layer.enabled: StackView.status != StackView.Active
+
+            Binding on numberColumns {
+                when: appsGrid.numberColumns !== undefined
+                value: appsGrid.numberColumns
+            }
+            Binding on numberRows {
+                when: appsGrid.numberRows !== undefined
+                value: appsGrid.numberRows
+            }
         }
     }
     StackView {
