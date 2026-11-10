@@ -99,15 +99,15 @@ AdaptiveDialog {
         id: rootContentArea
 
         // Use screenInfo instead of rootContentArea.height to avoid binding loop
-        readonly property int contentMargin: Math.max(systemActionsGrid.visible ? systemActionsGrid.implicitHeight : 0, searchField.visible ? searchField.implicitHeight * 2 : 0, root.windowMode !== AdaptiveDialog.WindowMode.Floating ? Kirigami.Units.iconSizes.huge : 0, root.windowMode !== AdaptiveDialog.WindowMode.Floating ? root.screenInfo.height * .12 : 0) + Kirigami.Units.gridUnit
+        readonly property int contentSpacing: Kirigami.Units.largeSpacing * (root.windowMode !== AdaptiveDialog.WindowMode.Floating ? 6 : 2)
         readonly property int maxSearchWidth: Kirigami.Units.gridUnit * 32
         readonly property int searchWidth: content.width > maxSearchWidth ? Math.min(content.width * 0.75, maxSearchWidth) : content.width
 
         focus: true
         LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
         LayoutMirroring.childrenInherit: true
-        implicitWidth: content.implicitWidth
-        implicitHeight: content.implicitHeight + (contentMargin * 2)
+        implicitWidth: Math.max(content.implicitWidth, systemActionsGrid.implicitWidth)
+        implicitHeight: content.implicitHeight + (contentSpacing * 2) + (searchField.visible ? searchField.implicitHeight + contentSpacing : 0) + (systemActionsGrid.visible ? systemActionsGrid.implicitHeight + contentSpacing : 0)
         Keys.forwardTo: [content.currentItem, searchField]
 
         Keys.onPressed: function (event) {
@@ -127,9 +127,6 @@ AdaptiveDialog {
             visible: plasmoid.configuration.showSearch
             enabled: visible
             activeFocusOnTab: true
-            anchors.top: parent.top
-            anchors.topMargin: (rootContentArea.contentMargin / 2) - (height / 2)
-            anchors.horizontalCenter: parent.horizontalCenter
             width: rootContentArea.searchWidth + (leftInset * 2) - Kirigami.Units.gridUnit * (rootContentArea.implicitWidth > rootContentArea.maxSearchWidth ? 6 : 2)
 
             onTextChanged: {
@@ -151,6 +148,11 @@ AdaptiveDialog {
                 nextItemInFocusChain(true).forceActiveFocus(Qt.FocusReason);
             }
 
+            anchors {
+                top: parent.top
+                topMargin: rootContentArea.contentSpacing
+                horizontalCenter: parent.horizontalCenter
+            }
             DebugRect {}
         }
 
@@ -192,11 +194,10 @@ AdaptiveDialog {
 
             anchors {
                 horizontalCenter: parent.horizontalCenter
-                top: parent.top
-                bottom: parent.bottom
-                topMargin: rootContentArea.contentMargin
-                bottomMargin: rootContentArea.contentMargin
-                // margins: rootContentArea.contentMargin
+                top: searchField.visible ? searchField.bottom : parent.top
+                bottom: systemActionsGrid.visible ? systemActionsGrid.top : parent.bottom
+                topMargin: rootContentArea.contentSpacing
+                bottomMargin: anchors.topMargin
             }
             Component {
                 id: runnerResultsViewComponent
@@ -290,8 +291,7 @@ AdaptiveDialog {
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 bottom: parent.bottom
-                margins: Kirigami.Units.largeSpacing
-                bottomMargin: (rootContentArea.contentMargin / 2) - (height / 2)
+                bottomMargin: rootContentArea.contentSpacing
             }
             DebugRect {}
         }

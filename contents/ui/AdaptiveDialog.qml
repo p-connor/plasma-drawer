@@ -98,9 +98,6 @@ PlasmaCore.Dialog {
             y: isFloating ? 0 : -dialog.margins.top
         }
 
-        onPressed: function (mouse) {
-            console.log("adaptivedialog mousearea pressed");
-        }
         onReleased: function (mouse) {
             dialog.backgroundReleased(mouse);
         }
