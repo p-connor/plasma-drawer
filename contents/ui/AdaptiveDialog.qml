@@ -86,30 +86,29 @@ PlasmaCore.Dialog {
 
     // Dialog sizes the window from mainItem and offsets it by its theme-set frame margins (by overriding x/y).
     // So mainItem covers the whole screen, shifted back by the margins, and holds our background and content.
-    mainItem: Item {
+    mainItem: MouseArea {
+        id: backgroundMouseArea
+
         width: isFloating ? contentContainer.width : dialog._screenRect.width
         height: isFloating ? contentContainer.height : dialog._screenRect.height
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
 
         transform: Translate {
             x: isFloating ? 0 : -dialog.margins.left
             y: isFloating ? 0 : -dialog.margins.top
         }
 
+        onPressed: function (mouse) {
+            console.log("adaptivedialog mousearea pressed");
+        }
+        onReleased: function (mouse) {
+            dialog.backgroundReleased(mouse);
+        }
+
         Item {
             id: backgroundContainer
 
             anchors.fill: parent
-
-            MouseArea {
-                id: backgroundMouseArea
-
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
-                anchors.fill: parent
-
-                onReleased: function (mouse) {
-                    dialog.backgroundReleased(mouse);
-                }
-            }
         }
         Item {
             id: contentContainer

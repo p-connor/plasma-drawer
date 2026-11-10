@@ -36,12 +36,9 @@ AdaptiveDialog {
 
     readonly property bool searching: searchField.text != ""
 
-    function colorWithAlpha(color, alpha) {
-        return Qt.rgba(color.r, color.g, color.b, alpha);
-    }
     function leave() {
-        if (!searching && content.currentItem.tryExitDirectory && !content.currentItem.isAtRoot) {
-            content.currentItem.tryExitDirectory();
+        if (!searching && !appsGridView.isAtRoot) {
+            appsGridView.tryExitDirectory();
         } else {
             root.toggle();
         }
@@ -74,7 +71,7 @@ AdaptiveDialog {
             id: backgroundRectComponent
 
             Rectangle {
-                color: colorWithAlpha(drawerTheme.backgroundColor, plasmoid.configuration.backgroundOpacity / 100)
+                color: drawerTheme.colorWithAlpha(drawerTheme.backgroundColor, plasmoid.configuration.backgroundOpacity / 100)
             }
         }
         Component {

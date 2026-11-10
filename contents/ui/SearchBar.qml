@@ -23,7 +23,7 @@ TextField {
         anchors.verticalCenter: parent.verticalCenter
         height: parent.height * 0.85
         radius: height * 0.25
-        color: colorWithAlpha(drawerTheme.textColor, .15)
+        color: drawerTheme.colorWithAlpha(drawerTheme.textColor, .15)
     }
 
     Keys.onPressed: function (event) {

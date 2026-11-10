@@ -9,6 +9,10 @@ QtObject {
     readonly property color softTextColor: soften(textColor, 0.225)
     readonly property color iconColor: soften(textColor, 0.1)
 
+    // Returns input color with alpha value set
+    function colorWithAlpha(color, alpha) {
+        return Qt.rgba(color.r, color.g, color.b, alpha);
+    }
     function getReadableTextColor(backgroundColor) {
         return getPerceivedBrightness(backgroundColor) < .5 ? "#ddd" : "#222";
     }

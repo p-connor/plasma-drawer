@@ -110,7 +110,7 @@ FocusScope {
 
         width: rowWidth
         height: listView.height + (Kirigami.Units.smallSpacing * 2)
-        color: colorWithAlpha(drawerTheme.textColor, 0.05)
+        color: drawerTheme.colorWithAlpha(drawerTheme.textColor, 0.05)
         radius: Kirigami.Units.smallSpacing * 3
 
         ListView {
