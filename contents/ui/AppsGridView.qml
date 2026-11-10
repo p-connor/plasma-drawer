@@ -105,7 +105,7 @@ FocusScope {
             model: appsGrid.model
             dragEnabled: false
             hoverEnabled: true
-            layer.enabled: true
+            layer.enabled: StackView.status != StackView.Active
         }
     }
     StackView {

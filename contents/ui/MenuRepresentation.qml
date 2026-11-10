@@ -235,8 +235,13 @@ AdaptiveDialog {
             id: contentOpenAnimation
 
             readonly property int duration: plasmoid.configuration.disableAnimations ? 0 : Kirigami.Units.longDuration * 1.5 / plasmoid.configuration.animationSpeedMultiplier
+            
+            onStarted: {
+                content.layer.enabled = true;
+            }
 
             onStopped: {
+                content.layer.enabled = false;
                 content.scale = 1;
                 content.opacity = 1;
             }
