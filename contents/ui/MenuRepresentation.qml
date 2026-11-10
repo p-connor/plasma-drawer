@@ -65,7 +65,7 @@ AdaptiveDialog {
     background: Loader {
         id: backgroundLoader
 
-        sourceComponent: plasmoid.configuration.backgroundType == 2 ? backgroundImageComponent : backgroundRectComponent
+        sourceComponent: (windowMode == AdaptiveDialog.WindowMode.Floating && plasmoid.configuration.backgroundType == 0) ? undefined : (plasmoid.configuration.backgroundType == 2) ? backgroundImageComponent : backgroundRectComponent
 
         Component {
             id: backgroundRectComponent
