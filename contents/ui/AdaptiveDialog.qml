@@ -73,7 +73,7 @@ PlasmaCore.Dialog {
         }
     }
 
-    hideOnWindowDeactivate: true
+    hideOnWindowDeactivate: !kicker.debugMode
     // Ensure we stack above panels in Fullscreen mode
     type: windowMode === AdaptiveDialog.WindowMode.Fullscreen ? PlasmaCore.Dialog.Dock : PlasmaCore.Dialog.Normal
     location: !animated ? PlasmaCore.Types.Desktop : _onPanelEdge ? plasmoid.location : PlasmaCore.Types.BottomEdge

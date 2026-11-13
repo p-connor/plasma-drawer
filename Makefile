@@ -19,12 +19,16 @@ install: $(PACKAGE_NAME)
 
 upgrade: $(PACKAGE_NAME)
 	kpackagetool6 -t Plasma/Applet -u $(PACKAGE_NAME)
+	systemctl restart --user plasma-plasmashell.service
 
 uninstall:
 	kpackagetool6 -t Plasma/Applet -r p-connor.plasma-drawer
 
 test: metadata.json
 	QT_LOGGING_RULES="qml.debug=true" plasmoidviewer -a ./
+
+debug: metadata.json
+	QT_LOGGING_RULES="qml.debug=true" gammaray plasmoidviewer -a ./
 
 format:
 	qmlformat -i ./contents/ui/*
