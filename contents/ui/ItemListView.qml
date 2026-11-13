@@ -28,6 +28,7 @@ FocusScope {
     property alias count: listView.count
     property alias model: listView.model
     property alias interactive: listView.interactive
+    property alias hoverEnabled: mouseArea.hoverEnabled
 
     // onCurrentIndexChanged: {
     //     if (currentIndex != -1) {
@@ -66,6 +67,10 @@ FocusScope {
         }
     }
     Keys.onPressed: function (event) {
+        if ((event.key == Qt.Key_Enter || event.key == Qt.Key_Return) && currentIndex != -1) {
+            event.accepted = true;
+        }
+
         if (event.key == Qt.Key_Menu && currentItem && currentItem.hasActionList) {
             event.accepted = true;
             openActionMenu(currentItem.x, currentItem.y, currentItem.getActionList());
@@ -220,6 +225,7 @@ FocusScope {
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                 onPressed: function (mouse) {
+                    updatePositionProperties(mouse.x, mouse.y);
                     if (mouse.button == Qt.RightButton && currentItem && currentItem.hasActionList) {
                         mouse.accepted = true;
                         itemList.openActionMenu(mouse.x, mouse.y, currentItem.getActionList());
@@ -235,7 +241,8 @@ FocusScope {
                     updatePositionProperties(mouse.x, mouse.y);
                 }
                 onExited: {
-                    if (!actionMenu.opened) {
+                    // onExited fires when hoverEnabled changes to false
+                    if (hoverEnabled && !actionMenu.opened) {
                         currentIndex = -1;
                     }
                 }

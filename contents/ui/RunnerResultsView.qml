@@ -17,6 +17,8 @@ FocusScope {
     property alias sectionsCount: runnerSectionsList.count
     property int iconSize: Kirigami.Units.iconSizes.huge
     property bool shrinkIconsToNative: false
+    // Disable hover events when the scrollview moves listitems under an unmoving mouse
+    property bool _sectionHoverDisabled: true
 
     function selectFirst() {
         if (sectionsCount > 0) {
@@ -46,6 +48,32 @@ FocusScope {
 
     width: Kirigami.Units.gridUnit * 20
     height: Kirigami.Units.gridUnit * 60
+
+    onActiveFocusChanged: {
+        if (activeFocus) {
+            if (currentSectionIndex == -1) {
+                currentSectionIndex = 0;
+            }
+        } else {
+            currentSectionIndex = -1;
+        }
+    }
+
+    HoverHandler {
+        id: hoverHandler
+
+        property point lastMousePos: Qt.point(-1, -1)
+
+        onPointChanged: {
+            if (point.position !== lastMousePos) {
+                // First fire is likely just on load, so ignore it
+                if (lastMousePos != Qt.point(-1, -1)) {
+                    searchResults._sectionHoverDisabled = false;
+                }
+                lastMousePos = point.position;
+            }
+        }
+    }
 
     // TODO: Move off of ScrollView as it hijacks up/down key events
     // See https://code.qt.io/cgit/qt/qtdeclarative.git/tree/src/quicktemplates/qquickscrollview.cpp?h=6.9.3#n642
@@ -217,6 +245,7 @@ FocusScope {
                     maxVisibleRows: 5
                     interactive: false
                     model: runnerSectionsList.model.modelForRow(index)
+                    hoverEnabled: !searchResults._sectionHoverDisabled
 
                     //currentIndex: index == 0 ? 0 : -1
                     onCurrentIndexChanged: {
@@ -236,6 +265,21 @@ FocusScope {
                 }
             }
 
+            // Ensure only one selection at a time
+            onCurrentIndexChanged: {
+                if (currentIndex === -1) {
+                    return;
+                }
+                for (let i = 0; i < count; i++) {
+                    if (i !== currentIndex) {
+                        let section = itemAtIndex(i);
+                        if (section) {
+                            section.currentIndex = -1;
+                        }
+                    }
+                }
+            }
+            onContentYChanged: searchResults._sectionHoverDisabled = true
             Keys.onPressed: function (event) {
                 switch (event.key) {
                 case Qt.Key_Up:
